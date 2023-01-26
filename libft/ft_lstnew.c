@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/23 17:21:42 by fvieira           #+#    #+#             */
-/*   Updated: 2023/01/23 17:21:43 by fvieira          ###   ########.fr       */
+/*   Created: 2022/11/08 19:43:24 by fvieira           #+#    #+#             */
+/*   Updated: 2022/11/08 19:43:39 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include "./libft/libft.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <dirent.h>
-# include <string.h>
+t_list	*ft_lstnew(void	*content)
+{
+	t_list	*lista;
 
-void	alphabeticsort(struct dirent **str);
-
-#endif
+	lista = (t_list *) malloc(sizeof(t_list));
+	if (lista != NULL)
+	{
+		lista->content = content;
+		lista->next = NULL;
+	}
+	return (lista);
+}

@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/23 17:21:42 by fvieira           #+#    #+#             */
-/*   Updated: 2023/01/23 17:21:43 by fvieira          ###   ########.fr       */
+/*   Created: 2022/11/09 14:59:40 by fvieira           #+#    #+#             */
+/*   Updated: 2022/11/09 14:59:42 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include "./libft/libft.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <dirent.h>
-# include <string.h>
+void	ft_lstclear(t_list **lst, void (*del)(void*))
+{
+	t_list	*sublst;
+	t_list	*next;
 
-void	alphabeticsort(struct dirent **str);
-
-#endif
+	if (!lst)
+		return ;
+	sublst = *lst;
+	while (sublst)
+	{
+		next = sublst->next;
+		ft_lstdelone(sublst, del);
+		sublst = next;
+	}
+	*lst = NULL;
+}
