@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/01/26 22:15:00 by fvieira          ###   ########.fr        #
+#    Updated: 2023/01/27 16:05:06 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ CFLAGS = -Werror -Wall -Wextra -I.
 LIBFT = ./libft/libft.a
 
 SRC = main.c \
-      ls_auxil.c
 
 OBJ = $(SRC:.c=.o)
 
