@@ -24,7 +24,6 @@
 # include <dirent.h>
 # include <string.h>
 # include <signal.h>
-
-void	alphabeticsort(struct dirent **str);
+# include <errno.h>
 
 #endif
