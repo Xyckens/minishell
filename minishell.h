@@ -26,4 +26,7 @@
 # include <signal.h>
 # include <errno.h>
 
+char	**set_new_env(char **envp);
+void	ft_export(char *command, char **envp);
+
 #endif

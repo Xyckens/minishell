@@ -9,7 +9,6 @@
 /*   Updated: 2023/01/23 17:22:57 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "minishell.h"
 
 /*void ls(char *argv) 
@@ -27,6 +26,7 @@
 	}
 	
 }*/
+
 void	ft_epur(char *s)
 {
 	int c;
@@ -55,6 +55,7 @@ void	ft_epur(char *s)
 		c++;
 	}
 }
+
 void	echo(char *str)
 {
 	int	count;
@@ -75,6 +76,7 @@ void	echo(char *str)
 	if (flag != 1)
 		ft_putchar_fd('\n', 1);
 }
+
 void	path(char *path)
 {
 	char	pwd[1000];
@@ -105,38 +107,6 @@ void	path(char *path)
 	}
 }
 
-void	ft_export(char *command, char **envp)
-{
-	// static int	len;
-	int			i;
-
-	i = 0;
-	if (!ft_strncmp(command, "export.", 7))
-	{
-		while (envp[i])
-		{
-			printf("%s\n", envp[i]);
-			i++;
-		}
-		printf("%d\n", i);
-	}
-	else if (!ft_strncmp(command, "export ", 7))
-	{	
-		while (envp[i])
-			i++;
-		//len = i + 1;
-		i++;
-		if (ft_strchr(command, '='))
-			envp[i] = &command[7];
-		else
-		{
-			envp[i] = ft_strjoin(&command[7], "=''");			
-			printf("Included: %s\n", envp[i]);
-		}
-		printf("%d\n", i);
-	}
-}
-
 void handle_signals(int signo)
 {
 	if (signo == SIGINT)
@@ -152,8 +122,11 @@ int main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	(void)argc;
-	char 			*line;
 
+	char	*line;
+	char	**new_env;
+
+	new_env = set_new_env(envp);
 	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
 	{
 		printf("failed to register interrupts with kernel\n");
@@ -170,7 +143,7 @@ int main(int argc, char **argv, char **envp)
 			break;
 		}
 		add_history (line);
-		ft_export(line, envp);
+		ft_export(line, new_env);
 		path(line);
 		free (line);
 	}

@@ -19,6 +19,8 @@ CFLAGS = -Werror -Wall -Wextra -I.
 LIBFT = ./libft/libft.a
 
 SRC = main.c \
+		export.c \
+		set_new_env.c \
 
 OBJ = $(SRC:.c=.o)
 
