@@ -21,6 +21,7 @@ LIBFT = ./libft/libft.a
 SRC = main.c \
 		export.c \
 		set_new_env.c \
+		unset.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -27,6 +27,7 @@
 # include <errno.h>
 
 char	**set_new_env(char **envp);
-void	ft_export(char *command, char **envp);
+char	**ft_export(char *command, char **envp);
+char	**ft_unset(char *command, char **new_env);
 
 #endif

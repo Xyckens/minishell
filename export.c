@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_export(char *command, char **new_env)
+char	**ft_export(char *command, char **new_env)
 {
 	int	i;
 	
@@ -37,4 +37,5 @@ void	ft_export(char *command, char **new_env)
 		}
 		printf("Included: %s\n", new_env[i]);
 	}
+	return (new_env);
 }

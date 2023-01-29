@@ -9,23 +9,86 @@
 /*   Updated: 2023/01/23 17:22:57 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
-/*void ls(char *argv) 
+char	**new_env = 0;
+
+int	does_it_have_2quotes(char *str, int firststop)
 {
-	DIR *dir;
-	struct dirent *ent;
-	if ((dir = opendir (argv)) != NULL) {
-	  while ((ent = readdir (dir)) != NULL) {
-	  	if(ent->d_name[0] != '.')
-	   	 printf ("%s   ", ent->d_name);
-	  }
-	  closedir (dir);
-	} else {
-	  perror ("");
+	int count;
+	int	count2;
+	int	flag;
+
+	count2 = 0;
+	flag = 0;
+	count = 0;
+	while (str[count])
+	{
+		if (str[count] == 39)
+			flag++;
+		if (flag == 2)
+		{
+			count2 = count;
+			break ;
+		}
+		count++;
 	}
-	
-}*/
+	if (flag == 2)
+	{
+		count = 0;
+		while (str[count] && count < count2)
+		{
+			if (str[count] != 39)
+				ft_putchar_fd(str[count], 1);
+			count++;
+		}
+		return (firststop + count2 + 1);
+	}
+	return (firststop + 1);
+}
+
+void	ft_printenv(char *str)
+{
+	int	count;
+
+	count = 0;
+	while (str[count])
+	{
+		if (str[count] == '=')
+		{
+			count++;
+			break ;
+		}
+		count++;
+	}
+	while (str[count])
+	{
+		ft_putchar_fd(str[count], 1);
+		count++;
+	}
+}
+
+int dollarsign(char *str, int c)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (str[count] && str[count] != ' ')
+		count++;
+	while (new_env[i])
+	{
+		if (!ft_strncmp(str, new_env[i], count))
+		{
+			ft_printenv(new_env[i]);
+			break;
+		}
+		i++;
+	}
+	return (count + c + 1);
+}
 
 void	ft_epur(char *s)
 {
@@ -42,6 +105,10 @@ void	ft_epur(char *s)
 		l--;
 	while (c <= l)
 	{
+		if (s[c] == 39)
+			c = does_it_have_2quotes(s + c, c);
+		if (s[c] == '$')
+			c = dollarsign(s + c + 1, c);
 		if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
 			ft_putchar_fd(' ', 1);
@@ -102,9 +169,9 @@ void	path(char *path)
 		previuos_pwd = ft_strdup(current_pwd);
 	}
 	else if (!ft_strncmp(path, "echo ", 5))
-	{
 		echo(path);
-	}
+	/*else
+		printf(" command not found: %s\n", path);*/ //vamos precisar disto, mas nao assim0
 }
 
 void handle_signals(int signo)
@@ -122,9 +189,7 @@ int main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	(void)argc;
-
-	char	*line;
-	char	**new_env;
+	char 	*line;
 
 	new_env = set_new_env(envp);
 	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
@@ -143,7 +208,8 @@ int main(int argc, char **argv, char **envp)
 			break;
 		}
 		add_history (line);
-		ft_export(line, new_env);
+		new_env = ft_export(line, new_env);
+		new_env = ft_unset(line, new_env);
 		path(line);
 		free (line);
 	}
