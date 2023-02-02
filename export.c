@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jegger-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 13:23:25 by jegger-s          #+#    #+#             */
-/*   Updated: 2023/01/28 13:23:28 by jegger-s         ###   ########.fr       */
+/*   Updated: 2023/02/01 17:11:56 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
-char	**ft_export(char *command, char **new_env)
+char	**ft_export(char *command, char **new_env, int fd)
 {
 	int	i;
 	
@@ -20,10 +21,10 @@ char	**ft_export(char *command, char **new_env)
 	{
 		while (new_env[i])
 		{
-			printf("%s\n", new_env[i]);
+			ft_printf(fd, "%s\n", new_env[i]);
 			i++;
 		}
-		printf("%d\n", i);
+		ft_printf(fd, "%d\n", i);
 	}
 	else if (!ft_strncmp(command, "export ", 7))
 	{
@@ -35,7 +36,7 @@ char	**ft_export(char *command, char **new_env)
 		{
 			new_env[i] = ft_strjoin(&command[7], "=''");
 		}
-		printf("Included: %s\n", new_env[i]);
+		ft_printf(fd, "Included: %s\n", new_env[i]);
 	}
 	return (new_env);
 }

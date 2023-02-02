@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/01/27 16:05:06 by fvieira          ###   ########.fr        #
+#    Updated: 2023/02/02 21:55:26 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ LIBFT = ./libft/libft.a
 SRC = main.c \
 		export.c \
 		set_new_env.c \
-		unset.c
+		unset.c \
+		parser.c \
+		append.c
 
 OBJ = $(SRC:.c=.o)
 

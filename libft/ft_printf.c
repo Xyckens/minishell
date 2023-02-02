@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 13:37:24 by fvieira           #+#    #+#             */
-/*   Updated: 2022/11/21 13:37:26 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/01 16:47:46 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	ft_encontreipercent(char p, va_list args, int fd)
 		return (ft_putstr_fd_("erro", fd));
 }
 
-int	ft_printf(const char *fds, ...)
+int	ft_printf(int fd, const char *fds, ...)
 {
 	va_list	args;
 	int		count;
@@ -55,11 +55,11 @@ int	ft_printf(const char *fds, ...)
 		if (fds[count] != '%')
 		{
 			count2++;
-			ft_putchar_fd_(fds[count], 1);
+			ft_putchar_fd_(fds[count], fd);
 		}
 		if (fds[count] == '%')
 		{
-			count2 += ft_encontreipercent(fds[count + 1], args, 1);
+			count2 += ft_encontreipercent(fds[count + 1], args, fd);
 			count++;
 		}
 		count++;

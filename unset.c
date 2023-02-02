@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 14:32:43 by fvieira           #+#    #+#             */
-/*   Updated: 2023/01/29 14:32:47 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:12:12 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**ft_unset(char *command, char **new_env)
 	i = 0;
 	if (!ft_strncmp(command, "unset", 5) && ft_strlen(command) == 5)
 	{
-		printf("unset: not enough arguments\n");
+		ft_printf(2, "unset: not enough arguments\n");
 	}
 	else if (!ft_strncmp(command, "unset", 5))
 	{

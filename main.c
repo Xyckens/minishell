@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:22:56 by fvieira           #+#    #+#             */
-/*   Updated: 2023/01/23 17:22:57 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:49:51 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	**new_env = 0;
 
-int	does_it_have_2quotes(char *str, int firststop)
+int	does_it_have_2quotes(char *str, int firststop, int fd)
 {
 	int count;
 	int	count2;
@@ -40,7 +40,7 @@ int	does_it_have_2quotes(char *str, int firststop)
 		while (str[count] && count < count2)
 		{
 			if (str[count] != 39)
-				ft_putchar_fd(str[count], 1);
+				ft_putchar_fd(str[count], fd);
 			count++;
 		}
 		return (firststop + count2 + 1);
@@ -48,7 +48,7 @@ int	does_it_have_2quotes(char *str, int firststop)
 	return (firststop + 1);
 }
 
-void	ft_printenv(char *str)
+void	ft_printenv(char *str, int fd)
 {
 	int	count;
 
@@ -64,12 +64,12 @@ void	ft_printenv(char *str)
 	}
 	while (str[count])
 	{
-		ft_putchar_fd(str[count], 1);
+		ft_putchar_fd(str[count], fd);
 		count++;
 	}
 }
 
-int dollarsign(char *str, int c)
+int dollarsign(char *str, int c, int fd)
 {
 	int	count;
 	int	i;
@@ -82,7 +82,7 @@ int dollarsign(char *str, int c)
 	{
 		if (!ft_strncmp(str, new_env[i], count))
 		{
-			ft_printenv(new_env[i]);
+			ft_printenv(new_env[i], fd);
 			break;
 		}
 		i++;
@@ -90,7 +90,7 @@ int dollarsign(char *str, int c)
 	return (count + c + 1);
 }
 
-void	ft_epur(char *s)
+void	ft_epur(char *s, int fd)
 {
 	int c;
 	int flag;
@@ -106,24 +106,24 @@ void	ft_epur(char *s)
 	while (c <= l)
 	{
 		if (s[c] == 39)
-			c = does_it_have_2quotes(s + c, c);
+			c = does_it_have_2quotes(s + c, c, fd);
 		if (s[c] == '$')
-			c = dollarsign(s + c + 1, c);
+			c = dollarsign(s + c + 1, c, fd);
 		if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
-			ft_putchar_fd(' ', 1);
+			ft_putchar_fd(' ', fd);
 			flag = 0;
 		}
 		if (s[c] != ' ' && s[c] != '\t' && s[c] != '\n')
 		{
 			flag = 1;
-			ft_putchar_fd(s[c], 1);
+			ft_putchar_fd(s[c], fd);
 		}
 		c++;
 	}
 }
 
-void	echo(char *str)
+void	echo(char *str, int fd)
 {
 	int	count;
 	int	flag;
@@ -139,12 +139,12 @@ void	echo(char *str)
 	}
 	while (str[count] == ' ' || (str[count] >= 9 && str[count] <= 13))
 		count++;
-	ft_epur(str + count);
+	ft_epur(str + count, fd);
 	if (flag != 1)
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', fd);
 }
 
-void	path(char *path)
+void	path(char *path, int fd)
 {
 	char	pwd[1000];
 
@@ -154,7 +154,7 @@ void	path(char *path)
 	if (current_pwd != getcwd(pwd, 100))
 		current_pwd = getcwd(pwd, 100);
 	if (!ft_strncmp(path, "pwd", 3))
-		printf("%s\n", getcwd(pwd, 100));
+		ft_printf(fd, "%s\n", getcwd(pwd, 100));
 	else if (!ft_strncmp(path, "cd ", 3))
 	{
 		if (!ft_strncmp(&path[3], "~", 1))
@@ -162,23 +162,23 @@ void	path(char *path)
 		else if (!ft_strncmp(&path[3], "-", 1))
 		{
 			chdir(previuos_pwd);
-			printf("%s\n", previuos_pwd);
+			ft_printf(fd, "%s\n", previuos_pwd);
 		}
 		else if (chdir(&path[3]) == -1)
-			printf("cd: %s: %s\n", strerror(errno), &path[3]);
+			ft_printf(fd, "cd: %s: %s\n", strerror(errno), &path[3]);
 		previuos_pwd = ft_strdup(current_pwd);
 	}
 	else if (!ft_strncmp(path, "echo ", 5))
-		echo(path);
+		echo(path, fd);
 	/*else
-		printf(" command not found: %s\n", path);*/ //vamos precisar disto, mas nao assim0
+		ft_printf(fd, " command not found: %s\n", path);*/ //vamos precisar disto, mas nao assim0
 }
 
 void handle_signals(int signo)
 {
 	if (signo == SIGINT)
 	{
-		printf("\n"); // Move to a new line
+		ft_printf(1, "\n"); // Move to a new line
 		rl_on_new_line(); // Regenerate the prompt on a newline
 		rl_replace_line("", 0); // Clear the previous text
 		rl_redisplay();
@@ -190,15 +190,17 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)argc;
 	char 	*line;
+	int		fd;
 
+	fd = 1;
 	new_env = set_new_env(envp);
 	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
 	{
-		printf("failed to register interrupts with kernel\n");
+		ft_printf(fd, "failed to register interrupts with kernel\n");
 	}
 	if (signal(SIGINT, handle_signals) == SIG_ERR)
 	{
-		printf("failed to register interrupts with kernel\n");
+		ft_printf(fd, "failed to register interrupts with kernel\n");
 	}
 	while ((line = readline("prompt% ")))
 	{
@@ -208,9 +210,10 @@ int main(int argc, char **argv, char **envp)
 			break;
 		}
 		add_history (line);
-		new_env = ft_export(line, new_env);
+		fd = parser(line, new_env);
+		new_env = ft_export(line, new_env, fd);
 		new_env = ft_unset(line, new_env);
-		path(line);
+		path(line, fd);
 		free (line);
 	}
 	return (0);

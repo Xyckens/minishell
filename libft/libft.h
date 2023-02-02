@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvieira <fvieira@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 15:09:46 by fvieira           #+#    #+#             */
-/*   Updated: 2022/08/22 15:23:11 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/01 16:47:58 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void		ft_lstdelone(t_list *lst, void (*del)(void*));
 void		ft_lstclear(t_list **lst, void (*del)(void*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-int			ft_printf(const char *fds, ...);
+int			ft_printf(int fd, const char *fds, ...);
 void		ft_putchar_fd_(char c, int fd);
 int			ft_print_pointer_fd(unsigned long long s, int fd);
 int			ft_putnbr_fd_(int n, int fd);

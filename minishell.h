@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:21:42 by fvieira           #+#    #+#             */
-/*   Updated: 2023/01/23 17:21:43 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/02 21:54:39 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 # include <errno.h>
 
 char	**set_new_env(char **envp);
-char	**ft_export(char *command, char **envp);
+char	**ft_export(char *command, char **envp, int fd);
 char	**ft_unset(char *command, char **new_env);
-
+int		parser(char *prompt);
+int		redirectout(char *prompt, int midle);
 #endif
