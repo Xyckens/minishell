@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:22:56 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/01 17:49:51 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/03 19:39:30 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,5 +216,7 @@ int main(int argc, char **argv, char **envp)
 		path(line, fd);
 		free (line);
 	}
+	if (fd != 1)
+		close(fd);
 	return (0);
 }

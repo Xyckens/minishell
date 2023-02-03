@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 20:35:05 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/02 21:47:49 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/03 19:36:58 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ char	*name(char *str)
 	}	
 	string[count] = '\0';
 	return (string);
+}
+
+int	append(char *prompt, int midle)
+{
+	int	fd;
+	char	*path;
+
+	path = name(prompt + midle + 2);
+	fd = open(path, O_WRONLY | O_CREAT | O_APPEND);
+	return (fd);
 }
 int	redirectout(char *prompt, int midle)
 {
