@@ -37,19 +37,19 @@ char	*name(char *str)
 
 int	append(char *prompt, int midle)
 {
-	int	fd;
+	int		fd;
 	char	*path;
 
 	path = name(prompt + midle + 2);
-	fd = open(path, O_WRONLY | O_CREAT | O_APPEND);
+	fd = open(path, O_CREAT | O_RDWR | O_APPEND, 0777);
 	return (fd);
 }
 int	redirectout(char *prompt, int midle)
 {
-	int	fd;
+	int		fd;
 	char	*path;
 
 	path = name(prompt + midle + 2);
-	fd = open(path, O_WRONLY | O_CREAT);
+	fd = open(path, O_WRONLY | O_CREAT, 0666);
 	return (fd);
 }

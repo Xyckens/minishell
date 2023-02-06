@@ -25,6 +25,7 @@
 # include <string.h>
 # include <signal.h>
 # include <errno.h>
+# include <fcntl.h>
 
 char	**set_new_env(char **envp);
 char	**ft_export(char *command, char **envp, int fd);

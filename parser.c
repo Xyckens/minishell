@@ -19,9 +19,9 @@ int	parser(char *prompt)
 
 	count = 0;
 	fd = 1;
-	/*while (prompt[count])
+	while (prompt[count])
 	{
-		if (prompt[count] == '|')
+		/*if (prompt[count] == '|')
 			pipe(prompt, count);
 		else if (prompt[count] == '<')
 		{
@@ -29,15 +29,19 @@ int	parser(char *prompt)
 				delimiter(prompt, count++);
 			else
 				redirectin(prompt, count);
-		}
-		else if (prompt[count] == '>')
+		}*/
+		if (prompt[count] == '>')
 		{
 			if (prompt[count + 1] == '>')
+			{
+				printf("%c\n", prompt[count]);
 				fd = append(prompt, count++);
+				printf("%c\n", prompt[count]);
+			}
 			else
 				fd = redirectout(prompt, count);
 		}
 		count++;
-	}*/
+	}
 	return (fd);
 }

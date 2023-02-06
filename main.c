@@ -109,6 +109,8 @@ void	ft_epur(char *s, int fd)
 			c = does_it_have_2quotes(s + c, c, fd);
 		if (s[c] == '$')
 			c = dollarsign(s + c + 1, c, fd);
+		if (s[c] == '>' || s[c] == '<' || s[c] == '|')
+			break ;
 		if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
 			ft_putchar_fd(' ', fd);
@@ -210,7 +212,7 @@ int main(int argc, char **argv, char **envp)
 			break;
 		}
 		add_history (line);
-		fd = parser(line, new_env);
+		fd = parser(line);
 		new_env = ft_export(line, new_env, fd);
 		new_env = ft_unset(line, new_env);
 		path(line, fd);
