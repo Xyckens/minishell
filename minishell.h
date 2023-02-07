@@ -27,6 +27,8 @@
 # include <errno.h>
 # include <fcntl.h>
 
+void	executable(char *prompt, int fd);
+
 char	**set_new_env(char **envp);
 char	**ft_export(char *command, char **envp, int fd);
 char	**ft_unset(char *command, char **new_env);

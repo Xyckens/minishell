@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   append.c                                           :+:      :+:    :+:   */
+/*   executables.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/02 20:35:05 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/03 19:36:58 by fvieira          ###   ########.fr       */
+/*   Created: 2023/02/07 20:54:04 by fvieira           #+#    #+#             */
+/*   Updated: 2023/02/07 20:54:07 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*name(char *str)
+char	*name(char *str)
 {
 	int		count;
 	int		space;
@@ -35,21 +35,30 @@ static char	*name(char *str)
 	return (string);
 }
 
-int	append(char *prompt, int midle)
+void	executable(char *prompt, int fd)
 {
-	int		fd;
-	char	*path;
+	int status;
+	char *args[2];
 
-	path = name(prompt + midle + 3);
-	fd = open(path, O_CREAT | O_RDWR | O_APPEND, 0666);
-	return (fd);
+	(void)fd;
+	args[0] = ft_strjoin("/bin/", name(prompt));
+	args[1] = NULL;
+	if (fork() == 0)
+		execv(args[0], args);
+	else
+		wait(&status);
+	free(args[0]);
 }
-int	redirectout(char *prompt, int midle)
+/*int main( void )
 {
-	int		fd;
-	char	*path;
+	int status;
+	char *args[2];
 
-	path = name(prompt + midle + 2);
-	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	return (fd);
-}
+	args[0] = "/bin/ls";        // first arg is the full path to the executable
+	args[1] = NULL;             // list of args must be NULL terminated
+	if ( fork() == 0 )
+		execv( args[0], args ); // child: call execv with the path and the args
+	else
+		wait( &status );        // parent: wait for the child (not really necessary)
+	return 0;
+}*/

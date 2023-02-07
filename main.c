@@ -172,8 +172,9 @@ void	path(char *path, int fd)
 	}
 	else if (!ft_strncmp(path, "echo ", 5))
 		echo(path, fd);
-	/*else
-		ft_printf(fd, " command not found: %s\n", path);*/ //vamos precisar disto, mas nao assim0
+	else
+		executable(path, fd);
+		//ft_printf(fd, " command not found: %s\n", path); //vamos precisar disto, mas nao assim0
 }
 
 void handle_signals(int signo)

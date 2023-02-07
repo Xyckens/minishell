@@ -33,11 +33,7 @@ int	parser(char *prompt)
 		if (prompt[count] == '>')
 		{
 			if (prompt[count + 1] == '>')
-			{
-				printf("%c\n", prompt[count]);
 				fd = append(prompt, count++);
-				printf("%c\n", prompt[count]);
-			}
 			else
 				fd = redirectout(prompt, count);
 		}

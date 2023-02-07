@@ -23,7 +23,8 @@ SRC = main.c \
 		set_new_env.c \
 		unset.c \
 		parser.c \
-		append.c
+		append.c \
+		executables.c
 
 OBJ = $(SRC:.c=.o)
 
