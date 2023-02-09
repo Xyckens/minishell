@@ -22,11 +22,13 @@ char	*name(char *str)
 	space = 0;
 	while (str[count] == ' ')
 		space++;
-	while (str[space + count] && str[space + count] != ' ')
+	while (str[space + count] && str[space + count] != '"' && str[space + count] != '>'
+		&& str[space + count] != '|' && str[space + count] != 39)
 		count++;
 	string = malloc((count + 1) * sizeof(char));
 	count = 0;
-	while (str[space + count] && str[space + count] != ' ')
+	while (str[space + count] && str[space + count] != '"' && str[space + count] != '>'
+		&& str[space + count] != '|' && str[space + count] != 39)
 	{
 		string[count] = str[space + count];
 		count++;
@@ -35,30 +37,24 @@ char	*name(char *str)
 	return (string);
 }
 
-void	executable(char *prompt, int fd)
+void	idk(char **args, char **env, int fd)
 {
-	int status;
-	char *args[2];
+	dup2(fd, 1);
+	execve(args[0], args, env);
+}
 
-	(void)fd;
-	args[0] = ft_strjoin("/bin/", name(prompt));
-	args[1] = NULL;
+void	executable(char *prompt, char **env, int fd)
+{
+	int		status;
+	char	**nome;
+
+	nome = ft_split(name(prompt), ' ');
+	//suspeito que a funcao name crash o programa
+	// quando nao se escreve nada e se da enter
+	nome[0] = ft_strjoin("/bin/", nome[0]);
 	if (fork() == 0)
-		execv(args[0], args);
+		idk(nome, env, fd);
 	else
 		wait(&status);
-	free(args[0]);
+	free(nome);
 }
-/*int main( void )
-{
-	int status;
-	char *args[2];
-
-	args[0] = "/bin/ls";        // first arg is the full path to the executable
-	args[1] = NULL;             // list of args must be NULL terminated
-	if ( fork() == 0 )
-		execv( args[0], args ); // child: call execv with the path and the args
-	else
-		wait( &status );        // parent: wait for the child (not really necessary)
-	return 0;
-}*/

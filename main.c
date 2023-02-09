@@ -89,6 +89,42 @@ int dollarsign(char *str, int c, int fd)
 	}
 	return (count + c + 1);
 }
+/*int	does_it_have_2doublequotes(char *str, int firststop, int fd)
+{
+	int count;
+	int	count2;
+	int	flag;
+
+	count2 = 0;
+	flag = 0;
+	count = 0;
+	while (str[count])
+	{
+		if (str[count] == '"')
+			flag++;
+		if (flag == 2)
+		{
+			count2 = count;
+			break ;
+		}
+		count++;
+	}
+	if (flag == 2)
+	{
+		count = 0;
+		while (str[count] && count < count2)
+		{
+			if (s[c] == '$')
+				c = dollarsign(s + c + 1, c, fd);
+			if (str[count] != '"')
+				ft_putchar_fd(str[count], fd);
+			count++;
+		}
+		return (firststop + count2 + 1);
+	}
+	return (firststop + 1);
+}
+*/
 
 void	ft_epur(char *s, int fd)
 {
@@ -107,6 +143,8 @@ void	ft_epur(char *s, int fd)
 	{
 		if (s[c] == 39)
 			c = does_it_have_2quotes(s + c, c, fd);
+		//if (s[c] == '"')
+		//	c = does_it_have_2doublequotes(s + c, c, fd);
 		if (s[c] == '$')
 			c = dollarsign(s + c + 1, c, fd);
 		if (s[c] == '>' || s[c] == '<' || s[c] == '|')
@@ -150,7 +188,7 @@ void	path(char *path, int fd)
 {
 	char	pwd[1000];
 
-	static char	*previuos_pwd;
+	static char	*previous_pwd;
 	static char	*current_pwd;
 
 	if (current_pwd != getcwd(pwd, 100))
@@ -163,17 +201,17 @@ void	path(char *path, int fd)
 			chdir("/nfs/homes/jegger-s/");
 		else if (!ft_strncmp(&path[3], "-", 1))
 		{
-			chdir(previuos_pwd);
-			ft_printf(fd, "%s\n", previuos_pwd);
+			chdir(previous_pwd);
+			ft_printf(fd, "%s\n", previous_pwd);
 		}
 		else if (chdir(&path[3]) == -1)
 			ft_printf(fd, "cd: %s: %s\n", strerror(errno), &path[3]);
-		previuos_pwd = ft_strdup(current_pwd);
+		previous_pwd = ft_strdup(current_pwd);
 	}
 	else if (!ft_strncmp(path, "echo ", 5))
 		echo(path, fd);
 	else
-		executable(path, fd);
+		executable(path, new_env, fd);
 		//ft_printf(fd, " command not found: %s\n", path); //vamos precisar disto, mas nao assim0
 }
 
@@ -198,13 +236,9 @@ int main(int argc, char **argv, char **envp)
 	fd = 1;
 	new_env = set_new_env(envp);
 	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
-	{
 		ft_printf(fd, "failed to register interrupts with kernel\n");
-	}
 	if (signal(SIGINT, handle_signals) == SIG_ERR)
-	{
 		ft_printf(fd, "failed to register interrupts with kernel\n");
-	}
 	while ((line = readline("prompt% ")))
 	{
 		if (!ft_strncmp (line, "exit", 4))
