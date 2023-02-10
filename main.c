@@ -14,6 +14,15 @@
 
 char	**new_env = 0;
 
+typedef struct	s_prompt
+{
+	char *cmd;
+	char *st_arg;
+}				t_prompt;
+
+void	set_cmd(char *path, t_prompt *first);
+void	set_first_argument(char *path, t_prompt *first);
+
 int	does_it_have_2quotes(char *str, int firststop, int fd)
 {
 	int count;
@@ -184,35 +193,84 @@ void	echo(char *str, int fd)
 		ft_putchar_fd('\n', fd);
 }
 
-void	path(char *path, int fd)
+void	change_directory(char *path, int fd, char *pwd)
 {
-	char	pwd[1000];
-
-	static char	*previous_pwd;
+	static char	*previuos_pwd;
 	static char	*current_pwd;
 
 	if (current_pwd != getcwd(pwd, 100))
 		current_pwd = getcwd(pwd, 100);
-	if (!ft_strncmp(path, "pwd", 3))
-		ft_printf(fd, "%s\n", getcwd(pwd, 100));
-	else if (!ft_strncmp(path, "cd ", 3))
-	{
-		if (!ft_strncmp(&path[3], "~", 1))
+	if (!ft_strcmp(path, "~") || !ft_strcmp(path, ""))
 			chdir("/nfs/homes/jegger-s/");
-		else if (!ft_strncmp(&path[3], "-", 1))
+		else if (!ft_strcmp(path, "-"))
 		{
-			chdir(previous_pwd);
-			ft_printf(fd, "%s\n", previous_pwd);
+			chdir(previuos_pwd);
+			ft_printf(fd, "%s\n", previuos_pwd);
 		}
-		else if (chdir(&path[3]) == -1)
-			ft_printf(fd, "cd: %s: %s\n", strerror(errno), &path[3]);
-		previous_pwd = ft_strdup(current_pwd);
-	}
-	else if (!ft_strncmp(path, "echo ", 5))
+		else if (chdir(path) == -1)
+			ft_printf(fd, "cd: %s: %s\n", strerror(errno), path);
+		previuos_pwd = ft_strdup(current_pwd);
+}
+
+void	path(char *path, int fd)
+{
+	t_prompt	first;
+	char		pwd[1000];
+
+	set_cmd(path, &first);
+	if (!ft_strcmp(first.cmd, "pwd"))
+		ft_printf(fd, "%s\n", getcwd(pwd, 100));
+	else if (!ft_strcmp(first.cmd, "cd"))
+		change_directory(first.st_arg, fd, pwd);
+	else if (!ft_strcmp(first.cmd, "echo"))
 		echo(path, fd);
 	else
-		executable(path, new_env, fd);
-		//ft_printf(fd, " command not found: %s\n", path); //vamos precisar disto, mas nao assim0
+		executable(path, fd);
+	//ft_printf(fd, " command not found: %s\n", path); //vamos precisar disto, mas nao assim0
+}
+
+void	set_cmd(char *path, t_prompt *first)
+{
+	int	cmd;
+	int	st_arg;
+	int	i;
+
+	// printf("PATH: %s\n", path);
+	i = 0;
+	while (path[i] && path[i] <= 32)
+		i++;
+	cmd = i;
+	while (path[cmd] && path[cmd] > 32)
+		cmd++;
+	st_arg = cmd;
+	first->cmd = malloc(sizeof(char) * cmd + 1);
+	cmd = i;
+	i = 0;
+	while (path[cmd] && path[cmd] > 32)
+		first->cmd[i++] = path[cmd++];
+	first->cmd[i] = '\0';
+	// printf("CMD: %s\n", first->cmd);
+	set_first_argument(&path[st_arg], first);
+}
+
+void	set_first_argument(char *path, t_prompt *first)
+{
+	int	st_arg;
+	int	i;
+
+	i = 0;
+	while (path[i] && path[i] <= 32)
+		i++;
+	st_arg = i;
+	while (path[st_arg] && path[st_arg] > 32)
+		st_arg++;
+	first->st_arg = malloc(sizeof(char) * st_arg + 1);
+	st_arg = i;
+	i = 0;
+	while (path[st_arg] && path[st_arg] > 32)
+		first->st_arg[i++] = path[st_arg++];
+	first->st_arg[i] = '\0';
+	// printf("St ARG: %s|\n", first->st_arg);
 }
 
 void handle_signals(int signo)

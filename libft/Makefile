@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/05 16:34:08 by fvieira           #+#    #+#              #
-#    Updated: 2022/11/09 17:45:08 by fvieira          ###   ########.fr        #
+#    Updated: 2023/02/10 13:13:36 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ SRC = ft_atoi.c \
 	  ft_putnbr_fd_.c \
 	  ft_putnbr_hex_fd.c \
 	  ft_putstr_fd_.c \
-	  ft_putlongnbr_fd.c
+	  ft_putlongnbr_fd.c \
+	  ft_strcmp.c
 
 BONUS = ft_lstnew\
 		ft_lstadd_front\
