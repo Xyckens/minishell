@@ -44,6 +44,7 @@ int	append(char *prompt, int midle)
 	fd = open(path, O_CREAT | O_RDWR | O_APPEND, 0666);
 	return (fd);
 }
+
 int	redirectout(char *prompt, int midle)
 {
 	int		fd;

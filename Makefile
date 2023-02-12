@@ -19,12 +19,14 @@ CFLAGS = -Werror -Wall -Wextra -I.
 LIBFT = ./libft/libft.a
 
 SRC = main.c \
-		export.c \
 		set_new_env.c \
-		unset.c \
 		parser.c \
 		append.c \
-		executables.c
+		executables.c \
+		delimit.c \
+		echo.c \
+		path_related.c
+
 
 OBJ = $(SRC:.c=.o)
 
