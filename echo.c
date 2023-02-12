@@ -67,20 +67,22 @@ void	ft_printenv(char *str, int fd)
 	}
 }
 
-int	dollarsign(char *str, int c, int fd, char **new_env)
+int	dollarsign(char *str, int c, t_prompt *every)
 {
 	int	count;
 	int	i;
 
 	count = 0;
 	i = 0;
+	if (str[count] == '?')
+		ft_printf(every->fd, "%d", every->exit_stat);
 	while (str[count] && str[count] != ' ')
 		count++;
-	while (new_env[i])
+	while (every->new_env[i])
 	{
-		if (!ft_strncmp(str, new_env[i], count))
+		if (!ft_strncmp(str, every->new_env[i], count))
 		{
-			ft_printenv(new_env[i], fd);
+			ft_printenv( every->new_env[i], every->fd);
 			break ;
 		}
 		i++;
@@ -124,7 +126,7 @@ int	dollarsign(char *str, int c, int fd, char **new_env)
 }
 */
 
-void	ft_epur(char *s, int fd, char **new_env)
+void	ft_epur(char *s, t_prompt *every)
 {
 	int	c;
 	int	flag;
@@ -140,28 +142,28 @@ void	ft_epur(char *s, int fd, char **new_env)
 	while (c <= l)
 	{
 		if (s[c] == 39)
-			c = does_it_have_2quotes(s + c, c, fd);
+			c = does_it_have_2quotes(s + c, c, every->fd);
 		//if (s[c] == '"')
 		//	c = does_it_have_2doublequotes(s + c, c, fd);
 		if (s[c] == '$')
-			c = dollarsign(s + c + 1, c, fd, new_env);
+			c = dollarsign(s + c + 1, c, every);
 		if (s[c] == '>' || s[c] == '<' || s[c] == '|')
 			break ;
 		if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
-			ft_putchar_fd(' ', fd);
+			ft_putchar_fd(' ', every->fd);
 			flag = 0;
 		}
 		if (s[c] != ' ' && s[c] != '\t' && s[c] != '\n')
 		{
 			flag = 1;
-			ft_putchar_fd(s[c], fd);
+			ft_putchar_fd(s[c], every->fd);
 		}
 		c++;
 	}
 }
 
-void	echo(char *str, int fd, char **new_env)
+void	echo(char *str, t_prompt *every)
 {
 	int	count;
 	int	flag;
@@ -177,7 +179,8 @@ void	echo(char *str, int fd, char **new_env)
 	}
 	while (str[count] == ' ' || (str[count] >= 9 && str[count] <= 13))
 		count++;
-	ft_epur(str + count, fd, new_env);
+	ft_epur(str + count, every);
 	if (flag != 1)
-		ft_putchar_fd('\n', fd);
+		ft_putchar_fd('\n', every->fd);
+	every->exit_stat = 0;
 }

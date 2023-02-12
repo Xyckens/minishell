@@ -26,7 +26,7 @@ char	**ft_removeenv(char **new_env, int pos)
 	return (new_env);
 }
 
-char	**ft_unset(char *command, char **new_env)
+char	**ft_unset(char *command, t_prompt *every)
 {
 	int	count;
 	int	i;
@@ -36,44 +36,52 @@ char	**ft_unset(char *command, char **new_env)
 	if (!ft_strncmp(command, "unset", 5) && ft_strlen(command) == 5)
 	{
 		ft_printf(2, "unset: not enough arguments\n");
+		every->exit_stat = 1;
 	}
 	else if (!ft_strncmp(command, "unset", 5))
 	{
 		while (command[count] && command[count] != ' ')
 			count++;
-		while (new_env[i])
+		while (every->new_env[i])
 		{
-			if (!ft_strncmp(command + 6, new_env[i], count - 6))
+			if (!ft_strncmp(command + 6, every->new_env[i], count - 6))
 			{
-				new_env = ft_removeenv(new_env, i);
+				every->new_env = ft_removeenv(every->new_env, i);
 				break ;
 			}
 			i++;
 		}
+			every->exit_stat = 0;
 	}
-	return (new_env);
+	return (every->new_env);
 }
 
-void	path(char *path, int fd, char **new_env, t_prompt *first)
+void	path(char *path, t_prompt *every)
 {
 	char	pwd[1000];
 
-	if (!ft_strcmp(first->cmd, "pwd"))
+	if (!ft_strcmp(every->cmd, "pwd"))
 	{
-		if (!ft_strcmp(first->st_arg, ""))
-			ft_printf(fd, "%s\n", getcwd(pwd, 100));
+		if (!ft_strcmp(every->st_arg, ""))
+		{
+			ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
+			every->exit_stat = 0;
+		}
 		else
-			ft_printf(fd, "pwd: too many arguments\n");
+		{
+			ft_printf(every->fd, "pwd: too many arguments\n");
+			every->exit_stat = 1;
+		}
 	}
-	else if (!ft_strcmp(first->cmd, "cd"))
-		change_directory(first->st_arg, fd, pwd);
-	else if (!ft_strcmp(first->cmd, "echo"))
-		echo(path, fd, new_env);
-	else if (!ft_strcmp(first->cmd, "export")
-		|| (!ft_strcmp(first->cmd, "unset")))
+	else if (!ft_strcmp(every->cmd, "cd"))
+		change_directory(every, pwd);
+	else if (!ft_strcmp(every->cmd, "echo"))
+		echo(path, every);
+	else if (!ft_strcmp(every->cmd, "export")
+		|| (!ft_strcmp(every->cmd, "unset")))
 		printf(""); //Need to fix it.
 	else
-		executable(path, new_env, fd);
+		executable(path, every);
 }
 
 char	*formated_word(char *str)
@@ -98,41 +106,48 @@ char	*formated_word(char *str)
 	return (new_word);
 }
 
-char	**ft_export(char **new_env, int fd, t_prompt *args)
+char	**ft_export(t_prompt *every)
 {
 	int	i;
 
 	i = 0;
-	if (!ft_strcmp(args->cmd, "export"))
+	if (!ft_strcmp(every->cmd, "export"))
 	{
-		if (!ft_strcmp(args->st_arg, ""))
+		if (!ft_strcmp(every->st_arg, ""))
 		{
-			while (new_env[i])
+			//nao funciona para "export > test"
+			//se calhar resolvemos isso no parcer, mas explico te em pessoa
+			//printf("%d\n", every->fd);
+			while (every->new_env[i])
 			{
-				ft_printf(fd, "declare -x %s\n", new_env[i]);
+				ft_printf(every->fd, "declare -x %s\n", every->new_env[i]);
 				i++;
 			}
+			every->exit_stat = 0;
 		}
 		else
 		{
-			while (new_env[i])
+			while (every->new_env[i])
 				i++;
-			if (ft_strchr(args->st_arg, '='))
-				new_env[i] = formated_word(args->st_arg);
+			if (ft_strchr(every->st_arg, '='))
+				every->new_env[i] = formated_word(every->st_arg);
 			else
-				new_env[i] = ft_strdup(args->st_arg);
+				every->new_env[i] = ft_strdup(every->st_arg);
+			//nao tenho a certeza disto
+			every->exit_stat = 0;
 		}
 	}
-	return (new_env);
+	//precisamos de if para quando export nao funciona
+	// o export consegue nao funcionar? lol nao sei
+	return (every->new_env);
 }
 
-int	parser(char *prompt, char **new_env, t_prompt *nameit)
+int	parser(char *prompt, t_prompt *everything)
 {
 	int	count;
-	int	fd;
 
 	count = 0;
-	fd = 1;
+	everything->fd = 1;
 	while (prompt[count])
 	{
 		/*if (prompt[count] == '|')
@@ -143,13 +158,13 @@ int	parser(char *prompt, char **new_env, t_prompt *nameit)
 				redirectin(prompt, count);
 		}*/
 		if (prompt[count] == '>' && prompt[count + 1] == '>')
-			fd = append(prompt, count++);
+			everything->fd = append(prompt, count++);
 		else if (prompt[count] == '>' && prompt[count + 1] != '>')
-			fd = redirectout(prompt, count);
+			everything->fd = redirectout(prompt, count);
 		count++;
 	}
-	new_env = ft_export(new_env, fd, nameit);
-	new_env = ft_unset(prompt, new_env);
-	path(prompt, fd, new_env, nameit);
-	return (fd);
+	everything->new_env = ft_export(everything);
+	everything->new_env = ft_unset(prompt, everything);
+	path(prompt, everything);
+	return (everything->fd);
 }

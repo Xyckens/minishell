@@ -12,23 +12,28 @@
 
 #include "minishell.h"
 
-void	change_directory(char *path, int fd, char *pwd)
+void	change_directory(t_prompt *every, char *pwd)
 {
 	static char	*previuos_pwd;
 	static char	*current_pwd;
 
+	every->exit_stat = 0;
 	if (current_pwd != getcwd(pwd, 100))
 		current_pwd = getcwd(pwd, 100);
-	if (!ft_strcmp(path, "~") || !ft_strcmp(path, ""))
+	if (!ft_strcmp(every->st_arg, "~") || !ft_strcmp(every->st_arg, ""))
 		chdir("/nfs/homes/jegger-s/");
-	else if (!ft_strcmp(path, "-"))
+	else if (!ft_strcmp(every->st_arg, "-"))
 	{
 		chdir(previuos_pwd);
-		ft_printf(fd, "%s\n", previuos_pwd);
+		ft_printf(every->fd, "%s\n", previuos_pwd);
 	}
-	else if (chdir(path) == -1)
-		ft_printf(fd, "cd: %s: %s\n", strerror(errno), path);
+	else if (chdir(every->st_arg) == -1)
+		ft_printf(every->fd, "cd: %s: %s\n", strerror(errno), every->st_arg);
+	//nao estou a acompanhar isto, depois confirma se nao deverias
+	//estar a escrever para fd = 2, se 'e error aposto q sim
+	//depois preciso q ponhas o every->exit_stat conforme o cd do terminal
 	previuos_pwd = ft_strdup(current_pwd);
+	//where free?
 }
 
 void	set_first_argument(char *path, t_prompt *first)

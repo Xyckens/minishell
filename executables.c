@@ -39,17 +39,22 @@ char	*name(char *str)
 	return (string);
 }
 
-void	idk(char **args, char **env, int fd)
+void	idk(char **args, t_prompt *everything)
 {
-	dup2(fd, 1);
-	if (execve(args[0], args, env) == -1)
+	dup2(everything->fd, 1);
+	if (execve(args[0], args, everything->new_env) == -1)
+	{
 		ft_printf(2, "%s: command not found\n", args[0] + 5);
+		everything->exit_stat = 127;
+	}
+	else
+		everything->exit_stat = 0;
 	//nao gosto como isto ficou
 	//mas da tua maneira tb nao podia ser
 	//alterei para ser no fd 2 o stderr
 }
 
-void	executable(char *prompt, char **env, int fd)
+void	executable(char *prompt, t_prompt *everything)
 {
 	int		status;
 	char	**nome;
@@ -59,7 +64,7 @@ void	executable(char *prompt, char **env, int fd)
 	// quando nao se escreve nada e se da enter
 	nome[0] = ft_strjoin("/bin/", nome[0]);
 	if (fork() == 0)
-		idk(nome, env, fd);
+		idk(nome, everything);
 	else
 		wait(&status);
 	//vai ser preciso dar free a todos os elementos do nome

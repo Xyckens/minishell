@@ -76,4 +76,12 @@ int			ft_putstr_fd_(char *s, int fd);
 int			ft_putlongnbr_fd(unsigned int n, int fd);
 int			ft_strcmp(char *s1, char *s2);
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10 
+# endif
+
+char		*get_next_line(int fd);
+char		*ft_alt_strjoin(char *s1, char *s2);
+char		*ft_alt_strdup(char *s2, const char *string, size_t size);
+
 #endif

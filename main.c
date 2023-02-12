@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+t_prompt	g_everything;
+
 void	handle_signals(int signo)
 {
 	if (signo == SIGINT)
@@ -20,6 +22,7 @@ void	handle_signals(int signo)
 		rl_on_new_line(); // Regenerate the prompt on a newline
 		rl_replace_line("", 0); // Clear the previous text
 		rl_redisplay();
+		g_everything.exit_stat = 130;
 	}
 }
 
@@ -34,27 +37,25 @@ void	signals(void)
 int	main(int argc, char **argv, char **envp)
 {
 	char		*line;
-	int			fd;
-	char		**new_env;
-	t_prompt	nameit;
 
 	(void)argv;
 	(void)argc;
-	new_env = set_new_env(envp);
+	g_everything.new_env = set_new_env(envp);
 	signals();
 	line = "ola";
+	g_everything.exit_stat = 0;
 	while (line)
 	{
 		line = readline("prompt% ");
 		if (!ft_strncmp (line, "exit", 4))
 			break ;
-		set_cmd(line, &nameit);
+		set_cmd(line, &g_everything);
 		add_history (line);
-		fd = parser(line, new_env, &nameit);
+		g_everything.fd = parser(line, &g_everything);
 	}
 	free (line);
-	if (fd != 1)
-		close(fd);
+	if (g_everything.fd != 1)
+		close(g_everything.fd);
 	exit(1);
 	return (0);
 }

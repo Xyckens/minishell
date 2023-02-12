@@ -31,23 +31,26 @@ typedef struct s_prompt
 {
 	char	*cmd;
 	char	*st_arg;
+	int		fd;
+	char	**new_env;
+	int		exit_stat;
 }				t_prompt;
 
-void	path(char *path, int fd, char **new_env, t_prompt *first);
+void	path(char *path, t_prompt *first);
 // Set arguments to list
 void	set_cmd(char *path, t_prompt *first);
 void	set_first_argument(char *path, t_prompt *first);
 
-void	change_directory(char *path, int fd, char *pwd);
-void	echo(char *str, int fd, char **new_env);
+void	change_directory(t_prompt *every, char *pwd);
+void	echo(char *str, t_prompt *every);
 
-void	executable(char *prompt, char **env, int fd);
+void	executable(char *prompt, t_prompt *everything);
 
 char	**set_new_env(char **envp);
-char	**ft_export(char **new_env, int fd, t_prompt *args);
-char	**ft_unset(char *command, char **new_env);
+char	**ft_export(t_prompt *args);
+char	**ft_unset(char *command, t_prompt *everything);
 
-int		parser(char *prompt, char **new_env, t_prompt *first);
+int		parser(char *prompt, t_prompt *first);
 int		redirectout(char *prompt, int midle);
 int		append(char *prompt, int midle);
 void	redirectin(char *prompt, int middle);
