@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:59:34 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/13 15:00:55 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/02 21:54:16 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,34 +56,6 @@ char	**ft_unset(char *command, t_prompt *every)
 	return (every->new_env);
 }
 
-void	path(char *path, t_prompt *every)
-{
-	char	pwd[1000];
-
-	if (!ft_strcmp(every->cmd, "pwd"))
-	{
-		if (!ft_strcmp(every->st_arg, ""))
-		{
-			ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
-			every->exit_stat = 0;
-		}
-		else
-		{
-			ft_printf(every->fd, "pwd: too many arguments\n");
-			every->exit_stat = 1;
-		}
-	}
-	else if (!ft_strcmp(every->cmd, "cd"))
-		change_directory(every, pwd);
-	else if (!ft_strcmp(every->cmd, "echo"))
-		echo(path, every);
-	/*else if (!ft_strcmp(every->cmd, "export")
-		|| (!ft_strcmp(every->cmd, "unset")))
-		printf(""); //Need to fix it.*/
-	else
-		executable(path, every);
-}
-
 char	*formated_word(char *str)
 {
 	char	*new_word;
@@ -105,6 +77,26 @@ char	*formated_word(char *str)
 	new_word[j] = '\0';
 	return (new_word);
 }
+
+/*int	check_duplicate_keys(t_prompt *every)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (every->new_env[i])
+	{
+		j = 0;
+		while (every->st_arg[j])
+		{
+			if (every->st_arg[j] != every->new_env[i][j])
+				break ;
+			j++:
+		}
+		i++;
+	}
+	return ()
+}*/
 
 char	**ft_export(t_prompt *every)
 {
@@ -142,30 +134,55 @@ char	**ft_export(t_prompt *every)
 	return (every->new_env);
 }
 
-int	parser(char *prompt, t_prompt *everything)
+void	path(t_prompt *every)
+{
+	char	pwd[1000];
+
+	if (!ft_strcmp(every->cmd, "pwd"))
+	{
+		if (!ft_strcmp(every->st_arg, ""))
+		{
+			ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
+			every->exit_stat = 0;
+		}
+		else
+		{
+			ft_printf(every->fd, "pwd: too many arguments\n");
+			every->exit_stat = 1;
+		}
+	}
+	else if (!ft_strcmp(every->cmd, "cd"))
+		change_directory(every, pwd);
+	else if (!ft_strcmp(every->cmd, "echo"))
+		echo(every);
+	else if (!ft_strcmp(every->cmd, "export"))
+		every->new_env = ft_export(every);
+	else if (!ft_strcmp(every->cmd, "unset"))
+		every->new_env = ft_unset(every->prompt, every);
+	else
+		executable(every->cmd, every);
+}
+
+int	parser(t_prompt *eve)
 {
 	int	count;
 
 	count = 0;
-	everything->fd = 1;
-	while (prompt[count])
+	eve->fd = 1;
+	while (eve->prompt[count])
 	{
-		/*if (prompt[count] == '|')
-			pipe(prompt, count);*/
-		/*if (prompt[count] == '<' && prompt[count + 1] == '<')
-				delimiter(prompt, count++);*/
-		if (prompt[count] == '<' && prompt[count + 1] != '<')
-				prompt = redirectin(prompt, count);
-
-		else if (prompt[count] == '>' && prompt[count + 1] == '>')
-			everything->fd = append(prompt, count++);
-		else if (prompt[count] == '>' && prompt[count + 1] != '>')
-			everything->fd = redirectout(prompt, count);
+		/*if (eve->prompt[count] == '|')
+			pipe(eve->prompt, count);*/
+		/*if (eve->prompt[count] == '<' && eve->prompt[count + 1] == '<')
+				delimiter(eve->prompt, count++);*/
+		if (eve->prompt[count] == '<' && eve->prompt[count + 1] != '<')
+			eve->prompt = redirectin(eve->prompt, count);
+		else if (eve->prompt[count] == '>' && eve->prompt[count + 1] == '>')
+			eve->fd = append(eve->prompt, count++);
+		else if (eve->prompt[count] == '>' && eve->prompt[count + 1] != '>')
+			eve->fd = redirectout(eve->prompt, count);
 		count++;
 	}
-	ft_printf(1, "prompt = %s\n", prompt);
-	everything->new_env = ft_export(everything);
-	everything->new_env = ft_unset(prompt, everything);
-	path(prompt, everything);
-	return (everything->fd);
+	path(eve);
+	return (eve->fd);
 }

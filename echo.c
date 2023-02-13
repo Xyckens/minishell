@@ -163,23 +163,25 @@ void	ft_epur(char *s, t_prompt *every)
 	}
 }
 
-void	echo(char *str, t_prompt *every)
+void	echo(t_prompt *every)
 {
 	int	count;
 	int	flag;
 
 	count = 4;
 	flag = 0;
-	while (str[count] == ' ' || (str[count] >= 9 && str[count] <= 13))
+		while (every->prompt[count] == ' '
+			|| (every->prompt[count] >= 9 && every->prompt[count] <= 13))
 		count++;
-	if (!ft_strncmp(str + count, "-n", 2))
+	if (!ft_strncmp(every->prompt + count, "-n", 2))
 	{
 		count += 2;
 		flag = 1;
 	}
-	while (str[count] == ' ' || (str[count] >= 9 && str[count] <= 13))
+	while (every->prompt[count] == ' '
+		|| (every->prompt[count] >= 9 && every->prompt[count] <= 13))
 		count++;
-	ft_epur(str + count, every);
+	ft_epur(every->prompt + count, every);
 	if (flag != 1)
 		ft_putchar_fd('\n', every->fd);
 	every->exit_stat = 0;

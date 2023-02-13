@@ -36,24 +36,21 @@ void	signals(void)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char		*line;
-
 	(void)argv;
 	(void)argc;
 	g_everything.new_env = set_new_env(envp);
 	signals();
-	line = "ola";
 	g_everything.exit_stat = 0;
-	while (line)
+	while (1)
 	{
-		line = readline("prompt% ");
-		if (!ft_strncmp (line, "exit", 4))
+		g_everything.prompt = readline("prompt% ");
+		if (!ft_strncmp (g_everything.prompt, "exit", 4))
 			break ;
-		set_cmd(line, &g_everything);
-		add_history (line);
-		g_everything.fd = parser(line, &g_everything);
+		set_cmd(&g_everything);
+		add_history (g_everything.prompt);
+		g_everything.fd = parser(&g_everything);
 	}
-	free (line);
+	free (g_everything.prompt);
 	if (g_everything.fd != 1)
 		close(g_everything.fd);
 	exit(1);

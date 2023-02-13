@@ -24,8 +24,13 @@ void	change_directory(t_prompt *every, char *pwd)
 		chdir("/nfs/homes/jegger-s/");
 	else if (!ft_strcmp(every->st_arg, "-"))
 	{
-		chdir(previuos_pwd);
-		ft_printf(every->fd, "%s\n", previuos_pwd);
+		if (!previuos_pwd)
+			ft_printf(every->fd, "%s\n", current_pwd);
+		else
+		{
+			chdir(previuos_pwd);
+			ft_printf(every->fd, "%s\n", previuos_pwd);
+		}
 	}
 	else if (chdir(every->st_arg) == -1)
 		ft_printf(every->fd, "cd: %s: %s\n", strerror(errno), every->st_arg);
@@ -55,24 +60,24 @@ void	set_first_argument(char *path, t_prompt *first)
 	first->st_arg[i] = '\0';
 }
 
-void	set_cmd(char *path, t_prompt *first)
+void	set_cmd(t_prompt *every)
 {
 	int	st_arg;
 	int	cmd;
 	int	i;
 
 	i = 0;
-	while (path[i] && path[i] <= 32)
+	while (every->prompt[i] && every->prompt[i] <= 32)
 		i++;
 	cmd = i;
-	while (path[cmd] && path[cmd] > 32)
+	while (every->prompt[cmd] && every->prompt[cmd] > 32)
 		cmd++;
 	st_arg = cmd;
-	first->cmd = malloc(sizeof(char) * cmd + 1);
+	every->cmd = malloc(sizeof(char) * cmd + 1);
 	cmd = i;
 	i = 0;
-	while (path[cmd] && path[cmd] > 32)
-		first->cmd[i++] = path[cmd++];
-	first->cmd[i] = '\0';
-	set_first_argument(&path[st_arg], first);
+	while (every->prompt[cmd] && every->prompt[cmd] > 32)
+		every->cmd[i++] = every->prompt[cmd++];
+	every->cmd[i] = '\0';
+	set_first_argument(&every->prompt[st_arg], every);
 }

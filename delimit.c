@@ -6,13 +6,11 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 15:55:34 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/13 15:01:05 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/11 15:55:35 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 char	*redirectin(char *prompt, int middle)
 {

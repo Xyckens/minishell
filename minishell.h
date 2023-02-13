@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:21:42 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/13 15:01:22 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/03 19:38:09 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 typedef struct s_prompt
 {
+	char	*prompt;
 	char	*cmd;
 	char	*st_arg;
 	int		fd;
@@ -36,13 +37,13 @@ typedef struct s_prompt
 	int		exit_stat;
 }				t_prompt;
 
-void	path(char *path, t_prompt *first);
+void	path(t_prompt *every);
 // Set arguments to list
-void	set_cmd(char *path, t_prompt *first);
+void	set_cmd(t_prompt *first);
 void	set_first_argument(char *path, t_prompt *first);
 
 void	change_directory(t_prompt *every, char *pwd);
-void	echo(char *str, t_prompt *every);
+void	echo(t_prompt *every);
 
 void	executable(char *prompt, t_prompt *everything);
 
@@ -50,7 +51,7 @@ char	**set_new_env(char **envp);
 char	**ft_export(t_prompt *args);
 char	**ft_unset(char *command, t_prompt *everything);
 
-int		parser(char *prompt, t_prompt *first);
+int		parser(t_prompt *every);
 int		redirectout(char *prompt, int midle);
 int		append(char *prompt, int midle);
 char	*redirectin(char *prompt, int middle);
