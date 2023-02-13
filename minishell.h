@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:21:42 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/03 19:38:09 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/13 15:01:22 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	**ft_unset(char *command, t_prompt *everything);
 int		parser(char *prompt, t_prompt *first);
 int		redirectout(char *prompt, int midle);
 int		append(char *prompt, int midle);
-void	redirectin(char *prompt, int middle);
+char	*redirectin(char *prompt, int middle);
 
+char	*name(char *str);
 #endif

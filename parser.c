@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:59:34 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/02 21:54:16 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/13 15:00:55 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ void	path(char *path, t_prompt *every)
 		change_directory(every, pwd);
 	else if (!ft_strcmp(every->cmd, "echo"))
 		echo(path, every);
-	else if (!ft_strcmp(every->cmd, "export")
+	/*else if (!ft_strcmp(every->cmd, "export")
 		|| (!ft_strcmp(every->cmd, "unset")))
-		printf(""); //Need to fix it.
+		printf(""); //Need to fix it.*/
 	else
 		executable(path, every);
 }
@@ -153,16 +153,17 @@ int	parser(char *prompt, t_prompt *everything)
 		/*if (prompt[count] == '|')
 			pipe(prompt, count);*/
 		/*if (prompt[count] == '<' && prompt[count + 1] == '<')
-				delimiter(prompt, count++);
-		else if (prompt[count] == '<' && prompt[count + 1] != '<')
-				redirectin(prompt, count);
-		}*/
-		if (prompt[count] == '>' && prompt[count + 1] == '>')
+				delimiter(prompt, count++);*/
+		if (prompt[count] == '<' && prompt[count + 1] != '<')
+				prompt = redirectin(prompt, count);
+
+		else if (prompt[count] == '>' && prompt[count + 1] == '>')
 			everything->fd = append(prompt, count++);
 		else if (prompt[count] == '>' && prompt[count + 1] != '>')
 			everything->fd = redirectout(prompt, count);
 		count++;
 	}
+	ft_printf(1, "prompt = %s\n", prompt);
 	everything->new_env = ft_export(everything);
 	everything->new_env = ft_unset(prompt, everything);
 	path(prompt, everything);

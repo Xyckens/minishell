@@ -6,34 +6,11 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 20:35:05 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/03 19:36:58 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/13 12:22:59 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*name(char *str)
-{
-	int		count;
-	int		space;
-	char	*string;
-
-	count = 0;
-	space = 0;
-	while (str[count] == ' ')
-		space++;
-	while (str[space + count] && str[space + count] != ' ')
-		count++;
-	string = malloc((count + 1) * sizeof(char));
-	count = 0;
-	while (str[space + count] && str[space + count] != ' ')
-	{
-		string[count] = str[space + count];
-		count++;
-	}	
-	string[count] = '\0';
-	return (string);
-}
 
 int	append(char *prompt, int midle)
 {
