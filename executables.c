@@ -54,12 +54,12 @@ void	idk(char **args, t_prompt *everything)
 	//alterei para ser no fd 2 o stderr
 }
 
-void	executable(char *prompt, t_prompt *everything)
+void	executable(t_prompt *everything)
 {
 	int		status;
 	char	**nome;
 
-	nome = ft_split(name(prompt), ' ');
+	nome = ft_split(name(everything->prompt), ' ');
 	// a funcao name crasha o programa
 	// quando nao se escreve nada e se da enter
 	nome[0] = ft_strjoin("/bin/", nome[0]);

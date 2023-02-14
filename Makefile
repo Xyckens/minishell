@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/02/02 21:55:26 by fvieira          ###   ########.fr        #
+#    Updated: 2023/02/14 18:30:55 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Werror -Wall -Wextra -I. 
+CFLAGS = -Werror -Wall -Wextra -I. -g 
 
 LIBFT = ./libft/libft.a
 
@@ -25,7 +25,8 @@ SRC = main.c \
 		executables.c \
 		delimit.c \
 		echo.c \
-		path_related.c
+		path_related.c \
+		sanitize.c
 
 
 OBJ = $(SRC:.c=.o)

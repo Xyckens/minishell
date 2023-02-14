@@ -30,13 +30,15 @@
 typedef struct s_prompt
 {
 	char	*prompt;
-	char	*cmd;
-	char	*st_arg;
+	char	**cmd;
+	char	**st_arg;
+	char	**sep;
 	int		fd;
 	char	**new_env;
 	int		exit_stat;
 }				t_prompt;
 
+void	sanitize(t_prompt *every);
 void	path(t_prompt *every);
 // Set arguments to list
 void	set_cmd(t_prompt *first);
@@ -45,7 +47,7 @@ void	set_first_argument(char *path, t_prompt *first);
 void	change_directory(t_prompt *every, char *pwd);
 void	echo(t_prompt *every);
 
-void	executable(char *prompt, t_prompt *everything);
+void	executable(t_prompt *everything);
 
 char	**set_new_env(char **envp);
 char	**ft_export(t_prompt *args);

@@ -103,9 +103,9 @@ char	**ft_export(t_prompt *every)
 	int	i;
 
 	i = 0;
-	if (!ft_strcmp(every->cmd, "export"))
+	if (!ft_strcmp(every->cmd[0], "export"))
 	{
-		if (!ft_strcmp(every->st_arg, ""))
+		if (!ft_strcmp(every->st_arg[0], ""))
 		{
 			//nao funciona para "export > test"
 			//se calhar resolvemos isso no parcer, mas explico te em pessoa
@@ -121,10 +121,10 @@ char	**ft_export(t_prompt *every)
 		{
 			while (every->new_env[i])
 				i++;
-			if (ft_strchr(every->st_arg, '='))
-				every->new_env[i] = formated_word(every->st_arg);
+			if (ft_strchr(every->st_arg[0], '='))
+				every->new_env[i] = formated_word(every->st_arg[0]);
 			else
-				every->new_env[i] = ft_strdup(every->st_arg);
+				every->new_env[i] = ft_strdup(every->st_arg[0]);
 			//nao tenho a certeza disto
 			every->exit_stat = 0;
 		}
@@ -138,9 +138,9 @@ void	path(t_prompt *every)
 {
 	char	pwd[1000];
 
-	if (!ft_strcmp(every->cmd, "pwd"))
+	if (!ft_strcmp(every->cmd[0], "pwd"))
 	{
-		if (!ft_strcmp(every->st_arg, ""))
+		if (!ft_strcmp(every->st_arg[0], ""))
 		{
 			ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
 			every->exit_stat = 0;
@@ -151,37 +151,37 @@ void	path(t_prompt *every)
 			every->exit_stat = 1;
 		}
 	}
-	else if (!ft_strcmp(every->cmd, "cd"))
+	else if (!ft_strcmp(every->cmd[0], "cd"))
 		change_directory(every, pwd);
-	else if (!ft_strcmp(every->cmd, "echo"))
+	else if (!ft_strcmp(every->cmd[0], "echo"))
 		echo(every);
-	else if (!ft_strcmp(every->cmd, "export"))
+	else if (!ft_strcmp(every->cmd[0], "export"))
 		every->new_env = ft_export(every);
-	else if (!ft_strcmp(every->cmd, "unset"))
+	else if (!ft_strcmp(every->cmd[0], "unset"))
 		every->new_env = ft_unset(every->prompt, every);
 	else
-		executable(every->cmd, every);
+		executable(every);
 }
 
 int	parser(t_prompt *eve)
 {
-	int	count;
+	int	c;
 
-	count = 0;
+	c = 0;
 	eve->fd = 1;
-	while (eve->prompt[count])
+	while (eve->prompt[c])
 	{
-		/*if (eve->prompt[count] == '|')
-			pipe(eve->prompt, count);*/
-		/*if (eve->prompt[count] == '<' && eve->prompt[count + 1] == '<')
-				delimiter(eve->prompt, count++);*/
-		if (eve->prompt[count] == '<' && eve->prompt[count + 1] != '<')
-			eve->prompt = redirectin(eve->prompt, count);
-		else if (eve->prompt[count] == '>' && eve->prompt[count + 1] == '>')
-			eve->fd = append(eve->prompt, count++);
-		else if (eve->prompt[count] == '>' && eve->prompt[count + 1] != '>')
-			eve->fd = redirectout(eve->prompt, count);
-		count++;
+		/*if (eve->prompt[c] == '|')
+			pipe(eve->prompt, c);*/
+		/*if (eve->prompt[c] == '<' && eve->prompt[c + 1] == '<')
+				delimiter(eve->prompt, c++);*/
+		if (eve->prompt[c] == '<' && eve->prompt[c + 1] != '<')
+			eve->prompt = redirectin(eve->prompt, c);
+		else if (eve->prompt[c] == '>' && eve->prompt[c + 1] == '>')
+			eve->fd = append(eve->prompt, c++);
+		else if (eve->prompt[c] == '>' && eve->prompt[c + 1] != '>')
+			eve->fd = redirectout(eve->prompt, c);
+		c++;
 	}
 	path(eve);
 	return (eve->fd);
