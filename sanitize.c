@@ -99,6 +99,7 @@ char	*rest_of_promp(char *sep)
 		str[final] = sep[count + final];
 		final++;
 	}
+	str[final] = '\0';
 	return (str);
 }
 

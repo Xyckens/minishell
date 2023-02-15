@@ -169,18 +169,25 @@ int	parser(t_prompt *eve)
 
 	c = 0;
 	eve->fd = 1;
+	//vamos ter de saber qual 'e o indice do cmd a mandar!!!!
 	while (eve->prompt[c])
 	{
-		/*if (eve->prompt[c] == '|')
-			pipe(eve->prompt, c);*/
-		/*if (eve->prompt[c] == '<' && eve->prompt[c + 1] == '<')
-				delimiter(eve->prompt, c++);*/
-		if (eve->prompt[c] == '<' && eve->prompt[c + 1] != '<')
-			eve->prompt = redirectin(eve->prompt, c);
-		else if (eve->prompt[c] == '>' && eve->prompt[c + 1] == '>')
-			eve->fd = append(eve->prompt, c++);
+		// if (eve->prompt[c] == '|')
+		// 	pipe(eve->prompt, c);
+		// if (eve->prompt[c] == '<' && eve->prompt[c + 1] == '<')
+		// {
+		// 		delimiter(eve->prompt, c++);
+		// 		c++;
+		// }
+		// if (eve->prompt[c] == '<' && eve->prompt[c + 1] != '<')
+		// 	eve->prompt = redirectin(eve->cmd[1]);
+		if (eve->prompt[c] == '>' && eve->prompt[c + 1] == '>')
+		{
+			eve->fd = append(eve->cmd[1]);
+			c++;
+		}
 		else if (eve->prompt[c] == '>' && eve->prompt[c + 1] != '>')
-			eve->fd = redirectout(eve->prompt, c);
+			eve->fd = redirectout(eve->cmd[1]);
 		c++;
 	}
 	path(eve);

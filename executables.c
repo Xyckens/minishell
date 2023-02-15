@@ -54,12 +54,33 @@ void	idk(char **args, t_prompt *everything)
 	//alterei para ser no fd 2 o stderr
 }
 
+char	**initialize(t_prompt *everything, int i)
+{
+	char	**nome;
+	char	**args;
+	int		count;
+
+	count = 0;
+	args = ft_split(everything->st_arg[i], ' ');
+	while (args[count])
+		count++;
+	nome = malloc((count + 2) * sizeof(char *));
+	nome[0] = everything->cmd[i];
+	nome[count + 1] = 0;
+	count = 0;
+	while (args[count])
+	{
+		nome[count + 1]	= args[count];
+		count++;
+	}
+	return (nome);
+}
 void	executable(t_prompt *everything)
 {
 	int		status;
 	char	**nome;
 
-	nome = ft_split(name(everything->prompt), ' ');
+	nome = initialize(everything, 0);
 	// a funcao name crasha o programa
 	// quando nao se escreve nada e se da enter
 	nome[0] = ft_strjoin("/bin/", nome[0]);

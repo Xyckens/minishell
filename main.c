@@ -50,14 +50,14 @@ int	main(int argc, char **argv, char **envp)
 		int i = 0;
 		while (g_everything.cmd[i])
 		{
-			printf("%s\n", g_everything.cmd[i]);
-			printf(" %s\n", g_everything.st_arg[i]);
+			printf("executable = %s\n", g_everything.cmd[i]);
+			printf("  args     = %s\n", g_everything.st_arg[i]);
 			i++;
 		}
 		//g_everything.cmd = malloc(2 * sizeof(char*));
 		//g_everything.st_arg = malloc(2 * sizeof(char*));
-		set_cmd(&g_everything);
-		add_history (g_everything.prompt);
+		//set_cmd(&g_everything);
+		add_history(g_everything.prompt);
 		g_everything.fd = parser(&g_everything);
 	}
 	free (g_everything.prompt);

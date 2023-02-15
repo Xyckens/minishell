@@ -12,22 +12,18 @@
 
 #include "minishell.h"
 
-int	append(char *prompt, int midle)
+int	append(char *prompt)
 {
 	int		fd;
-	char	*path;
 
-	path = name(prompt + midle + 3);
-	fd = open(path, O_CREAT | O_RDWR | O_APPEND, 0666);
+	fd = open(prompt, O_CREAT | O_RDWR | O_APPEND, 0666);
 	return (fd);
 }
 
-int	redirectout(char *prompt, int midle)
+int	redirectout(char *prompt)
 {
 	int		fd;
-	char	*path;
 
-	path = name(prompt + midle + 2);
-	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	fd = open(prompt, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	return (fd);
 }

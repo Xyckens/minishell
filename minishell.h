@@ -54,9 +54,9 @@ char	**ft_export(t_prompt *args);
 char	**ft_unset(char *command, t_prompt *everything);
 
 int		parser(t_prompt *every);
-int		redirectout(char *prompt, int midle);
-int		append(char *prompt, int midle);
-char	*redirectin(char *prompt, int middle);
+int		redirectout(char *prompt);
+int		append(char *prompt);
+char	*redirectin(char *prompt);
 
 char	*name(char *str);
 #endif
