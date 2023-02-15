@@ -39,21 +39,6 @@ char	*name(char *str)
 	return (string);
 }
 
-void	idk(char **args, t_prompt *everything)
-{
-	dup2(everything->fd, 1);
-	if (execve(args[0], args, everything->new_env) == -1)
-	{
-		ft_printf(2, "%s: command not found\n", args[0] + 5);
-		everything->exit_stat = 127;
-	}
-	else
-		everything->exit_stat = 0;
-	//nao gosto como isto ficou
-	//mas da tua maneira tb nao podia ser
-	//alterei para ser no fd 2 o stderr
-}
-
 char	**initialize(t_prompt *everything, int i)
 {
 	char	**nome;
@@ -75,15 +60,30 @@ char	**initialize(t_prompt *everything, int i)
 	}
 	return (nome);
 }
+
+void	idk(char **args, t_prompt *everything)
+{
+	dup2(everything->fd, 1);
+	if (execve(args[0], args, everything->new_env) == -1)
+		args[0] = ft_strjoin("/bin/", args[0]);
+	if (execve(args[0], args, everything->new_env) == -1)
+	{
+		ft_printf(2, "%s: command not found\n", args[0] + 5);
+		everything->exit_stat = 127;
+	}
+	else
+		everything->exit_stat = 0;
+	//nao gosto como isto ficou
+	//mas da tua maneira tb nao podia ser
+	//alterei para ser no fd 2 o stderr
+}
+
 void	executable(t_prompt *everything)
 {
 	int		status;
 	char	**nome;
 
 	nome = initialize(everything, 0);
-	// a funcao name crasha o programa
-	// quando nao se escreve nada e se da enter
-	nome[0] = ft_strjoin("/bin/", nome[0]);
 	if (fork() == 0)
 		idk(nome, everything);
 	else

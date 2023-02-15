@@ -159,6 +159,11 @@ void	path(t_prompt *every)
 		every->new_env = ft_export(every);
 	else if (!ft_strcmp(every->cmd[0], "unset"))
 		every->new_env = ft_unset(every->prompt, every);
+	else if (!ft_strcmp(every->cmd[0], "exit"))
+	{
+		ft_printf(1, "exit: too many arguments\n");
+		every->exit_stat = 1;
+	}
 	else
 		executable(every);
 }

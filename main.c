@@ -34,6 +34,21 @@ void	signals(void)
 		ft_printf(1, "failed to register interrupts with kernel\n");
 }
 
+void	ft_exit(t_prompt *everything)
+{
+	char	**arg;
+	int		i;
+
+	arg = ft_split(everything->prompt, ' ');
+	i = 0;
+	while (arg[i])
+		i++;
+	if (ft_strlen(everything->prompt) == 4)
+		exit(everything->exit_stat);
+	else if (i <= 2)
+		exit(ft_atoi(arg[1]));
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
@@ -45,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		g_everything.prompt = readline("prompt% ");
 		if (!ft_strncmp (g_everything.prompt, "exit", 4))
-			break ;
+			ft_exit(&g_everything);
 		sanitize(&g_everything);
 		int i = 0;
 		while (g_everything.cmd[i])
@@ -63,6 +78,5 @@ int	main(int argc, char **argv, char **envp)
 	free (g_everything.prompt);
 	if (g_everything.fd != 1)
 		close(g_everything.fd);
-	exit(1);
 	return (0);
 }
