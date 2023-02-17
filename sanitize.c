@@ -6,62 +6,11 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:39:44 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/14 16:39:52 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/17 19:29:04 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	aspas_ou_plicas(const char *str, int pos, char aop, int flag)
-{
-	int c_aspas;
-	int	i;
-
-	i = 0;
-	c_aspas = 0;
-	while (str[i] && i <= pos)
-	{
-		if (str[i] == aop)
-		{
-			if (flag == 1)
-			{
-				if (aop == 39)
-				{
-					if (aspas_ou_plicas(str, i,'"', 0) == 1)
-						c_aspas++;
-				}
-				else
-				{
-					if (aspas_ou_plicas(str, i, 39, 0) == 1)
-						c_aspas++;
-				}	
-			}
-			else
-				c_aspas++;
-		}
-		i++;
-	}
-	if (c_aspas % 2 == 1)
-	{
-		while (str[i])
-		{
-			if (str[i] == aop)
-			{
-				return (0);
-			}
-			i++;
-		}
-	}
-	return (1);
-}
-
-int	between(const char *str, int pos)
-{
-	if (aspas_ou_plicas(str, pos, 39, 1) == 1
-		&& aspas_ou_plicas(str, pos, '"', 1) == 1)
-		return (1);
-	return (0);
-}
 
 static int	count_words(char const *s, char *c)
 {
@@ -117,9 +66,13 @@ char	**ft_alt_split(char *s, char *sep)
 	index = -1;
 	while (i <= ft_strlen(s))
 	{
-		if (s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2] && index < 0)
+		printf("ola %c %ld %d\n", s[i], i, between(s, i));
+		if (s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2] && index < 0 && ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2])  && between(s, i) == 0))
+		{
+			printf("ola\n");
 			index = i;
-		else if ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2] || i == ft_strlen(s)) && index >= 0)
+		}
+		else if ((((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2])  && between(s, i) == 1) || i == ft_strlen(s)) && index >= 0)
 		{
 			ptrs[j++] = word_dup(s, index, i);
 			index = -1;

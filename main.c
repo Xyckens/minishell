@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:22:56 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/03 19:39:30 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/17 18:46:50 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ int	main(int argc, char **argv, char **envp)
 		//g_everything.cmd = malloc(2 * sizeof(char*));
 		//g_everything.st_arg = malloc(2 * sizeof(char*));
 		//set_cmd(&g_everything);
-		add_history(g_everything.prompt);
-		g_everything.fd = parser(&g_everything);
+		/*add_history(g_everything.prompt);
+		g_everything.fd = parser(&g_everything);*/
 	}
 	free (g_everything.prompt);
 	if (g_everything.fd != 1)

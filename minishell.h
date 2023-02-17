@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:21:42 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/03 19:38:09 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/17 20:13:48 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_prompt
 }				t_prompt;
 
 void	sanitize(t_prompt *every);
+int		between(const char *str, int pos);
 void	path(t_prompt *every);
 // Set arguments to list
 void	set_cmd(t_prompt *first);
