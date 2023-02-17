@@ -56,28 +56,6 @@ char	**ft_unset(char *command, t_prompt *every)
 	return (every->new_env);
 }
 
-char	*formated_word(char *str)
-{
-	char	*new_word;
-	int		i;
-	int		j;
-
-	new_word = malloc(sizeof(char) * ft_strlen(str) + 3);
-	if (!new_word)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i] && str[i] != '=')
-		new_word[j++] = str[i++];
-	new_word[j++] = str[i++];
-	new_word[j++] = '"';
-	while (str[i])
-		new_word[j++] = str[i++];
-	new_word[j++] = '"';
-	new_word[j] = '\0';
-	return (new_word);
-}
-
 /*int	check_duplicate_keys(t_prompt *every)
 {
 	int	i;
@@ -98,7 +76,7 @@ char	*formated_word(char *str)
 	return ()
 }*/
 
-char	**ft_export(t_prompt *every)
+/*char	**ft_export(t_prompt *every)
 {
 	int	i;
 
@@ -132,7 +110,7 @@ char	**ft_export(t_prompt *every)
 	//precisamos de if para quando export nao funciona
 	// o export consegue nao funcionar? lol nao sei
 	return (every->new_env);
-}
+}*/
 
 void	path(t_prompt *every)
 {
@@ -177,8 +155,8 @@ int	parser(t_prompt *eve)
 	//vamos ter de saber qual 'e o indice do cmd a mandar!!!!
 	while (eve->prompt[c])
 	{
-		// if (eve->prompt[c] == '|')
-		// 	pipe(eve->prompt, c);
+		//if (eve->prompt[c] == '|')
+		//	pipes(eve, c);
 		// if (eve->prompt[c] == '<' && eve->prompt[c + 1] == '<')
 		// {
 		// 		delimiter(eve->prompt, c++);

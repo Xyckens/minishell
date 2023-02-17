@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/02/15 16:57:24 by fvieira          ###   ########.fr        #
+#    Updated: 2023/02/17 13:20:38 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ SRC = main.c \
 		delimit.c \
 		echo.c \
 		path_related.c \
-		sanitize.c
+		sanitize.c \
+		ft_export.c
 
 
 OBJ = $(SRC:.c=.o)

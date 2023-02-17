@@ -12,6 +12,57 @@
 
 #include "minishell.h"
 
+int	aspas_ou_plicas(const char *str, int pos, char aop, int flag)
+{
+	int c_aspas;
+	int	i;
+
+	i = 0;
+	c_aspas = 0;
+	while (str[i] && i <= pos)
+	{
+		if (str[i] == aop)
+		{
+			if (flag == 1)
+			{
+				if (aop == 39)
+				{
+					if (aspas_ou_plicas(str, i,'"', 0) == 1)
+						c_aspas++;
+				}
+				else
+				{
+					if (aspas_ou_plicas(str, i, 39, 0) == 1)
+						c_aspas++;
+				}	
+			}
+			else
+				c_aspas++;
+		}
+		i++;
+	}
+	if (c_aspas % 2 == 1)
+	{
+		while (str[i])
+		{
+			if (str[i] == aop)
+			{
+				return (0);
+			}
+			i++;
+		}
+	}
+	return (1);
+}
+
+int	between(const char *str, int pos)
+{
+	if (aspas_ou_plicas(str, pos, 39, 1) == 1
+		&& aspas_ou_plicas(str, pos, '"', 1) == 1)
+		return (1);
+	return (0);
+}
+
 static int	count_words(char const *s, char *c)
 {
 	int	words;
@@ -27,8 +78,11 @@ static int	count_words(char const *s, char *c)
 		{	
 			if (s[i] == c[j] && i > 0 && s[i - 1] != c[j])
 			{
-				words++;
-				break ;
+				if (between(s, i) == 1)
+				{
+					words++;
+					break ;
+				}
 			}
 			j++;
 		}
@@ -57,7 +111,7 @@ char	**ft_alt_split(char *s, char *sep)
 	int		index;
 	char	**ptrs;	
 
-	ptrs = malloc(sizeof(char *) * (count_words(s, sep) + 1));
+	ptrs = malloc((count_words(s, sep) + 1) * sizeof(char *));
 	i = 0;
 	j = 0;
 	index = -1;
