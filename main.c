@@ -62,18 +62,18 @@ int	main(int argc, char **argv, char **envp)
 		if (!ft_strncmp (g_everything.prompt, "exit", 4))
 			ft_exit(&g_everything);
 		sanitize(&g_everything);
-		int i = 0;
+		/*int i = 0;
 		while (g_everything.cmd[i])
 		{
 			printf("executable = %s\n", g_everything.cmd[i]);
 			printf("  args     = %s\n", g_everything.st_arg[i]);
 			i++;
-		}
+		}*/
 		//g_everything.cmd = malloc(2 * sizeof(char*));
 		//g_everything.st_arg = malloc(2 * sizeof(char*));
 		//set_cmd(&g_everything);
-		/*add_history(g_everything.prompt);
-		g_everything.fd = parser(&g_everything);*/
+		add_history(g_everything.prompt);
+		g_everything.fd = parser(&g_everything);
 	}
 	free (g_everything.prompt);
 	if (g_everything.fd != 1)

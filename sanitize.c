@@ -66,10 +66,9 @@ char	**ft_alt_split(char *s, char *sep)
 	index = -1;
 	while (i <= ft_strlen(s))
 	{
-		printf("ola %c %ld %d\n", s[i], i, between(s, i));
-		if (s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2] && index < 0 && ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2])  && between(s, i) == 0))
+		//printf("ola %c %ld %d\n", s[i], i, between(s, i));
+		if ((s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2] && index < 0) || ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 0))
 		{
-			printf("ola\n");
 			index = i;
 		}
 		else if ((((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2])  && between(s, i) == 1) || i == ft_strlen(s)) && index >= 0)
@@ -107,6 +106,7 @@ char	*rest_of_promp(char *sep)
 		final++;
 	}
 	str[final] = '\0';
+	//printf("str = %s\n", str);
 	return (str);
 }
 
@@ -126,6 +126,7 @@ void	sanitize(t_prompt *every)
 	{
 		//bro isto nao vai ficar nada assim, mas queria que ao menos
 		//funcionasse
+		//ft_printf(1, " sep .%s\n", sep[i]);
 		char	**nome;
 
 		nome = ft_split(name(sep[i]), ' ');
