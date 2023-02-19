@@ -37,6 +37,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) --no-print-directory -C ./libft
+	echo "./minishell created"
 	$(CC) $(CFLAGS) $(OBJ) -lreadline $(LIBFT) -o $(NAME)
 
 clean:
@@ -50,6 +51,9 @@ fclean: clean
 		echo "$(NAME) deleted"
 
 re: fclean all
+
+run: re
+	./minishell
 
 .SILENT:
 

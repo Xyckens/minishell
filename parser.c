@@ -112,13 +112,13 @@ char	**ft_unset(char *command, t_prompt *every)
 	return (every->new_env);
 }*/
 
-void	path(t_prompt *every)
+void	path(t_prompt *every, int c)
 {
 	char	pwd[1000];
 
-	if (!ft_strcmp(every->cmd[0], "pwd"))
+	if (!ft_strcmp(every->cmd[c], "pwd"))
 	{
-		if (!ft_strcmp(every->st_arg[0], ""))
+		if (!ft_strcmp(every->st_arg[c], ""))
 		{
 			ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
 			every->exit_stat = 0;
@@ -129,15 +129,15 @@ void	path(t_prompt *every)
 			every->exit_stat = 1;
 		}
 	}
-	else if (!ft_strcmp(every->cmd[0], "cd"))
+	else if (!ft_strcmp(every->cmd[c], "cd"))
 		change_directory(every, pwd);
-	else if (!ft_strcmp(every->cmd[0], "echo"))
+	else if (!ft_strcmp(every->cmd[c], "echo"))
 		echo(every);
-	else if (!ft_strcmp(every->cmd[0], "export"))
+	else if (!ft_strcmp(every->cmd[c], "export"))
 		every->new_env = ft_export(every);
-	else if (!ft_strcmp(every->cmd[0], "unset"))
+	else if (!ft_strcmp(every->cmd[c], "unset"))
 		every->new_env = ft_unset(every->prompt, every);
-	else if (!ft_strcmp(every->cmd[0], "exit"))
+	else if (!ft_strcmp(every->cmd[c], "exit"))
 	{
 		ft_printf(1, "exit: too many arguments\n");
 		every->exit_stat = 1;
@@ -148,31 +148,24 @@ void	path(t_prompt *every)
 
 int	parser(t_prompt *eve)
 {
-	int	c;
+	static int	c = 0;
 
-	c = 0;
 	eve->fd = 1;
 	//vamos ter de saber qual 'e o indice do cmd a mandar!!!!
-	while (eve->prompt[c])
+	while (eve->cmd[c])
 	{
-		//if (eve->prompt[c] == '|')
+		//if (eve->sep[c] == '|')
 		//	pipes(eve, c);
-		// if (eve->prompt[c] == '<' && eve->prompt[c + 1] == '<')
-		// {
-		// 		delimiter(eve->prompt, c++);
-		// 		c++;
-		// }
-		// if (eve->prompt[c] == '<' && eve->prompt[c + 1] != '<')
+		// if (eve->sep[c] == '<' && eve->sep[c + 1] == '<')
+		// 		delimiter(eve->sep, c++);
+		// if (eve->sep[c][0] == '<' && eve->sep[c][1] != '<')
 		// 	eve->prompt = redirectin(eve->cmd[1]);
-		if (eve->prompt[c] == '>' && eve->prompt[c + 1] == '>')
-		{
-			eve->fd = append(eve->cmd[1]);
-			c++;
-		}
-		else if (eve->prompt[c] == '>' && eve->prompt[c + 1] != '>')
-			eve->fd = redirectout(eve->cmd[1]);
+		if (eve->sep[c] && eve->sep[c][0] == '>' && eve->sep[c][1] == '>')
+			eve->fd = append(eve->cmd[c + 1]);
+		else if (eve->sep[c] && eve->sep[c][0] == '>' && eve->sep[c][1] != '>')
+			eve->fd = redirectout(eve->cmd[c + 1]);
+		path(eve, c);
 		c++;
 	}
-	path(eve);
 	return (eve->fd);
 }

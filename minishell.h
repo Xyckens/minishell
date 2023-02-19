@@ -40,7 +40,7 @@ typedef struct s_prompt
 
 void	sanitize(t_prompt *every);
 int		between(const char *str, int pos);
-void	path(t_prompt *every);
+void	path(t_prompt *every, int c);
 // Set arguments to list
 void	set_cmd(t_prompt *first);
 void	set_first_argument(char *path, t_prompt *first);

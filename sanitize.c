@@ -52,6 +52,35 @@ static char	*word_dup(const char *str, int start, int finish)
 	word[i] = '\0';
 	return (word);
 }
+char	**sep_init(t_prompt *e)
+{
+	char	**sep;
+	int		i;
+	int		c;
+	int		j;
+
+	i = 2;
+	c = 0;
+	j = 0;
+	sep	= malloc((count_words(e->prompt, "><|")) * sizeof(char *));
+	while (e->prompt[c])
+	{
+		if (e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|')
+		{
+			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
+				i++;
+			sep[j] = malloc(i);
+			sep[j][0] = e->prompt[c];
+			sep[j][i - 1] = '\0';
+			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
+				sep[j][1] = e->prompt[++c];
+			j++;
+		}
+		c++;
+	}
+	sep[j] = 0;
+	return (sep);
+}
 
 char	**ft_alt_split(char *s, char *sep)
 {
@@ -66,11 +95,8 @@ char	**ft_alt_split(char *s, char *sep)
 	index = -1;
 	while (i <= ft_strlen(s))
 	{
-		//printf("ola %c %ld %d\n", s[i], i, between(s, i));
 		if ((s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2] && index < 0) || ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 0))
-		{
 			index = i;
-		}
 		else if ((((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2])  && between(s, i) == 1) || i == ft_strlen(s)) && index >= 0)
 		{
 			ptrs[j++] = word_dup(s, index, i);
@@ -112,28 +138,29 @@ char	*rest_of_promp(char *sep)
 
 void	sanitize(t_prompt *every)
 {
-	char	**sep;
+	char	**sep2;
 	int		i;
 
 	i = 0;
-	sep = ft_alt_split(every->prompt, "><|");
-	while (sep[i])
+	sep2 = ft_alt_split(every->prompt, "><|");
+	while (sep2[i])
 		i++;
 	every->cmd = malloc((i + 1) * sizeof(char *));
 	every->st_arg = malloc((i + 1) * sizeof(char *));
 	i = 0;
-	while (sep[i])
+	while (sep2[i])
 	{
 		//bro isto nao vai ficar nada assim, mas queria que ao menos
 		//funcionasse
-		//ft_printf(1, " sep .%s\n", sep[i]);
+		//ft_printf(1, " sep2 .%s\n", sep2[i]);
 		char	**nome;
 
-		nome = ft_split(name(sep[i]), ' ');
+		nome = ft_split(name(sep2[i]), ' ');
 		every->cmd[i] = nome[0];
-		every->st_arg[i] = rest_of_promp(sep[i]);
+		every->st_arg[i] = rest_of_promp(sep2[i]);
 		i++;
 	}
+	every->sep = sep_init(every);
 	every->cmd[i] = 0;
 	every->st_arg[i] = 0;
 }
