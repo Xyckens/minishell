@@ -132,7 +132,7 @@ void	path(t_prompt *every, int c)
 	else if (!ft_strcmp(every->cmd[c], "cd"))
 		change_directory(every, pwd);
 	else if (!ft_strcmp(every->cmd[c], "echo"))
-		echo(every);
+		echo(every, c);
 	else if (!ft_strcmp(every->cmd[c], "export"))
 		every->new_env = ft_export(every);
 	else if (!ft_strcmp(every->cmd[c], "unset"))
@@ -148,8 +148,11 @@ void	path(t_prompt *every, int c)
 
 int	parser(t_prompt *eve)
 {
-	static int	c = 0;
+	//static int	c = 0;
+	int	c;
 
+	
+	c = 0;
 	eve->fd = 1;
 	//vamos ter de saber qual 'e o indice do cmd a mandar!!!!
 	while (eve->cmd[c])

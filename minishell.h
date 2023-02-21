@@ -46,7 +46,7 @@ void	set_cmd(t_prompt *first);
 void	set_first_argument(char *path, t_prompt *first);
 
 void	change_directory(t_prompt *every, char *pwd);
-void	echo(t_prompt *every);
+void	echo(t_prompt *every, int c);
 
 void	executable(t_prompt *everything);
 
