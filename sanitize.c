@@ -65,7 +65,7 @@ char	**sep_init(t_prompt *e)
 	sep	= malloc((count_words(e->prompt, "><|")) * sizeof(char *));
 	while (e->prompt[c])
 	{
-		if (e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|')
+		if ((e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|') && between(e->prompt, c) == 1)
 		{
 			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
 				i++;
@@ -95,9 +95,9 @@ char	**ft_alt_split(char *s, char *sep)
 	index = -1;
 	while (i <= ft_strlen(s))
 	{
-		if ((s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2] && index < 0) || ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 0))
+		if (((s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2]) || ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 0))  && index < 0)
 			index = i;
-		else if ((((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2])  && between(s, i) == 1) || i == ft_strlen(s)) && index >= 0)
+		else if ((((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 1) || i == ft_strlen(s)) && index >= 0)
 		{
 			ptrs[j++] = word_dup(s, index, i);
 			index = -1;
@@ -152,10 +152,9 @@ void	sanitize(t_prompt *every)
 	{
 		//bro isto nao vai ficar nada assim, mas queria que ao menos
 		//funcionasse
-		//ft_printf(1, " sep2 .%s\n", sep2[i]);
 		char	**nome;
 
-		nome = ft_split(name(sep2[i]), ' ');
+		nome = ft_split(ft_strtrim(sep2[i], " "), ' ');
 		every->cmd[i] = nome[0];
 		every->st_arg[i] = rest_of_promp(sep2[i]);
 		i++;

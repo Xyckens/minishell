@@ -118,16 +118,8 @@ void	path(t_prompt *every, int c)
 
 	if (!ft_strcmp(every->cmd[c], "pwd"))
 	{
-		if (!ft_strcmp(every->st_arg[c], ""))
-		{
-			ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
-			every->exit_stat = 0;
-		}
-		else
-		{
-			ft_printf(every->fd, "pwd: too many arguments\n");
-			every->exit_stat = 1;
-		}
+		ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
+		every->exit_stat = 0;
 	}
 	else if (!ft_strcmp(every->cmd[c], "cd"))
 		change_directory(every, pwd);
@@ -143,7 +135,7 @@ void	path(t_prompt *every, int c)
 		every->exit_stat = 1;
 	}
 	else
-		executable(every);
+		executable(every, c);
 }
 
 int	parser(t_prompt *eve)
@@ -151,10 +143,8 @@ int	parser(t_prompt *eve)
 	//static int	c = 0;
 	int	c;
 
-	
 	c = 0;
 	eve->fd = 1;
-	//vamos ter de saber qual 'e o indice do cmd a mandar!!!!
 	while (eve->cmd[c])
 	{
 		//if (eve->sep[c] == '|')

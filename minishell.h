@@ -48,7 +48,7 @@ void	set_first_argument(char *path, t_prompt *first);
 void	change_directory(t_prompt *every, char *pwd);
 void	echo(t_prompt *every, int c);
 
-void	executable(t_prompt *everything);
+void	executable(t_prompt *everything, int c);
 
 char	**set_new_env(char **envp);
 char	**ft_export(t_prompt *args);

@@ -39,18 +39,18 @@ char	*name(char *str)
 	return (string);
 }
 
-char	**initialize(t_prompt *everything, int i)
+char	**initialize(t_prompt *everything, int c)
 {
 	char	**nome;
 	char	**args;
 	int		count;
 
 	count = 0;
-	args = ft_split(everything->st_arg[i], ' ');
+	args = ft_split(everything->st_arg[c], ' ');
 	while (args[count])
 		count++;
 	nome = malloc((count + 2) * sizeof(char *));
-	nome[0] = everything->cmd[i];
+	nome[0] = everything->cmd[c];
 	nome[count + 1] = 0;
 	count = 0;
 	while (args[count])
@@ -78,12 +78,12 @@ void	idk(char **args, t_prompt *everything)
 	//alterei para ser no fd 2 o stderr
 }
 
-void	executable(t_prompt *everything)
+void	executable(t_prompt *everything, int c)
 {
 	int		status;
 	char	**nome;
 
-	nome = initialize(everything, 0);
+	nome = initialize(everything, c);
 	if (fork() == 0)
 		idk(nome, everything);
 	else

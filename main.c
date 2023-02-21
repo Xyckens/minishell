@@ -70,9 +70,6 @@ int	main(int argc, char **argv, char **envp)
 			printf("   sep     = %s\n", g_everything.sep[i]);
 			i++;
 		}
-		//g_everything.cmd = malloc(2 * sizeof(char*));
-		//g_everything.st_arg = malloc(2 * sizeof(char*));
-		//set_cmd(&g_everything);
 		add_history(g_everything.prompt);
 		g_everything.fd = parser(&g_everything);
 	}

@@ -89,7 +89,7 @@ int	dollarsign(char *str, int c, t_prompt *every)
 	}
 	return (count + c + 1);
 }
-/*int	does_it_have_2doublequotes(char *str, int firststop, int fd)
+int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)
 {
 	int count;
 	int	count2;
@@ -98,9 +98,9 @@ int	dollarsign(char *str, int c, t_prompt *every)
 	count2 = 0;
 	flag = 0;
 	count = 0;
-	while (str[count])
+	while (s[count])
 	{
-		if (str[count] == '"')
+		if (s[count] == '"')
 			flag++;
 		if (flag == 2)
 		{
@@ -112,19 +112,19 @@ int	dollarsign(char *str, int c, t_prompt *every)
 	if (flag == 2)
 	{
 		count = 0;
-		while (str[count] && count < count2)
+		while (s[count] && count < count2)
 		{
-			if (s[c] == '$')
-				c = dollarsign(s + c + 1, c, fd);
-			if (str[count] != '"')
-				ft_putchar_fd(str[count], fd);
+			if (s[firststop] == '$')
+				firststop = dollarsign(s + firststop + 1, firststop, every);
+			if (s[count] != '"')
+				ft_putchar_fd(s[count], every->fd);
 			count++;
 		}
 		return (firststop + count2 + 1);
 	}
 	return (firststop + 1);
 }
-*/
+
 
 void	ft_epur(char *s, t_prompt *every)
 {
@@ -143,12 +143,10 @@ void	ft_epur(char *s, t_prompt *every)
 	{
 		if (s[c] == 39)
 			c = does_it_have_2quotes(s + c, c, every->fd);
-		//if (s[c] == '"')
-		//	c = does_it_have_2doublequotes(s + c, c, fd);
+		if (s[c] == '"')
+			c = does_it_have_2doublequotes(s + c, c, every);
 		if (s[c] == '$')
 			c = dollarsign(s + c + 1, c, every);
-		if (s[c] == '>' || s[c] == '<' || s[c] == '|')
-			break ;
 		if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
 			ft_putchar_fd(' ', every->fd);
@@ -170,8 +168,8 @@ void	echo(t_prompt *every, int c)
 
 	count = 0;
 	flag = 0;
-		while (every->st_arg[c][count] == ' '
-			|| (every->st_arg[c][count] >= 9 && every->st_arg[c][count] <= 13))
+	while (every->st_arg[c][count] == ' '
+		|| (every->st_arg[c][count] >= 9 && every->st_arg[c][count] <= 13))
 		count++;
 	if (!ft_strncmp(every->st_arg[c] + count, "-n", 2))
 	{
