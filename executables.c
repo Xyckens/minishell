@@ -55,7 +55,7 @@ char	**initialize(t_prompt *everything, int c)
 	count = 0;
 	while (args[count])
 	{
-		nome[count + 1]	= args[count];
+		nome[count + 1] = args[count];
 		count++;
 	}
 	return (nome);

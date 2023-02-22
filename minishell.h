@@ -33,17 +33,19 @@ typedef struct s_prompt
 	char	**cmd;
 	char	**st_arg;
 	char	**sep;
+	int		*order;
 	int		fd;
 	char	**new_env;
 	int		exit_stat;
 }				t_prompt;
 
+int		count_words(char const *s, char *c);
+int		*order(t_prompt *every);
+char	**sep_init(t_prompt *e);
 void	sanitize(t_prompt *every);
 int		between(const char *str, int pos);
+
 void	path(t_prompt *every, int c);
-// Set arguments to list
-void	set_cmd(t_prompt *first);
-void	set_first_argument(char *path, t_prompt *first);
 
 void	change_directory(t_prompt *every, char *pwd);
 void	echo(t_prompt *every, int c);

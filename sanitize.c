@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	count_words(char const *s, char *c)
+int	count_words(char const *s, char *c)
 {
 	int	words;
 	int	i;
@@ -52,35 +52,6 @@ static char	*word_dup(const char *str, int start, int finish)
 	word[i] = '\0';
 	return (word);
 }
-char	**sep_init(t_prompt *e)
-{
-	char	**sep;
-	int		i;
-	int		c;
-	int		j;
-
-	i = 2;
-	c = 0;
-	j = 0;
-	sep	= malloc((count_words(e->prompt, "><|")) * sizeof(char *));
-	while (e->prompt[c])
-	{
-		if ((e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|') && between(e->prompt, c) == 1)
-		{
-			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
-				i++;
-			sep[j] = malloc(i);
-			sep[j][0] = e->prompt[c];
-			sep[j][i - 1] = '\0';
-			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
-				sep[j][1] = e->prompt[++c];
-			j++;
-		}
-		c++;
-	}
-	sep[j] = 0;
-	return (sep);
-}
 
 char	**ft_alt_split(char *s, char *sep)
 {
@@ -95,7 +66,7 @@ char	**ft_alt_split(char *s, char *sep)
 	index = -1;
 	while (i <= ft_strlen(s))
 	{
-		if (((s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2]) || ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 0))  && index < 0)
+		if (((s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2]) || ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 0)) && index < 0)
 			index = i;
 		else if ((((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 1) || i == ft_strlen(s)) && index >= 0)
 		{
@@ -132,7 +103,6 @@ char	*rest_of_promp(char *sep)
 		final++;
 	}
 	str[final] = '\0';
-	//printf("str = %s\n", str);
 	return (str);
 }
 
@@ -162,4 +132,5 @@ void	sanitize(t_prompt *every)
 	every->sep = sep_init(every);
 	every->cmd[i] = 0;
 	every->st_arg[i] = 0;
+	every->order = order(every);
 }

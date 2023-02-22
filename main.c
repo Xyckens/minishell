@@ -59,6 +59,8 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		g_everything.prompt = readline("prompt% ");
+		if (!g_everything.prompt)
+			exit(g_everything.exit_stat);
 		if (!ft_strncmp (g_everything.prompt, "exit", 4))
 			ft_exit(&g_everything);
 		sanitize(&g_everything);
@@ -68,10 +70,12 @@ int	main(int argc, char **argv, char **envp)
 			printf("executable = %s\n", g_everything.cmd[i]);
 			printf("  args     = %s\n", g_everything.st_arg[i]);
 			printf("   sep     = %s\n", g_everything.sep[i]);
+			printf("  order    = %d\n", g_everything.order[i]);
 			i++;
 		}
 		add_history(g_everything.prompt);
 		g_everything.fd = parser(&g_everything);
+
 	}
 	free (g_everything.prompt);
 	if (g_everything.fd != 1)
