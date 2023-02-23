@@ -43,10 +43,18 @@ void	ft_exit(t_prompt *everything)
 	i = 0;
 	while (arg[i])
 		i++;
+	freesplit(everything->cmd);
+	freesplit(everything->sep);
+	freesplit(everything->st_arg);
+	//freesplit(everything->order);
 	if (ft_strlen(everything->prompt) == 4)
 		exit(everything->exit_stat);
 	else if (i <= 2)
-		exit(ft_atoi(arg[1]));
+	{
+		i = ft_atoi(arg[1]);
+		freesplit(arg);
+		exit(i);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -64,16 +72,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!ft_strncmp (g_everything.prompt, "exit", 4))
 			ft_exit(&g_everything);
 		sanitize(&g_everything);
-		int i = 0;
-		while (g_everything.cmd[i])
-		{
-			printf("executable = %s\n", g_everything.cmd[i]);
-			printf("  args     = %s\n", g_everything.st_arg[i]);
-			printf("   sep     = %s\n", g_everything.sep[i]);
-			printf("  order    = %d\n", g_everything.order[i]);
-			i++;
-		}
-		add_history(g_everything.prompt);
+		if (g_everything.prompt[0] != '\0')
+			add_history(g_everything.prompt);
 		g_everything.fd = parser(&g_everything);
 
 	}
@@ -82,3 +82,13 @@ int	main(int argc, char **argv, char **envp)
 		close(g_everything.fd);
 	return (0);
 }
+
+		/*int i = 0;
+		while (g_everything.cmd[i])
+		{
+			printf("executable = %s\n", g_everything.cmd[i]);
+			printf("  args     = %s\n", g_everything.st_arg[i]);
+			printf("   sep     = %s\n", g_everything.sep[i]);
+			printf("  order    = %d\n", g_everything.order[i]);
+			i++;
+		}*/

@@ -109,7 +109,9 @@ char	*rest_of_promp(char *sep)
 void	sanitize(t_prompt *every)
 {
 	char	**sep2;
+	char	*temp;
 	int		i;
+	char	**nome;
 
 	i = 0;
 	sep2 = ft_alt_split(every->prompt, "><|");
@@ -120,17 +122,17 @@ void	sanitize(t_prompt *every)
 	i = 0;
 	while (sep2[i])
 	{
-		//bro isto nao vai ficar nada assim, mas queria que ao menos
-		//funcionasse
-		char	**nome;
-
-		nome = ft_split(ft_strtrim(sep2[i], " "), ' ');
+		temp = ft_strtrim(sep2[i], " ");
+		nome = ft_split(temp, ' ');
 		every->cmd[i] = nome[0];
 		every->st_arg[i] = rest_of_promp(sep2[i]);
+		free(temp);
 		i++;
+		freesplit(nome);
 	}
-	every->sep = sep_init(every);
 	every->cmd[i] = 0;
 	every->st_arg[i] = 0;
+	every->sep = sep_init(every);
 	every->order = order(every);
+	freesplit(sep2);
 }

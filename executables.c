@@ -61,34 +61,70 @@ char	**initialize(t_prompt *everything, int c)
 	return (nome);
 }
 
-void	idk(char **args, t_prompt *everything)
+char	**pathfinder(char **new_env)
 {
+	int		count;
+	int		i;
+	char	*pathinicial;
+	char	**path;
+
+	count = 6;
+	i = -1;
+	
+	while (new_env[++i])
+	{
+		if (!ft_strncmp("PATH", new_env[i], 4))
+		{
+			pathinicial = new_env[i] + 5;
+			break ;
+		}
+	}
+	path = ft_split(pathinicial, ':');
+	return (path);
+}
+
+int	idk(char *arg0, char **args, t_prompt *everything)
+{
+	char	**path;
+	int i;
+
+	i = 0;
+	path = pathfinder(everything->new_env);
 	dup2(everything->fd, 1);
 	if (execve(args[0], args, everything->new_env) == -1)
-		args[0] = ft_strjoin("/bin/", args[0]);
-	if (execve(args[0], args, everything->new_env) == -1)
 	{
-		ft_printf(2, "%s: command not found\n", args[0] + 5);
-		everything->exit_stat = 127;
+		arg0 = ft_strjoin("/", arg0);
+		while (path[i])
+		{
+			free(args[0]);
+			args[0] = ft_strjoin(path[i], arg0);
+			if (execve(args[0], args, everything->new_env) == -1)
+				i++;
+			else
+			{
+				freesplit(path);
+				return (0);
+			}
+		}
 	}
-	else
-		everything->exit_stat = 0;
-	//nao gosto como isto ficou
-	//mas da tua maneira tb nao podia ser
-	//alterei para ser no fd 2 o stderr
+	if (!path[i])
+	{
+		freesplit(path);
+		ft_printf(2, "%s: command not found\n", arg0 + 1);
+		free(arg0);
+	}
+	return (127);
 }
 
 void	executable(t_prompt *everything, int c)
 {
 	int		status;
-	char	**nome;
+	char	**seperated;
 
-	nome = initialize(everything, c);
+	seperated = initialize(everything, c);
 	if (fork() == 0)
-		idk(nome, everything);
+		everything->fd = idk(seperated[0], seperated, everything);
 	else
 		wait(&status);
-	//vai ser preciso dar free a todos os elementos do nome
-	//por causa do split
-	free(nome);
+	freesplit(seperated);
 }

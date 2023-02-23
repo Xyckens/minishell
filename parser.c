@@ -100,7 +100,6 @@ int	parser(t_prompt *eve)
 			eve->fd = append(eve->cmd[c + 1]);
 		else if (eve->sep[c] && eve->sep[c][0] == '>' && eve->sep[c][1] != '>')
 			eve->fd = redirectout(eve->cmd[c + 1]);
-		printf("%d\n", eve->order[c]);
 		if (c == 0 || (eve->sep[c - 1][0] != '>' && eve->sep[c - 1][0] != '<' ))
 			path(eve, c);
 		if (eve->fd != 1)

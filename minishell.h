@@ -62,4 +62,6 @@ int		append(char *prompt);
 char	*redirectin(char *prompt);
 
 char	*name(char *str);
+
+void	freesplit(char **array);
 #endif

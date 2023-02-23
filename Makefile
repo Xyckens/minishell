@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/02/17 20:12:36 by fvieira          ###   ########.fr        #
+#    Updated: 2023/02/23 19:02:29 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Werror -Wall -Wextra -I. -g 
+CFLAGS = -Werror -Wall -Wextra -I. -fsanitize=address -g 
 
 LIBFT = ./libft/libft.a
 
@@ -28,7 +28,8 @@ SRC = main.c \
 		path_related.c \
 		sanitize.c \
 		ft_export.c \
-		pelicaseaspas.c
+		pelicaseaspas.c \
+		freed.c
 
 
 OBJ = $(SRC:.c=.o)
