@@ -54,7 +54,7 @@ void	executable(t_prompt *everything, int c);
 
 char	**set_new_env(char **envp);
 char	**ft_export(t_prompt *args);
-char	**ft_unset(char *command, t_prompt *everything);
+char	**ft_unset(t_prompt *everything, int c);
 
 int		parser(t_prompt *every);
 int		redirectout(char *prompt);
@@ -64,4 +64,5 @@ char	*redirectin(char *prompt);
 char	*name(char *str);
 
 void	freesplit(char **array);
+void	delete_everything(t_prompt *everything);
 #endif

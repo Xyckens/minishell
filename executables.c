@@ -50,14 +50,15 @@ char	**initialize(t_prompt *everything, int c)
 	while (args[count])
 		count++;
 	nome = malloc((count + 2) * sizeof(char *));
-	nome[0] = everything->cmd[c];
+	nome[0] = ft_strdup(everything->cmd[c]);
 	nome[count + 1] = 0;
 	count = 0;
 	while (args[count])
 	{
-		nome[count + 1] = args[count];
+		nome[count + 1] = ft_strdup(args[count]);
 		count++;
 	}
+	freesplit(args);
 	return (nome);
 }
 
@@ -90,7 +91,10 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 
 	i = 0;
 	path = pathfinder(everything->new_env);
-	dup2(everything->fd, 1);
+	if (everything->fd != 1)
+	{
+		dup2(everything->fd, 1);
+	}
 	if (execve(args[0], args, everything->new_env) == -1)
 	{
 		arg0 = ft_strjoin("/", arg0);
@@ -102,6 +106,7 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 				i++;
 			else
 			{
+				close(1);
 				freesplit(path);
 				return (0);
 			}
@@ -109,6 +114,7 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 	}
 	if (!path[i])
 	{
+		close(1);
 		freesplit(path);
 		ft_printf(2, "%s: command not found\n", arg0 + 1);
 		free(arg0);
@@ -118,12 +124,12 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 
 void	executable(t_prompt *everything, int c)
 {
-	int		status;
+	int	status;
 	char	**seperated;
 
 	seperated = initialize(everything, c);
 	if (fork() == 0)
-		everything->fd = idk(seperated[0], seperated, everything);
+		everything->exit_stat = idk(seperated[0], seperated, everything);
 	else
 		wait(&status);
 	freesplit(seperated);

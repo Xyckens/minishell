@@ -30,9 +30,10 @@ char	**set_new_env(char **envp)
 	int		i;
 
 	total_length = get_sizeof_envp(envp);
-	new_env = malloc(sizeof(char *) * total_length + 1);
+	new_env = malloc(sizeof(char *) * (total_length + 1));
 	i = -1;
 	while (envp[++i])
 		new_env[i] = ft_strdup(envp[i]);
+	new_env[i] = 0;
 	return (new_env);
 }

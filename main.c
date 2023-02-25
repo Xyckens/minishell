@@ -34,6 +34,16 @@ void	signals(void)
 		ft_printf(1, "failed to register interrupts with kernel\n");
 }
 
+void	delete_everything(t_prompt *everything)
+{
+	if(everything->cmd)
+		freesplit(everything->cmd);
+	if(everything->sep)
+		freesplit(everything->sep);
+	if(everything->st_arg)
+		freesplit(everything->st_arg);
+	free(everything->order);
+}
 void	ft_exit(t_prompt *everything)
 {
 	char	**arg;
@@ -43,12 +53,13 @@ void	ft_exit(t_prompt *everything)
 	i = 0;
 	while (arg[i])
 		i++;
-	freesplit(everything->cmd);
-	freesplit(everything->sep);
-	freesplit(everything->st_arg);
-	//freesplit(everything->order);
+	delete_everything(everything);
+	freesplit(everything->new_env);
 	if (ft_strlen(everything->prompt) == 4)
+	{
+		freesplit(arg);
 		exit(everything->exit_stat);
+	}
 	else if (i <= 2)
 	{
 		i = ft_atoi(arg[1]);
@@ -83,7 +94,7 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-		/*int i = 0;
+	/*	int i = 0;
 		while (g_everything.cmd[i])
 		{
 			printf("executable = %s\n", g_everything.cmd[i]);

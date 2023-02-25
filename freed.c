@@ -19,6 +19,7 @@ void	freesplit(char **array)
 	i = 0;
 	while (array[i])
 	{
+		//printf("arrraaaayyyy   %s\n", array[i]);
 		free(array[i]);
 		i++;
 	}
