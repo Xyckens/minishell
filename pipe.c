@@ -11,16 +11,16 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-​
+
 void	run_pipe(char **args, int *pfd, t_prompt *everything);
-​
+
 void	whatamidoing(char **args, t_prompt *env)
 {
 	(void)env;
 	int pid;
 	int	status;
 	int fd[2];
-​
+
 	if (pipe(fd) == -1)
 	{
 		printf("Error");
@@ -38,14 +38,14 @@ void	whatamidoing(char **args, t_prompt *env)
 		exit(0);
 	}
 }
-​
+
 // char *cmd1[] = { "/bin/ls", "-al", "/", 0 };
 // char *cmd2[] = { "/usr/bin/tr", "a-z", "A-Z", 0 };
-​
+
 void	run_pipe(char **args, int *pfd, t_prompt *everything)
 {
 	int pid;
-​
+
 	pid = fork();
 	if (pid == 0)/* child */
 	{
@@ -64,12 +64,11 @@ void	run_pipe(char **args, int *pfd, t_prompt *everything)
 		// perror(cmd1[0]);
 	}	
 }
-​
+
 // void	whatamidoing(t_prompt *env)
 // {
 // 	pid_t	pid;
 // 	int	fd[2];
-	
 // 	if (pipe(fd) == -1)
 // 	{
 // 		printf("Error");

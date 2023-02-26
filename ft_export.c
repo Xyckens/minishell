@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-// vou por no libft
 char	*ft_setchar(char *str, char get, char set)
 {
 	int	i;
@@ -86,46 +85,62 @@ char	*get_value(char *str)
 	return (value);
 }
 
-char	**manage_env_variables(t_prompt *every)
+char	**manage_env_variables(t_prompt *every, int c)
 {
 	char	*def_key;
 	char	*new_key;
 	char	*new_value;
 	int		i;
 
-	i = 0;
-	new_key = get_key(every->st_arg[i]);
-	while (every->new_env[i])
+	i = -1;
+	new_key = get_key(every->st_arg[c]);
+	while (every->new_env[++i])
 	{
 		def_key = get_key(every->new_env[i]);
 		if (!ft_strcmp(def_key, new_key))
 			break ;
 		free(def_key);
 		def_key = NULL;
-		i++;
 	}
-	new_value = get_value(every->st_arg[0]);
+	new_value = get_value(every->st_arg[c]);
 	if (new_value)
-		every->new_env[i] = formated_word(every->st_arg[0]);	
+	{
+		every->new_env = set_new_env2(every->new_env, every, i + 1);
+		every->new_env[i] = formated_word(every->st_arg[c]);
+	}
 	else if (!def_key && !new_value)
-		every->new_env[i] = ft_strdup(every->st_arg[0]);
+	{
+		every->new_env = set_new_env2(every->new_env, every, i + 1);
+		every->new_env[i] = ft_strdup(every->st_arg[c]);
+	}
 	every->exit_stat = 0;
 	return (every->new_env);
 }
 
-char	**ft_export(t_prompt *every)
+char	**ft_export(t_prompt *e, int c)
 {
 	int		i;
 
 	i = 0;
-	if (!ft_strcmp(every->st_arg[0], ""))
+	if (e->st_arg[c][0] == '\0')
 	{
-		//nao funciona para "export > test" //se calhar resolvemos isso no parcer, mas explico te em pessoa	//printf("%d\n", every->fd);
-		while (every->new_env[i])
-			ft_printf(every->fd, "declare -x %s\n", every->new_env[i++]);
-		every->exit_stat = 0;
+		while (e->new_env[i])
+		{
+			c = -1;
+			ft_printf(e->fd, "declare -x ");
+			while (e->new_env[i][++c])
+			{
+				ft_putchar_fd(e->new_env[i][c],e->fd);
+				if ((e->new_env[i][c] == '=' && e->new_env[i][c + 1] != '"')
+					|| (e->new_env[i][c + 1] == 0 && e->new_env[i][c] != '"'))
+					ft_putchar_fd('"',e->fd);
+			}
+			ft_putchar_fd('\n',e->fd);
+			i++;
+		}
+		e->exit_stat = 0;
 	}
 	else
-		every->new_env = manage_env_variables(every);
-	return (every->new_env);
+		e->new_env = manage_env_variables(e, c);
+	return (e->new_env);
 }

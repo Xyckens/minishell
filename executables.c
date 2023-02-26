@@ -71,7 +71,6 @@ char	**pathfinder(char **new_env)
 
 	count = 6;
 	i = -1;
-	
 	while (new_env[++i])
 	{
 		if (!ft_strncmp("PATH", new_env[i], 4))
@@ -87,7 +86,7 @@ char	**pathfinder(char **new_env)
 int	idk(char *arg0, char **args, t_prompt *everything)
 {
 	char	**path;
-	int i;
+	int		i;
 
 	i = 0;
 	path = pathfinder(everything->new_env);
@@ -106,7 +105,8 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 				i++;
 			else
 			{
-				close(1);
+				if (everything->fd != 1)
+					close(1);
 				freesplit(path);
 				return (0);
 			}
@@ -114,7 +114,8 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 	}
 	if (!path[i])
 	{
-		close(1);
+		if (everything->fd != 1)
+			close(1);
 		freesplit(path);
 		ft_printf(2, "%s: command not found\n", arg0 + 1);
 		free(arg0);

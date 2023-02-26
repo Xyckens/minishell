@@ -53,25 +53,25 @@ static char	*word_dup(const char *str, int start, int finish)
 	return (word);
 }
 
-char	**ft_alt_split(char *s, char *sep)
+char	**ft_alt_split(char *s, char *p)
 {
 	size_t	i;
 	size_t	j;
-	int		index;
+	int		x;
 	char	**ptrs;	
 
-	ptrs = malloc((count_words(s, sep) + 1) * sizeof(char *));
+	ptrs = malloc((count_words(s, p) + 1) * sizeof(char *));
 	i = 0;
 	j = 0;
-	index = -1;
+	x = -1;
 	while (i <= ft_strlen(s))
 	{
-		if (((s[i] != sep[0] && s[i] != sep[1] && s[i] != sep[2]) || ((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 0)) && index < 0)
-			index = i;
-		else if ((((s[i] == sep[0] || s[i] == sep[1] || s[i] == sep[2]) && between(s, i) == 1) || i == ft_strlen(s)) && index >= 0)
+		if (((s[i] != p[0] && s[i] != p[1] && s[i] != p[2]) || ((s[i] == p[0] || s[i] == p[1] || s[i] == p[2]) && between(s, i) == 0)) && x < 0)
+			x = i;
+		else if ((((s[i] == p[0] || s[i] == p[1] || s[i] == p[2]) && between(s, i) == 1) || i == ft_strlen(s)) && x >= 0)
 		{
-			ptrs[j++] = word_dup(s, index, i);
-			index = -1;
+			ptrs[j++] = word_dup(s, x, i);
+			x = -1;
 		}
 		i++;
 	}

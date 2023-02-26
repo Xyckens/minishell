@@ -36,14 +36,15 @@ void	signals(void)
 
 void	delete_everything(t_prompt *everything)
 {
-	if(everything->cmd)
+	if (everything->cmd)
 		freesplit(everything->cmd);
-	if(everything->sep)
+	if (everything->sep)
 		freesplit(everything->sep);
-	if(everything->st_arg)
+	if (everything->st_arg)
 		freesplit(everything->st_arg);
 	free(everything->order);
 }
+
 void	ft_exit(t_prompt *everything)
 {
 	char	**arg;
@@ -86,7 +87,6 @@ int	main(int argc, char **argv, char **envp)
 		if (g_everything.prompt[0] != '\0')
 			add_history(g_everything.prompt);
 		g_everything.fd = parser(&g_everything);
-
 	}
 	free (g_everything.prompt);
 	if (g_everything.fd != 1)

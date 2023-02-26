@@ -53,7 +53,8 @@ void	echo(t_prompt *every, int c);
 void	executable(t_prompt *everything, int c);
 
 char	**set_new_env(char **envp);
-char	**ft_export(t_prompt *args);
+char	**set_new_env2(char **envp, t_prompt *every, int size);
+char	**ft_export(t_prompt *every, int c);
 char	**ft_unset(t_prompt *everything, int c);
 
 int		parser(t_prompt *every);

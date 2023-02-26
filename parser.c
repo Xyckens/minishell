@@ -50,6 +50,7 @@ void	several_unset(char *st_arg, t_prompt *every)
 	}
 	freesplit(toremove);
 }
+
 char	**ft_unset(t_prompt *every, int c)
 {
 	int	count;
@@ -84,7 +85,7 @@ void	path(t_prompt *every, int c)
 	else if (!ft_strcmp(every->cmd[c], "echo"))
 		echo(every, c);
 	else if (!ft_strcmp(every->cmd[c], "export"))
-		every->new_env = ft_export(every);
+		every->new_env = ft_export(every, c);
 	else if (!ft_strcmp(every->cmd[c], "unset"))
 		every->new_env = ft_unset(every, c);
 	else if (!ft_strcmp(every->cmd[c], "exit"))
@@ -98,7 +99,6 @@ void	path(t_prompt *every, int c)
 
 int	parser(t_prompt *eve)
 {
-	//static int	c = 0;
 	int	c;
 
 	c = 0;
