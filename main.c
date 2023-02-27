@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:22:56 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/17 18:46:50 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/27 22:13:08 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,17 +84,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!ft_strncmp (g_everything.prompt, "exit", 4))
 			ft_exit(&g_everything);
 		sanitize(&g_everything);
-		if (g_everything.prompt[0] != '\0')
-			add_history(g_everything.prompt);
-		g_everything.fd = parser(&g_everything);
-	}
-	free (g_everything.prompt);
-	if (g_everything.fd != 1)
-		close(g_everything.fd);
-	return (0);
-}
-
-	/*	int i = 0;
+		int i = 0;
 		while (g_everything.cmd[i])
 		{
 			printf("executable = %s\n", g_everything.cmd[i]);
@@ -102,4 +92,14 @@ int	main(int argc, char **argv, char **envp)
 			printf("   sep     = %s\n", g_everything.sep[i]);
 			printf("  order    = %d\n", g_everything.order[i]);
 			i++;
-		}*/
+		}
+		catch_input_errors(&g_everything);
+		if (g_everything.prompt[0] != '\0')
+			add_history(g_everything.prompt);
+		g_everything.fd = parser(&g_everything);
+		free (g_everything.prompt);
+	}
+	if (g_everything.fd != 1)
+		close(g_everything.fd);
+	return (0);
+}

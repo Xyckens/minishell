@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 20:54:04 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/07 20:54:07 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:06:30 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,10 @@ char	**initialize(t_prompt *everything, int c)
 
 char	**pathfinder(char **new_env)
 {
-	int		count;
 	int		i;
 	char	*pathinicial;
 	char	**path;
 
-	count = 6;
 	i = -1;
 	while (new_env[++i])
 	{

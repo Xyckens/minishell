@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:21:42 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/17 20:13:48 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/02/27 15:48:27 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int		*order(t_prompt *every);
 char	**sep_init(t_prompt *e);
 void	sanitize(t_prompt *every);
 int		between(const char *str, int pos);
+
+void	catch_input_errors(t_prompt *every);
 
 void	path(t_prompt *every, int c);
 

@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/02/23 19:02:29 by fvieira          ###   ########.fr        #
+#    Updated: 2023/02/27 15:48:14 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ SRC = main.c \
 		sanitize.c \
 		ft_export.c \
 		pelicaseaspas.c \
-		freed.c
+		freed.c \
+		input_errors.c
 
 
 OBJ = $(SRC:.c=.o)
