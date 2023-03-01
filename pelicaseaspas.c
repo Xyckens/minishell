@@ -22,7 +22,8 @@ char	**sep_init(t_prompt *e)
 	i = 2;
 	c = 0;
 	j = 0;
-	sep = malloc((count_words(e->prompt, "><|")) * sizeof(char *));
+	sep = malloc((count_words(e->prompt, "><|") + 1) * sizeof(char *));
+	printf("%d\n",(count_words(e->prompt, "><|")));
 	while (e->prompt[c])
 	{
 		if ((e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|') && between(e->prompt, c) == 1)
@@ -77,6 +78,8 @@ int	correctorder(char **sep, int i)
 
 	c = 0;
 	counter = 0;
+	if (!sep[c] || !sep[i])
+		return (999);
 	while (sep[c])
 	{
 		if (sep[i][0] > sep[c][0])
@@ -95,9 +98,11 @@ int	*order(t_prompt *every)
 	int	count;
 
 	count = (count_words(every->prompt, "><|"));
-	order = malloc(count * sizeof(int *));
+	if (count == 0)
+		count++;	
+	order = malloc(count * sizeof(int));
 	i = 0;
-	while (i < count - 1)
+	while (i < count)
 	{
 		order[i] = correctorder(every->sep, i);
 		i++;

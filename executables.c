@@ -89,9 +89,7 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 	i = 0;
 	path = pathfinder(everything->new_env);
 	if (everything->fd != 1)
-	{
 		dup2(everything->fd, 1);
-	}
 	if (execve(args[0], args, everything->new_env) == -1)
 	{
 		arg0 = ft_strjoin("/", arg0);

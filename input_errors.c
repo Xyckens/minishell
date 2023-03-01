@@ -23,9 +23,9 @@ void	catch_input_errors(t_prompt *every)
 		cexe++;
 	while (every->sep[csep])
 		csep++;
-	if (cexe != csep + 1)
+	if (cexe != csep + 1 || cexe == 0)
 	{
-		printf("wtf mens\n");
+		printf("        wtf mens\n");
 		exit(125);
 	}
 	

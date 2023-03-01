@@ -126,7 +126,8 @@ void	sanitize(t_prompt *every)
 	{
 		temp = ft_strtrim(sep2[i], " ");
 		nome = ft_split(temp, ' ');
-		every->cmd[i] = ft_strdup(nome[0]);
+		if(nome[0])
+			every->cmd[i] = ft_strdup(nome[0]);
 		every->st_arg[i] = rest_of_promp(sep2[i]);
 		free(temp);
 		i++;

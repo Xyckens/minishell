@@ -99,6 +99,8 @@ int	next(char **sep, int *order, int pos, int jump)
 	c = 0;
 	if (pos == -1)
 	{
+		if (!sep[c])
+			return (c);
 		while (sep[c])
 		{
 			if (order[c] == 0)
@@ -112,9 +114,7 @@ int	next(char **sep, int *order, int pos, int jump)
 			return (c);
 		c++;
 	}
-	printf("c = %i, jump = %i order = %i\n",c,jump, order[pos]);
-	if (jump == 0)
-		return (c - 1);
+	printf("c = %i, jump = %i order = %i\n", c, jump, order[pos]);
 	return (c + 1);
 }
 
@@ -123,7 +123,6 @@ int	use_last(t_prompt *eve, int f)
 	int	i;
 
 	i = f;
-	printf("entrei\n");
 	while (eve->sep[i] && eve->sep[i][0] == eve->sep[f][0])
 	{
 		if (eve->fd != 1)
@@ -142,29 +141,28 @@ int	use_last(t_prompt *eve, int f)
 int	parser(t_prompt *eve)
 {
 	int	ex;
-	int	file;
+	int	jump;
 
 	ex = next(eve->sep, eve->order, -1, 1);
 	while (eve->cmd[ex])
 	{
-		file = 1;
+		jump = 1;
 		eve->fd = 1;
+		if (eve->sep[ex])
+		{
 		//if (eve->sep[ex] == '|')
 		//	pipes(eve, c);
 		// if (eve->sep[ex] == '<' && eve->sep[ex + 1] == '<')
 		// 		delimiter(eve->sep, c++);
 		// if (eve->sep[ex][0] == '<' && eve->sep[ex][1] != '<')
 		// 	eve->prompt = redirectin(eve->cmd[1]);
-		if (eve->sep[ex][0] == '>' || eve->sep[ex][0] == '<')
-			file = use_last(eve, ex);
-		//vai selecionar o fd correto mas executar o comando errado
+			if (eve->sep[ex][0] == '>' || eve->sep[ex][0] == '<')
+				jump = use_last(eve, ex);
+		}
 		path(eve, ex);
 		if (eve->fd != 1)
 			close(eve->fd);
-		//vai passar pelos > ou < todos na mesma
-		ex = next(eve->sep, eve->order, ex, file);
-		printf("exe = %i\n",ex);
-		printf("command = %s\n",eve->cmd[ex]);
+		ex = next(eve->sep, eve->order, ex, jump);
 	}
 	return (eve->fd);
 }
