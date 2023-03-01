@@ -63,6 +63,7 @@ int		parser(t_prompt *every);
 int		redirectout(char *prompt);
 int		append(char *prompt);
 char	*redirectin(char *prompt);
+void	whatamidoing(t_prompt *env, int c);
 
 char	*name(char *str);
 

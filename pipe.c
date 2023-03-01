@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-void	run_pipe(char **args, int *pfd, t_prompt *everything);
+void	run_pipe(t_prompt *everything, int *pfd, int c);
 
-void	whatamidoing(char **args, t_prompt *env)
+void	whatamidoing(t_prompt *env, int c)
 {
 	(void)env;
-	int pid;
-	int	status;
+	// int pid;
+	// int	status;
 	int fd[2];
 
 	if (pipe(fd) == -1)
@@ -26,42 +26,48 @@ void	whatamidoing(char **args, t_prompt *env)
 		printf("Error");
 		exit(1);
 	}
-	pid = fork(); 
-	if (pid > 0)
-	{
-		while ((pid = wait(&status)) != -1)
-			fprintf(stderr, "process %d exits with %d\n", pid, WEXITSTATUS(status));
-	}
-	else if (pid == 0)
-	{
-		run_pipe(args, fd, env);
-		exit(0);
-	}
+
+	// Provavelmente nao vamos usar
+
+	// pid = fork();
+	// if (pid > 0)
+	// {
+	// 	while ((pid = wait(&status)) != -1)
+	// 		fprintf(stderr, "process %d exits with %d\n", pid, WEXITSTATUS(status));
+	// }
+	// else if (pid == 0)
+	// {
+	// 	run_pipe(env, fd, c);
+	// 	exit(0);
+	// }
+
+	run_pipe(env, fd, c);
 }
 
-// char *cmd1[] = { "/bin/ls", "-al", "/", 0 };
-// char *cmd2[] = { "/usr/bin/tr", "a-z", "A-Z", 0 };
-
-void	run_pipe(char **args, int *pfd, t_prompt *everything)
+void	run_pipe(t_prompt *everything, int *pfd, int c)
 {
 	int pid;
 
 	pid = fork();
 	if (pid == 0)/* child */
 	{
-		dup2(pfd[0], 0);
-		close(pfd[1]);	/* the child does not need this end of the pipe */
-		execve(args[0], args, everything->new_env);
-		// execvp(cmd2[0], cmd2);
-		// perror(cmd2[0]);
+		dup2(pfd[1], 1);
+		close(pfd[0]);
+		// printf("Child RunPipe: %s - C: %d\n", everything->cmd[c], c);
+		// printf("            CHILD          \n");
+		executable(everything, c);
+		// wait(NULL);
+		close(pfd[1]);
+		exit(0);
 	}
 	if (pid > 0) /* parent */
 	{
-		dup2(pfd[1], 1);
-		close(pfd[0]);	/* the parent does not need this end of the pipe */
-		execve(args[0], args, everything->new_env);
-		// execvp(cmd1[0], cmd1);
-		// perror(cmd1[0]);
+		c++;
+		// printf("Parent RunPipe: %s - C: %d\n", everything->cmd[c], c);
+		dup2(pfd[0], 0);
+		close(pfd[1]);
+		printf("            PARENT          \n");
+		executable(everything, c);
 	}	
 }
 

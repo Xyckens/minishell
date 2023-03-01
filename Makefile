@@ -30,8 +30,8 @@ SRC = main.c \
 		ft_export.c \
 		pelicaseaspas.c \
 		freed.c \
-		input_errors.c
-
+		input_errors.c \
+		pipe.c
 
 OBJ = $(SRC:.c=.o)
 

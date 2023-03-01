@@ -81,7 +81,7 @@ char	**pathfinder(char **new_env)
 	return (path);
 }
 
-int	idk(char *arg0, char **args, t_prompt *everything)
+void	idk(char *arg0, char **args, t_prompt *everything)
 {
 	char	**path;
 	int		i;
@@ -104,7 +104,8 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 				if (everything->fd != 1)
 					close(1);
 				freesplit(path);
-				return (0);
+				everything->exit_stat = 0;
+				break ;
 			}
 		}
 	}
@@ -115,8 +116,9 @@ int	idk(char *arg0, char **args, t_prompt *everything)
 		freesplit(path);
 		ft_printf(2, "%s: command not found\n", arg0 + 1);
 		free(arg0);
+		everything->exit_stat = 127;
 	}
-	return (127);
+	exit(0);
 }
 
 void	executable(t_prompt *everything, int c)
@@ -126,7 +128,7 @@ void	executable(t_prompt *everything, int c)
 
 	seperated = initialize(everything, c);
 	if (fork() == 0)
-		everything->exit_stat = idk(seperated[0], seperated, everything);
+		idk(seperated[0], seperated, everything);
 	else
 		wait(&status);
 	freesplit(seperated);

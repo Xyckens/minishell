@@ -150,8 +150,8 @@ int	parser(t_prompt *eve)
 		eve->fd = 1;
 		if (eve->sep[ex])
 		{
-		//if (eve->sep[ex] == '|')
-		//	pipes(eve, c);
+			if (eve->sep[ex][0] == '|')
+				whatamidoing(eve, ex);
 		// if (eve->sep[ex] == '<' && eve->sep[ex + 1] == '<')
 		// 		delimiter(eve->sep, c++);
 		// if (eve->sep[ex][0] == '<' && eve->sep[ex][1] != '<')
