@@ -14,7 +14,7 @@
 
 void	run_pipe(t_prompt *everything, int *pfd, int c);
 
-void	whatamidoing(t_prompt *env, int c)
+void	pipes(t_prompt *env, int c)
 {
 	(void)env;
 	// int pid;
@@ -47,28 +47,44 @@ void	whatamidoing(t_prompt *env, int c)
 void	run_pipe(t_prompt *everything, int *pfd, int c)
 {
 	int pid;
+	char	**seperated;
+
+	seperated = initialize(everything, c);
+	int	status;
 
 	pid = fork();
-	if (pid == 0)/* child */
+	if (pid == 0)// child
 	{
 		dup2(pfd[1], 1);
 		close(pfd[0]);
 		// printf("Child RunPipe: %s - C: %d\n", everything->cmd[c], c);
 		// printf("            CHILD          \n");
-		executable(everything, c);
-		// wait(NULL);
+		idk(seperated[0], seperated, everything);
+
+		//executable(everything, c);
 		close(pfd[1]);
-		exit(0);
+		exit(123);
 	}
-	if (pid > 0) /* parent */
+	pid = fork();
+	if (pid == 0)
 	{
+		 // parent
+
+		wait(NULL);
 		c++;
+		seperated = initialize(everything, c);
 		// printf("Parent RunPipe: %s - C: %d\n", everything->cmd[c], c);
 		dup2(pfd[0], 0);
 		close(pfd[1]);
-		printf("            PARENT          \n");
-		executable(everything, c);
-	}	
+		idk(seperated[0], seperated, everything);
+	}
+		//executable(everything, c);
+	close(pfd[0]);
+	close(pfd[1]);
+	waitpid(pid, &status, 0);
+	everything->exit_stat = status >> 8;
+	waitpid(pid, &status, 0);
+	everything->exit_stat = status >> 8;
 }
 
 // void	whatamidoing(t_prompt *env)

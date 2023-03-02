@@ -52,7 +52,9 @@ void	path(t_prompt *every, int c);
 void	change_directory(t_prompt *every, char *pwd);
 void	echo(t_prompt *every, int c);
 
-void	executable(t_prompt *everything, int c);
+char	**initialize(t_prompt *everything, int c);
+void	idk(char *arg0, char **args, t_prompt *everything);
+int		executable(t_prompt *everything, int c);
 
 char	**set_new_env(char **envp);
 char	**set_new_env2(char **envp, t_prompt *every, int size);
@@ -63,7 +65,7 @@ int		parser(t_prompt *every);
 int		redirectout(char *prompt);
 int		append(char *prompt);
 char	*redirectin(char *prompt);
-void	whatamidoing(t_prompt *env, int c);
+void	pipes(t_prompt *env, int c);
 
 char	*name(char *str);
 

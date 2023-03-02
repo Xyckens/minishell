@@ -151,7 +151,7 @@ int	parser(t_prompt *eve)
 		if (eve->sep[ex])
 		{
 			if (eve->sep[ex][0] == '|')
-				whatamidoing(eve, ex);
+				pipes(eve, ex);
 		// if (eve->sep[ex] == '<' && eve->sep[ex + 1] == '<')
 		// 		delimiter(eve->sep, c++);
 		// if (eve->sep[ex][0] == '<' && eve->sep[ex][1] != '<')
@@ -159,7 +159,8 @@ int	parser(t_prompt *eve)
 			if (eve->sep[ex][0] == '>' || eve->sep[ex][0] == '<')
 				jump = use_last(eve, ex);
 		}
-		path(eve, ex);
+		if (!eve->sep[ex] || eve->sep[ex][0] != '|')
+			path(eve, ex);
 		if (eve->fd != 1)
 			close(eve->fd);
 		ex = next(eve->sep, eve->order, ex, jump);

@@ -83,6 +83,7 @@ int	main(int argc, char **argv, char **envp)
 			exit(g_everything.exit_stat);
 		if (!ft_strncmp (g_everything.prompt, "exit", 4))
 			ft_exit(&g_everything);
+		printf("ola\n");
 		sanitize(&g_everything);
 		catch_input_errors(&g_everything);
 		int i = 0;

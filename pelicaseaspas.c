@@ -23,7 +23,6 @@ char	**sep_init(t_prompt *e)
 	c = 0;
 	j = 0;
 	sep = malloc((count_words(e->prompt, "><|") + 1) * sizeof(char *));
-	printf("%d\n",(count_words(e->prompt, "><|")));
 	while (e->prompt[c])
 	{
 		if ((e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|') && between(e->prompt, c) == 1)
