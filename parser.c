@@ -131,11 +131,15 @@ int	use_last(t_prompt *eve, int f)
 			eve->fd = redirectout(eve->cmd[i + 1]);
 		if (eve->sep[i][0] == '>' && eve->sep[i][1] == '>')
 			eve->fd = append(eve->cmd[i + 1]);
-		//if (eve->sep[i][0] == '<' && eve->sep[i][1] != '<')
+		if (eve->sep[i][0] == '<' && eve->sep[i][1] != '<')
+			eve->fd = redirectin(eve->cmd[i + 1]);
 		//if (eve->sep[i][0] == '<' && eve->sep[i][1] == '<')
 		i++;
 	}
-	return (i);
+	if (i == 1)
+		i++;
+		//funciona mal para ls > ola > ola1 > ola2
+	return (i - 1);
 }
 
 int	parser(t_prompt *eve)
@@ -144,26 +148,33 @@ int	parser(t_prompt *eve)
 	int	jump;
 
 	ex = next(eve->sep, eve->order, -1, 1);
+	eve->fd = 1;
 	while (eve->cmd[ex])
 	{
+		printf("\n \nsep %s cmd %s\n \n", eve->sep[ex], eve->cmd[ex]);
 		jump = 1;
-		eve->fd = 1;
 		if (eve->sep[ex])
 		{
 			if (eve->sep[ex][0] == '|')
+			{
+				printf("pipes?\n");
 				pipes(eve, ex);
+			}
 		// if (eve->sep[ex] == '<' && eve->sep[ex + 1] == '<')
 		// 		delimiter(eve->sep, c++);
-		// if (eve->sep[ex][0] == '<' && eve->sep[ex][1] != '<')
-		// 	eve->prompt = redirectin(eve->cmd[1]);
 			if (eve->sep[ex][0] == '>' || eve->sep[ex][0] == '<')
 				jump = use_last(eve, ex);
 		}
-		if (!eve->sep[ex] || eve->sep[ex][0] != '|')
+		if (ex >= 1)
+		{
+			if (eve->sep[ex - 1][0] != '|')
+				path(eve, ex);
+		}
+		else if (!eve->sep[ex] || eve->sep[ex][0] != '|')
 			path(eve, ex);
-		if (eve->fd != 1)
-			close(eve->fd);
 		ex = next(eve->sep, eve->order, ex, jump);
 	}
-	return (eve->fd);
+	if (eve->fd != 1)
+		close(eve->fd);
+	return (1);
 }

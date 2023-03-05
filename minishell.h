@@ -53,7 +53,7 @@ void	change_directory(t_prompt *every, char *pwd);
 void	echo(t_prompt *every, int c);
 
 char	**initialize(t_prompt *everything, int c);
-void	idk(char *arg0, char **args, t_prompt *everything);
+void	idk(char *arg0, char **args, t_prompt *everything, int c);
 int		executable(t_prompt *everything, int c);
 
 char	**set_new_env(char **envp);
@@ -64,7 +64,7 @@ char	**ft_unset(t_prompt *everything, int c);
 int		parser(t_prompt *every);
 int		redirectout(char *prompt);
 int		append(char *prompt);
-char	*redirectin(char *prompt);
+int	redirectin(char *name);
 void	pipes(t_prompt *env, int c);
 
 char	*name(char *str);

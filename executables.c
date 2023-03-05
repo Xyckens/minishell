@@ -81,16 +81,20 @@ char	**pathfinder(char **new_env)
 	return (path);
 }
 
-void	idk(char *arg0, char **args, t_prompt *everything)
+void	idk(char *arg0, char **args, t_prompt *everything, int c)
 {
 	char	**path;
 	int		i;
 
 	i = 0;
 	path = pathfinder(everything->new_env);
-	if (everything->fd != 1)
+	if (everything->sep[c] && everything->sep[c][0] == '<')
+	{
+		dup2(everything->fd, 0);
+		everything->fd = 1;
+	}
+	else if (everything->fd > 1)
 		dup2(everything->fd, 1);
-	
 	if (execve(args[0], args, everything->new_env) == -1)
 	{
 		arg0 = ft_strjoin("/", arg0);
@@ -100,18 +104,8 @@ void	idk(char *arg0, char **args, t_prompt *everything)
 			args[0] = ft_strjoin(path[i], arg0);
 			if (execve(args[0], args, everything->new_env) == -1)
 				i++;
-			else
-			{
-				if (everything->fd != 1)
-					close(everything->fd);
-				freesplit(path);
-				everything->exit_stat = 0;
-
-				break ;
-			}
 		}
 	}
-
 	if (!path[i])
 	{
 		if (everything->fd != 1)
@@ -120,21 +114,20 @@ void	idk(char *arg0, char **args, t_prompt *everything)
 		ft_printf(2, "%s: command not found\n", arg0 + 1);
 		free(arg0);
 		everything->exit_stat = 127;
+		exit(127);
 	}
-
-	//exit(0);
 }
 
 int	executable(t_prompt *everything, int c)
 {
-	//int	status;
+	int	status;
 	char	**seperated;
 
 	seperated = initialize(everything, c);
 	if (fork() == 0)
-		idk(seperated[0], seperated, everything);
+		idk(seperated[0], seperated, everything, c);
 	else
-	//	wait(&status);
+		wait(&status);
 	freesplit(seperated);
 	return (0);
 }

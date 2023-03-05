@@ -35,3 +35,16 @@
 	close(fd);
 	return (prompt);
 }*/
+
+int	redirectin(char	*name)
+{
+	int		fd;
+
+	fd = open(name, O_RDONLY | O_CLOEXEC, 0666);
+	if (fd == -1)
+	{
+		printf("prompt: no such file or directory: gfd\n");
+		exit(127);
+	}
+	return (fd);
+}
