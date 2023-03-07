@@ -6,7 +6,7 @@
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:59:34 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/27 22:10:43 by fvieira          ###   ########.fr       */
+/*   Updated: 2023/03/07 17:15:02 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,10 @@ int	use_last(t_prompt *eve, int f)
 		//if (eve->sep[i][0] == '<' && eve->sep[i][1] == '<')
 		i++;
 	}
-	if (i == 1)
-		i++;
+	//if (i == 1)
+	//	i++;
 		//funciona mal para ls > ola > ola1 > ola2
-	return (i - 1);
+	return (i - f);
 }
 
 int	parser(t_prompt *eve)
