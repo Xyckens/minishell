@@ -98,7 +98,7 @@ int	*order(t_prompt *every)
 
 	count = (count_words(every->prompt, "><|"));
 	if (count == 0)
-		count++;	
+		count++;
 	order = malloc(count * sizeof(int));
 	i = 0;
 	while (i < count)

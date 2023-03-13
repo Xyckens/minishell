@@ -133,9 +133,9 @@ char	**ft_export(t_prompt *e, int c)
 				ft_putchar_fd(e->new_env[i][c],e->fd);
 				if ((e->new_env[i][c] == '=' && e->new_env[i][c + 1] != '"')
 					|| (e->new_env[i][c + 1] == 0 && e->new_env[i][c] != '"'))
-					ft_putchar_fd('"',e->fd);
+					ft_putchar_fd('"', e->fd);
 			}
-			ft_putchar_fd('\n',e->fd);
+			ft_putchar_fd('\n', e->fd);
 			i++;
 		}
 		e->exit_stat = 0;

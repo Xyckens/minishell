@@ -125,7 +125,7 @@ int	use_last(t_prompt *eve, int f)
 	i = f;
 	while (eve->sep[i] && eve->sep[i][0] == eve->sep[f][0])
 	{
-		if (eve->fd != 1)
+		if (eve->sep[i][0] != '|' && eve->fd != 1)
 			close(eve->fd);
 		if (eve->sep[i][0] == '>' && eve->sep[i][1] != '>')
 			eve->fd = redirectout(eve->cmd[i + 1]);
@@ -136,9 +136,8 @@ int	use_last(t_prompt *eve, int f)
 		//if (eve->sep[i][0] == '<' && eve->sep[i][1] == '<')
 		i++;
 	}
-	//if (i == 1)
-	//	i++;
-		//funciona mal para ls > ola > ola1 > ola2
+	/*if (eve->sep[f][0] && i > f + 1)
+		mult_pipes(eve, f, i - f);*/
 	return (i - f);
 }
 

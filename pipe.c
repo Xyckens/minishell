@@ -12,24 +12,6 @@
 
 #include "minishell.h"
 
-void	run_pipe(t_prompt *everything, int *pfd, int c);
-
-/*void	pipes(t_prompt *every, int c)
-{
-	// int pid;
-	// int	status;
-	int fd[2];
-
-	if (pipe(fd) == -1)
-	{
-		printf("Error");
-		exit(1);
-	}
-	else
-		wait(NULL);
-	run_pipe(every, fd, c);
-}*/
-
 void	child(t_prompt *every, int pfd[2], int c)
 {
 	char	**seperated;
@@ -80,3 +62,10 @@ void	pipes(t_prompt *everything, int c)
 	waitpid(pid, &status, 0);
 	everything->exit_stat = status >> 8;
 }
+
+/*void	mult_pipes(t_prompt *every, int c, int mult)
+{
+	pid_t pid;
+	int	status;
+	int pfd[2];
+}*/
