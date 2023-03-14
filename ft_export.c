@@ -113,6 +113,8 @@ char	**manage_env_variables(t_prompt *every, int c)
 		every->new_env = set_new_env2(every->new_env, every, i + 1);
 		every->new_env[i] = ft_strdup(every->st_arg[c]);
 	}
+	free(new_value);
+	free(new_key);
 	every->exit_stat = 0;
 	return (every->new_env);
 }

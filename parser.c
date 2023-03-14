@@ -136,8 +136,8 @@ int	use_last(t_prompt *eve, int f)
 		//if (eve->sep[i][0] == '<' && eve->sep[i][1] == '<')
 		i++;
 	}
-	/*if (eve->sep[f][0] && i > f + 1)
-		mult_pipes(eve, f, i - f);*/
+	if (eve->sep[f][0] == '|' && i > f + 1)
+		mult_pipes(eve, f, i - f);
 	return (i - f);
 }
 
