@@ -64,8 +64,9 @@ char	**ft_unset(t_prompt *everything, int c);
 int		parser(t_prompt *every);
 int		redirectout(char *prompt);
 int		append(char *prompt);
-int	redirectin(char *name);
+int		redirectin(char *name);
 void	pipes(t_prompt *env, int c);
+void	mult_pipes(t_prompt *every, int c, int mult);
 
 char	*name(char *str);
 

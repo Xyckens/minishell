@@ -157,11 +157,11 @@ int	parser(t_prompt *eve)
 			if (eve->sep[ex][0] == '|')
 			{
 				printf("pipes?\n");
-				pipes(eve, ex);
+				//pipes(eve, ex);
 			}
 		// if (eve->sep[ex] == '<' && eve->sep[ex + 1] == '<')
 		// 		delimiter(eve->sep, c++);
-			if (eve->sep[ex][0] == '>' || eve->sep[ex][0] == '<')
+			if (eve->sep[ex][0] == '>' || eve->sep[ex][0] == '<' || eve->sep[ex][0] == '|')
 				jump = use_last(eve, ex);
 		}
 		if (ex >= 1)

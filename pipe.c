@@ -16,6 +16,8 @@ void	child(t_prompt *every, int pfd[2], int c)
 {
 	char	**seperated;
 
+	printf("child %d %d \n",pfd[0], pfd[1] );
+
 	seperated = initialize(every, c);	
 	close(every->fd);
 	dup(pfd[1]);
@@ -67,6 +69,7 @@ void	alt_child(t_prompt *every, int pfd[2], int c)
 {
 	char	**seperated;
 
+	printf("child %d %d \n",pfd[0], pfd[1] );
 	seperated = initialize(every, c);
 	dup(pfd[1]);
 	close(pfd[0]);
@@ -83,6 +86,7 @@ void	mult_pipes(t_prompt *every, int c, int mult)
 	int	i;
 
 	i = 0;
+	printf("mult %d\n", mult);
 	while (i < mult)
 	{
 		if (pipe(&pfd[i * 2]) == -1)
@@ -94,24 +98,25 @@ void	mult_pipes(t_prompt *every, int c, int mult)
 	}
 	pid = fork();
 	if (pid == 0)
-		child(everything, &pfd[2], c);
+		child(every, &pfd[2], c);
 	waitpid(pid, &status, 0);
-	everything->exit_stat = status >> 8;
+	every->exit_stat = status >> 8;
 	i = 1;
 	while (every->sep[c + i] && every->sep[c + i][0] == '|')
 	{
+		printf("cmd %s\n", every->cmd[c + i]);
 		pid = fork();
 		if (pid == 0)
-			alt_child(everything, &pfd[i * 2], c + i);
+			alt_child(every, &pfd[i * 2], c + i);
 		waitpid(pid, &status, 0);
-		everything->exit_stat = status >> 8;
+		every->exit_stat = status >> 8;
 		i++;
 	}
 	pid = fork();
 	if (pid == 0)
-		parent(everything, &pfd[i * 2], c + i);
+		parent(every, &pfd[i * 2], c + i);
 	waitpid(pid, &status, 0);
-	everything->exit_stat = status >> 8;
+	every->exit_stat = status >> 8;
 	while (i > 0)
 		close(pfd[i--]);
 }
