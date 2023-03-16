@@ -87,6 +87,7 @@ void	idk(char *arg0, char **args, t_prompt *everything, int c)
 	int		i;
 
 	i = 0;
+	(void)c;
 	path = pathfinder(everything->new_env);
 	if (everything->sep[c] && everything->sep[c][0] == '<')
 	{
