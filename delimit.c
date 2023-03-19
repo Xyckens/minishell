@@ -12,30 +12,6 @@
 
 #include "minishell.h"
 
-/*char	*redirectin(char *prompt)
-{
-	char	*line;
-	char	*content;
-	int		fd;
-
-	fd = open(prompt, O_RDONLY);
-	content = "\0";
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-		{
-			free(line);
-			break ;
-		}
-		content = ft_strjoin(content, line);
-		free(line);
-	}
-	free(content);
-	close(fd);
-	return (prompt);
-}*/
-
 int	redirectin(char	*name)
 {
 	int		fd;
@@ -47,4 +23,30 @@ int	redirectin(char	*name)
 		exit(127);
 	}
 	return (fd);
+}
+
+int	hereindoc(t_prompt *every)
+{
+	char	*buff;
+	int		fd;
+
+	buff = "\0";
+	fd = open("libft/.test.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
+	printf("fd doc: %d\n", fd);
+	while (1)
+	{
+		every->prompt = readline("> ");
+		if (ft_strcmp(every->prompt, every->cmd[1]))
+		{
+			ft_printf(fd, every->prompt);
+			ft_printf(fd, "\n");
+		}
+		else
+			break ;
+		free (every->prompt);
+	}
+	every->herein = 0;
+	every->clean = 1;
+	every->parser = 1;	
+	return (redirectin("libft/.test.txt"));
 }

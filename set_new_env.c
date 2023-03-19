@@ -37,6 +37,7 @@ char	**set_new_env(char **envp)
 	new_env[i] = 0;
 	return (new_env);
 }
+
 char	**set_new_env2(char **envp, t_prompt *every, int size)
 {
 	char	**new_env;

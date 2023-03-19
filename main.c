@@ -18,9 +18,9 @@ void	handle_signals(int signo)
 {
 	if (signo == SIGINT)
 	{
-		ft_printf(1, "\n"); // Move to a new line
-		rl_on_new_line(); // Regenerate the prompt on a newline
-		rl_replace_line("", 0); // Clear the previous text
+		ft_printf(1, "\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 		g_everything.exit_stat = 130;
 	}
@@ -73,27 +73,27 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	(void)argc;
-	g_everything.new_env = set_new_env(envp);
 	signals();
+	g_everything.new_env = set_new_env(envp);
 	g_everything.exit_stat = 0;
+	g_everything.herein = 0;
+	g_everything.clean = 0;
+	g_everything.parser = 0;
 	while (1)
 	{
-		g_everything.prompt = readline("prompt% ");
+		if (!g_everything.herein)
+		{
+			g_everything.parser = 0;
+			g_everything.clean = 0;
+			g_everything.prompt = readline("prompt% ");
+		}
 		if (!g_everything.prompt)
 			exit(g_everything.exit_stat);
 		if (!ft_strncmp (g_everything.prompt, "exit", 4))
 			ft_exit(&g_everything);
-		sanitize(&g_everything);
+		if (!g_everything.clean)
+			sanitize(&g_everything);
 		catch_input_errors(&g_everything);
-		int i = 0;
-		while (g_everything.cmd[i])
-		{
-			printf("executable = %s\n", g_everything.cmd[i]);
-			printf("  args     = %s\n", g_everything.st_arg[i]);
-			printf("   sep     = %s\n", g_everything.sep[i]);
-			printf("  order    = %d\n", g_everything.order[i]);
-			i++;
-		}
 		if (g_everything.prompt[0] != '\0')
 			add_history(g_everything.prompt);
 		g_everything.fd = parser(&g_everything);
@@ -101,3 +101,13 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
+
+/*		int i = 0;
+		while (g_everything.cmd[i])
+		{
+			printf("executable = %s\n", g_everything.cmd[i]);
+			printf("  args     = %s\n", g_everything.st_arg[i]);
+			printf("   sep     = %s\n", g_everything.sep[i]);
+			printf("  order    = %d\n", g_everything.order[i]);
+			i++;
+		}*/

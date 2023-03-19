@@ -33,10 +33,7 @@ void	change_directory(t_prompt *every, char *pwd)
 		}
 	}
 	else if (chdir(every->st_arg[0]) == -1)
-		ft_printf(every->fd, "cd: %s: %s\n", strerror(errno), every->st_arg[0]);
-	//nao estou a acompanhar isto, depois confirma se nao deverias
-	//estar a escrever para fd = 2, se 'e error aposto q sim
-	//depois preciso q ponhas o every->exit_stat conforme o cd do terminal
+		ft_printf(2, "cd: %s: %s\n", strerror(errno), every->st_arg[0]);
 	previuos_pwd = ft_strdup(current_pwd);
 	//where free?
 }

@@ -69,26 +69,26 @@ void	ft_printenv(char *str, int fd)
 
 int	dollarsign(char *str, int c, t_prompt *every)
 {
-	int	count;
+	int	cou;
 	int	i;
 
-	count = 0;
+	cou = 0;
 	i = 0;
-	if (str[count] == '?')
+	if (str[cou] == '?')
 		ft_printf(every->fd, "%d", every->exit_stat);
-	while (str[count] && str[count] != ' ' && str[count] != '"' && str[count] != 39
-		&& str[count] != '>' && str[count] != '<' && str[count] != '|')
-		count++;
+	while (str[cou] && str[cou] != ' ' && str[cou] != '"' && str[cou] != 39
+		&& str[cou] != '>' && str[cou] != '<' && str[cou] != '|')
+		cou++;
 	while (every->new_env[i])
 	{
-		if (!ft_strncmp(str, every->new_env[i], count))
+		if (!ft_strncmp(str, every->new_env[i], cou))
 		{
 			ft_printenv(every->new_env[i], every->fd);
 			break ;
 		}
 		i++;
 	}
-	return (count + c + 1);
+	return (cou + c + 1);
 }
 
 int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)

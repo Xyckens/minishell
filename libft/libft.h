@@ -75,6 +75,7 @@ int			ft_putnbr_hex_fd(unsigned int hex, int fd, int p);
 int			ft_putstr_fd_(char *s, int fd);
 int			ft_putlongnbr_fd(unsigned int n, int fd);
 int			ft_strcmp(char *s1, char *s2);
+char		*ft_setchar(char *str, char get, char set);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10 

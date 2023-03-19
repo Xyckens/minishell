@@ -37,6 +37,9 @@ typedef struct s_prompt
 	int		fd;
 	char	**new_env;
 	int		exit_stat;
+	int		herein;
+	int		clean;
+	int		parser;
 }				t_prompt;
 
 int		count_words(char const *s, char *c);
@@ -65,6 +68,7 @@ int		parser(t_prompt *every);
 int		redirectout(char *prompt);
 int		append(char *prompt);
 int		redirectin(char *name);
+int		hereindoc(t_prompt *every);
 void	pipes(t_prompt *env, int c);
 void	mult_pipes(t_prompt *every, int c, int mult);
 

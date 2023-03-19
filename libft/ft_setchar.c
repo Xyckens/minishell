@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freed.c                                            :+:      :+:    :+:   */
+/*   ft_setchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvieira <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 17:09:59 by fvieira           #+#    #+#             */
-/*   Updated: 2023/02/23 17:10:01 by fvieira          ###   ########.fr       */
+/*   Created: 2023/03/19 21:52:29 by fvieira           #+#    #+#             */
+/*   Updated: 2023/03/19 21:52:34 by fvieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	freesplit(char **array)
+char	*ft_setchar(char *str, char get, char set)
 {
 	int	i;
 
 	i = 0;
-	while (array[i])
+	while (str[i])
 	{
-		free(array[i]);
+		if (str[i] == get)
+			str[i] = set;
 		i++;
 	}
-	free(array);
+	return (str);
 }

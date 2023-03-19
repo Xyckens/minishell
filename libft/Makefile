@@ -59,7 +59,8 @@ SRC = ft_atoi.c \
 	  ft_putlongnbr_fd.c \
 	  ft_strcmp.c \
 	  get_next_line_bonus.c \
-	  get_next_line_utils_bonus.c
+	  get_next_line_utils_bonus.c \
+	  ft_setchar.c
 
 BONUS = ft_lstnew\
 		ft_lstadd_front\

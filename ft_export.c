@@ -12,20 +12,6 @@
 
 #include "minishell.h"
 
-char	*ft_setchar(char *str, char get, char set)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == get)
-			str[i] = set;
-		i++;
-	}
-	return (str);
-}
-
 char	*formated_word(char *str)
 {
 	char	*new_word;

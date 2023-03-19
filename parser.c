@@ -28,27 +28,27 @@ char	**ft_removeenv(char **new_env, int pos)
 
 void	several_unset(char *st_arg, t_prompt *every)
 {
-	char	**toremove;
-	int		count;
+	char	**rem;
+	int		cou;
 	int		i;
 
-	count = 0;
-	toremove = ft_split(st_arg, ' ');
-	while (toremove[count])
-		count++;
-	while (--count >= 0)
+	cou = 0;
+	rem = ft_split(st_arg, ' ');
+	while (rem[cou])
+		cou++;
+	while (--cou >= 0)
 	{
 		i = -1;
 		while (every->new_env[++i])
 		{
-			if (!ft_strncmp(toremove[count], every->new_env[i], ft_strlen(toremove[count])))
+			if (!ft_strncmp(rem[cou], every->new_env[i], ft_strlen(rem[cou])))
 			{
 				every->new_env = ft_removeenv(every->new_env, i);
 				break ;
 			}
 		}
 	}
-	freesplit(toremove);
+	freesplit(rem);
 }
 
 char	**ft_unset(t_prompt *every, int c)
@@ -90,6 +90,7 @@ void	path(t_prompt *every, int c)
 	}
 	else
 		executable(every, c);
+	unlink("libft/.test.txt");
 }
 
 int	next(char **sep, int *order, int pos, int jump)
@@ -114,7 +115,6 @@ int	next(char **sep, int *order, int pos, int jump)
 			return (c);
 		c++;
 	}
-	printf("c = %i, jump = %i order = %i\n", c, jump, order[pos]);
 	return (c + 1);
 }
 
@@ -133,7 +133,8 @@ int	use_last(t_prompt *eve, int f)
 			eve->fd = append(eve->cmd[i + 1]);
 		if (eve->sep[i][0] == '<' && eve->sep[i][1] != '<')
 			eve->fd = redirectin(eve->cmd[i + 1]);
-		//if (eve->sep[i][0] == '<' && eve->sep[i][1] == '<')
+		if (eve->sep[i][0] == '<' && eve->sep[i][1] == '<')
+			eve->fd = hereindoc(eve);
 		i++;
 	}
 	if (eve->sep[f][0] == '|' && i > f)
@@ -150,18 +151,10 @@ int	parser(t_prompt *eve)
 	eve->fd = 1;
 	while (eve->cmd[ex])
 	{
-		printf("\n \nsep %s cmd %s\n \n", eve->sep[ex], eve->cmd[ex]);
 		jump = 1;
 		if (eve->sep[ex])
 		{
-			if (eve->sep[ex][0] == '|')
-			{
-				printf("pipes?\n");
-				//pipes(eve, ex);
-			}
-		// if (eve->sep[ex] == '<' && eve->sep[ex + 1] == '<')
-		// 		delimiter(eve->sep, c++);
-			if (eve->sep[ex][0] == '>' || eve->sep[ex][0] == '<' || eve->sep[ex][0] == '|')
+			if (eve->sep[ex][0] == 62 || eve->sep[ex][0] == 60 || eve->sep[ex][0] == '|')
 				jump = use_last(eve, ex);
 		}
 		if (ex >= 1)
