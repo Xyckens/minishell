@@ -93,15 +93,6 @@ int	main(int argc, char **argv, char **envp)
 			ft_exit(&g_everything);
 		if (!g_everything.clean)
 			sanitize(&g_everything);
-		catch_input_errors(&g_everything);
-		if (g_everything.prompt[0] != '\0')
-			add_history(g_everything.prompt);
-		g_everything.fd = parser(&g_everything);
-		free (g_everything.prompt);
-	}
-	return (0);
-}
-
 /*		int i = 0;
 		while (g_everything.cmd[i])
 		{
@@ -111,3 +102,11 @@ int	main(int argc, char **argv, char **envp)
 			printf("  order    = %d\n", g_everything.order[i]);
 			i++;
 		}*/
+		if (g_everything.prompt[0] != '\0')
+			add_history(g_everything.prompt);
+		if (catch_input_errors(&g_everything))
+			g_everything.fd = parser(&g_everything);
+		free (g_everything.prompt);
+	}
+	return (0);
+}

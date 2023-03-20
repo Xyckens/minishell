@@ -88,7 +88,7 @@ void	mult_pipes(t_prompt *every, int c, int mult)
 	i = 0;
 	while (i < mult)
 	{
-		waitpid(-1, &status, 0);
+		waitpid(0, &status, 0);
 		every->exit_stat = status >> 8;
 		i++;
 	}

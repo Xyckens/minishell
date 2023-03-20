@@ -89,15 +89,21 @@ char	**manage_env_variables(t_prompt *every, int c)
 		def_key = NULL;
 	}
 	new_value = get_value(every->st_arg[c]);
-	if (new_value)
-	{
-		every->new_env = set_new_env2(every->new_env, every, i + 1);
-		every->new_env[i] = formated_word(every->st_arg[c]);
-	}
-	else if (!def_key && !new_value)
+	if (!def_key && !new_value)
 	{
 		every->new_env = set_new_env2(every->new_env, every, i + 1);
 		every->new_env[i] = ft_strdup(every->st_arg[c]);
+	}
+	else if (new_value)
+	{
+		if (!every->new_env[i])
+			every->new_env = set_new_env2(every->new_env, every, i + 1);
+		else
+		{
+			free(def_key);
+			free(every->new_env[i]);
+		}
+		every->new_env[i] = formated_word(every->st_arg[c]);
 	}
 	free(new_value);
 	free(new_key);
@@ -118,7 +124,7 @@ char	**ft_export(t_prompt *e, int c)
 			ft_printf(e->fd, "declare -x ");
 			while (e->new_env[i][++c])
 			{
-				ft_putchar_fd(e->new_env[i][c],e->fd);
+				ft_putchar_fd(e->new_env[i][c], e->fd);
 				if ((e->new_env[i][c] == '=' && e->new_env[i][c + 1] != '"')
 					|| (e->new_env[i][c + 1] == 0 && e->new_env[i][c] != '"'))
 					ft_putchar_fd('"', e->fd);

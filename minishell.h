@@ -48,7 +48,7 @@ char	**sep_init(t_prompt *e);
 void	sanitize(t_prompt *every);
 int		between(const char *str, int pos);
 
-void	catch_input_errors(t_prompt *every);
+int		catch_input_errors(t_prompt *every);
 
 void	path(t_prompt *every, int c);
 

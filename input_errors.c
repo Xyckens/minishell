@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	catch_input_errors(t_prompt *every)
+int	catch_input_errors(t_prompt *every)
 {
 	int	csep;
 	int	cexe;
@@ -22,11 +22,18 @@ void	catch_input_errors(t_prompt *every)
 	while (every->cmd[cexe])
 		cexe++;
 	while (every->sep[csep])
+	{
+		if (!every->cmd[csep])
+		{
+			ft_printf(2,"error near %s\n",every->sep[csep]);
+			return (0);
+		}
 		csep++;
+	}
 	if (cexe != csep + 1 || cexe == 0)
 	{
-		printf("        wtf mens\n");
-		exit(125);
+		ft_printf(2,"        wtf mens\n");
+		return (0);
 	}
-	
+	return (1);
 }

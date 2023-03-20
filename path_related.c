@@ -14,7 +14,7 @@
 
 void	change_directory(t_prompt *every, char *pwd)
 {
-	static char	*previuos_pwd;
+	static char	*previous_pwd;
 	static char	*current_pwd;
 
 	every->exit_stat = 0;
@@ -24,17 +24,17 @@ void	change_directory(t_prompt *every, char *pwd)
 		chdir("/nfs/homes/jegger-s/");
 	else if (!ft_strcmp(every->st_arg[0], "-"))
 	{
-		if (!previuos_pwd)
+		if (!previous_pwd)
 			ft_printf(every->fd, "%s\n", current_pwd);
 		else
 		{
-			chdir(previuos_pwd);
-			ft_printf(every->fd, "%s\n", previuos_pwd);
+			chdir(previous_pwd);
+			ft_printf(every->fd, "%s\n", previous_pwd);
 		}
 	}
 	else if (chdir(every->st_arg[0]) == -1)
 		ft_printf(2, "cd: %s: %s\n", strerror(errno), every->st_arg[0]);
-	previuos_pwd = ft_strdup(current_pwd);
+	previous_pwd = ft_strdup(current_pwd);
 	//where free?
 }
 
