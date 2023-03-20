@@ -121,13 +121,18 @@ void	idk(char *arg0, char **args, t_prompt *everything, int c)
 int	executable(t_prompt *everything, int c)
 {
 	int		status;
+	pid_t	pid;
 	char	**seperated;
 
 	seperated = initialize(everything, c);
-	if (fork() == 0)
+	pid = fork();
+	if (pid == 0)
 		idk(seperated[0], seperated, everything, c);
 	else
-		wait(&status);
+	{
+		waitpid(0, &status, 0);
+		everything->exit_stat = status >> 8;
+	}
 	freesplit(seperated);
 	return (0);
 }

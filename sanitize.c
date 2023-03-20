@@ -66,9 +66,12 @@ char	**ft_alt_split(char *s, char *p)
 	x = -1;
 	while (i <= ft_strlen(s))
 	{
-		if (((s[i] != p[0] && s[i] != p[1] && s[i] != p[2]) || ((s[i] == p[0] || s[i] == p[1] || s[i] == p[2]) && between(s, i) == 0)) && x < 0)
+		if (((s[i] != p[0] && s[i] != p[1] && s[i] != p[2])
+			|| ((s[i] == p[0] || s[i] == p[1] || s[i] == p[2])
+				&& between(s, i) == 0)) && x < 0)
 			x = i;
-		else if ((((s[i] == p[0] || s[i] == p[1] || s[i] == p[2]) && between(s, i) == 1) || i == ft_strlen(s)) && x >= 0)
+		else if ((((s[i] == p[0] || s[i] == p[1] || s[i] == p[2])
+			&& between(s, i) == 1) || i == ft_strlen(s)) && x >= 0)
 		{
 			ptrs[j++] = word_dup(s, x, i);
 			x = -1;
