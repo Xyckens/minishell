@@ -47,6 +47,6 @@ int	hereindoc(t_prompt *every)
 	}
 	every->herein = 0;
 	every->clean = 1;
-	every->parser = 1;	
+	every->parser = 1;
 	return (redirectin("libft/.test.txt"));
 }

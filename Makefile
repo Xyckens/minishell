@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/02/27 15:48:14 by fvieira          ###   ########.fr        #
+#    Updated: 2023/03/21 20:02:11 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRC = main.c \
 		sanitize.c \
 		ft_export.c \
 		pelicaseaspas.c \
-		freed.c \
+		split.c \
 		input_errors.c \
 		pipe.c
 

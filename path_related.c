@@ -12,16 +12,55 @@
 
 #include "minishell.h"
 
+char	*ft_str_nex_chr(const char *s, int c)
+{
+	int	count;
+
+	count = 0;
+	while (s[count] != '\0')
+	{
+		if (s[count] == c)
+			return ((char *)s + count + 1);
+		count++;
+	}
+	if (s[count] == c)
+		return ((char *)s + count + 1);
+	return (0);
+}
+
+char	*get_variable(t_prompt *env, char *var)
+{
+	int		i;
+
+	i = 0;
+	while (env->new_env[i])
+	{
+		if (!ft_strncmp(env->new_env[i], var, ft_strlen(var)))
+			return (ft_str_nex_chr(env->new_env[i], '='));
+		i++;
+	}
+	return (NULL);
+}
+
 void	change_directory(t_prompt *every, char *pwd)
 {
 	static char	*previous_pwd;
 	static char	*current_pwd;
+	char		*var;
 
 	every->exit_stat = 0;
 	if (current_pwd != getcwd(pwd, 100))
 		current_pwd = getcwd(pwd, 100);
 	if (!ft_strcmp(every->st_arg[0], "~") || !ft_strcmp(every->st_arg[0], ""))
-		chdir("/nfs/homes/jegger-s/");
+		chdir(get_variable(every, "HOME"));
+	else if (!ft_strncmp(every->st_arg[0], "$", 1))
+	{
+		var = ft_str_nex_chr(every->st_arg[0], '$');
+		if (!get_variable(every, var))
+			chdir(get_variable(every, "HOME"));
+		else if (chdir(get_variable(every, var)) == -1)
+			ft_printf(2, "cd: %s: %s\n", get_variable(every, var), strerror(errno));
+	}
 	else if (!ft_strcmp(every->st_arg[0], "-"))
 	{
 		if (!previous_pwd)
@@ -33,48 +72,16 @@ void	change_directory(t_prompt *every, char *pwd)
 		}
 	}
 	else if (chdir(every->st_arg[0]) == -1)
-		ft_printf(2, "cd: %s: %s\n", strerror(errno), every->st_arg[0]);
+		ft_printf(2, "cd: %s: %s\n", every->st_arg[0], strerror(errno));
+	
 	previous_pwd = ft_strdup(current_pwd);
-	//where free?
-}
 
-void	set_first_argument(char *path, t_prompt *every)
-{
-	int	st_arg;
-	int	i;
+	// Nao sei bem como dar free aqui, pq so podemos nos livrar do previous_pwd
+	// quando o programa acabar. Se pah, vou ter que incluir isso na struct pra poder
+	// dar free no main. Talvez seja melhor, pq dai um free geral no fim pode ser util.
 
-	i = 0;
-	while (path[i] && path[i] <= 32)
-		i++;
-	st_arg = i;
-	while (path[st_arg] && path[st_arg] > 32)
-		st_arg++;
-	every->st_arg[0] = malloc(sizeof(char) * st_arg + 1);
-	st_arg = i;
-	i = 0;
-	while (path[st_arg] && path[st_arg] > 32)
-		every->st_arg[0][i++] = path[st_arg++];
-	every->st_arg[0][i] = '\0';
-}
+	// Se for assim, eu penso em criar uma struct unica pro CD e add na struct geral. 
+	// Talvez cada built-in mereca uma struct, se achar que precisa. Nda complicado.
 
-void	set_cmd(t_prompt *every)
-{
-	int	st_arg;
-	int	cmd;
-	int	i;
-
-	i = 0;
-	while (every->prompt[i] && every->prompt[i] <= 32)
-		i++;
-	cmd = i;
-	while (every->prompt[cmd] && every->prompt[cmd] > 32)
-		cmd++;
-	st_arg = cmd;
-	every->cmd[0] = malloc(sizeof(char) * cmd + 1);
-	cmd = i;
-	i = 0;
-	while (every->prompt[cmd] && every->prompt[cmd] > 32)
-		every->cmd[0][i++] = every->prompt[cmd++];
-	every->cmd[0][i] = '\0';
-	set_first_argument(&every->prompt[st_arg], every);
+	// Se tiver outra ideia, me diga.
 }

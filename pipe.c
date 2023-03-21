@@ -27,6 +27,7 @@ void	closefd(int *pfd, int mult)
 void	child(t_prompt *every, int *pfd, int mult, int c)
 {
 	close(every->fd);
+	every->fd = 1;
 	if (dup2(pfd[1], STDOUT_FILENO) < 0)
 		printf("error\n");
 	closefd(pfd, mult);
@@ -36,6 +37,8 @@ void	child(t_prompt *every, int *pfd, int mult, int c)
 
 void	alt_child(t_prompt *every, int *pfd, int i[2], int c)
 {
+	close(every->fd);
+	every->fd = 1;
 	dup2(pfd[i[0] + 1], STDOUT_FILENO);
 	if (dup2(pfd[i[0] - 2], STDIN_FILENO) < 0)
 		printf("ERROR\n");

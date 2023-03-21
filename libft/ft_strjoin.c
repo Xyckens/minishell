@@ -39,15 +39,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	joined[len_s1 + count] = '\0';
 	return (joined);
 }
-/*#include <stdio.h>
-int main(void)
-{
-	if (len_s1 == 0 && len_s2 == 0)
-		return (0);
-		estava na linha 24
-    char s1[] = "era franci";
-    char s2[] = "sco manu\0glkjhk";
-
-    printf("%s", ft_strjoin(s1,s2));
-    return (0);
-}*/

@@ -42,7 +42,7 @@ char	**set_new_env2(char **envp, t_prompt *every, int size)
 {
 	char	**new_env;
 	int		i;
-	
+
 	new_env = malloc(sizeof(char *) * (size + 1));
 	i = -1;
 	while (envp[++i])

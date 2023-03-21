@@ -25,14 +25,14 @@ int	catch_input_errors(t_prompt *every)
 	{
 		if (!every->cmd[csep])
 		{
-			ft_printf(2,"error near %s\n",every->sep[csep]);
+			ft_printf(2, "error near %s\n", every->sep[csep]);
 			return (0);
 		}
 		csep++;
 	}
 	if (cexe != csep + 1 || cexe == 0)
 	{
-		ft_printf(2,"        wtf mens\n");
+		ft_printf(2, "error near %s\n", every->sep[csep]);
 		return (0);
 	}
 	return (1);

@@ -106,16 +106,13 @@ void	idk(char *arg0, char **args, t_prompt *everything, int c)
 				i++;
 		}
 	}
-	if (!path[i])
-	{
-		if (everything->fd != 1)
-			close(everything->fd);
-		freesplit(path);
-		ft_printf(2, "%s: command not found\n", arg0 + 1);
-		free(arg0);
-		everything->exit_stat = 127;
-		exit(127);
-	}
+	if (everything->fd != 1)
+		close(everything->fd);
+	freesplit(path);
+	ft_printf(2, "%s: command not found\n", arg0 + 1);
+	free(arg0);
+	everything->exit_stat = 127;
+	exit(127);
 }
 
 int	executable(t_prompt *everything, int c)

@@ -75,5 +75,6 @@ void	mult_pipes(t_prompt *every, int c, int mult);
 char	*name(char *str);
 
 void	freesplit(char **array);
+char	**ft_alt_split(char *s, char *p);
 void	delete_everything(t_prompt *everything);
 #endif
