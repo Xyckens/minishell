@@ -61,11 +61,12 @@ void	mult_pipes(t_prompt *every, int c, int mult)
 {
 	pid_t	pid;
 	int		status;
-	int 	pfd[(mult - 1) * 2];
+	int		*pfd;
 	int		i[2];
 
 	i[0] = 0;
 	i[1] = mult;
+	pfd = malloc(sizeof(int) * ((mult - 1) * 2));
 	while (i[0] < i[1] - 1)
 	{
 		if (pipe(pfd + i[0] * 2) == -1)
@@ -94,4 +95,5 @@ void	mult_pipes(t_prompt *every, int c, int mult)
 	every->exit_stat = status >> 8;
 	while (++i[0] < i[1] - 1)
 		waitpid(0, &status, 0);
+	free(pfd);
 }

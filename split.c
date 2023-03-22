@@ -38,7 +38,8 @@ int	count_words(char const *s, char *c)
 		j = 0;
 		while (j < 3)
 		{	
-			if (s[i] == c[j] && i > 0 && s[i - 1] != c[j])
+			if (s[i] == c[j] && i > 0 && s[i - 1] != c[0]
+				&& s[i - 1] != c[1] && s[i - 1] != c[2])
 			{
 				if (between(s, i) == 1)
 				{

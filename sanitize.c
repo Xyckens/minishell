@@ -48,8 +48,11 @@ void	ft_prompt(t_prompt *every, char *prompt, int i)
 	sep = ft_alt_split(prompt, " \t");
 	joined = ft_strdup("\0");
 	j = 0;
-	every->cmd[i] = ft_strtrim(sep[0], "\"");
-	while (sep[++j])
+	if (sep[0])
+		every->cmd[i] = ft_strtrim(sep[0], "\"");
+	else
+		every->cmd[i] = ft_strdup("\0");
+	while (sep[0] && sep[++j])
 	{
 		if (j > 1)
 			joined = ft_alt_strjoin(joined, " ");
@@ -73,11 +76,18 @@ void	sanitize(t_prompt *every)
 	while (sep2[i])
 		i++;
 	delete_everything(every);
+	if (i == 0)
+		i++;
 	every->cmd = malloc((i + 1) * sizeof(char *));
 	every->st_arg = malloc((i + 1) * sizeof(char *));
 	i = -1;
 	while (sep2[++i])
 		ft_prompt(every, sep2[i], i);
+	if (!sep2[0])
+	{
+		every->st_arg[i] = ft_strdup("\0");
+		every->cmd[i++] = ft_strdup("\0");
+	}
 	every->cmd[i] = 0;
 	every->st_arg[i] = 0;
 	every->sep = sep_init(every);
