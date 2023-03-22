@@ -58,6 +58,33 @@ char	*ft_strtrim(char const *s1, char const *set)
 	ft_strncpy(trimmed_str, (s1 + beg), end);
 	return (trimmed_str);
 }
+
+char	*ft_alt_strtrim(char *s1, char const *set)
+{
+	size_t	beg;
+	size_t	end;
+	char	*trimmed_str;
+
+	if (!s1 || !set)
+		return (NULL);
+	beg = 0;
+	while (s1[beg] != '\0' && ft_strchr(set, s1[beg]) != NULL)
+		beg++;
+	end = ft_strlen (s1 + beg);
+	if (end != '\0')
+	{
+		while (s1[beg + end - 1] != '\0' && ft_strchr(set, s1[beg + end - 1])
+			!= NULL)
+			end--;
+	}
+	trimmed_str = malloc((end + 1) * sizeof(char));
+	if (trimmed_str == NULL)
+		return (NULL);
+	ft_strncpy(trimmed_str, (s1 + beg), end);
+	free(s1);
+	return (trimmed_str);
+}
+
 /*#include <stdio.h>
 int	main(void)
 {

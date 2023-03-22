@@ -47,26 +47,15 @@ void	delete_everything(t_prompt *everything)
 
 void	ft_exit(t_prompt *everything)
 {
-	char	**arg;
-	int		i;
-
-	arg = ft_split(everything->prompt, ' ');
-	i = 0;
-	while (arg[i])
-		i++;
+	int	saida;
+	if (!everything->st_arg[0])
+		saida = (everything->exit_stat);
+	else
+		saida = (ft_atoi(everything->st_arg[0]));
+	change_directory(everything, "altura de dar free a isto!@#%$^");
 	delete_everything(everything);
 	freesplit(everything->new_env);
-	if (ft_strlen(everything->prompt) == 4)
-	{
-		freesplit(arg);
-		exit(everything->exit_stat);
-	}
-	else if (i <= 2)
-	{
-		i = ft_atoi(arg[1]);
-		freesplit(arg);
-		exit(i);
-	}
+	exit(saida);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -89,10 +78,19 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (!g_everything.prompt)
 			exit(g_everything.exit_stat);
-		if (!ft_strncmp (g_everything.prompt, "exit", 4))
-			ft_exit(&g_everything);
 		if (!g_everything.clean)
 			sanitize(&g_everything);
+		if (!ft_strncmp (g_everything.cmd[0], "exit", 4))
+			ft_exit(&g_everything);
+		int i = 0;
+		while (g_everything.cmd[i])
+		{
+			printf("executable = %s\n", g_everything.cmd[i]);
+			printf("  args     = %s\n", g_everything.st_arg[i]);
+			printf("   sep     = %s\n", g_everything.sep[i]);
+			printf("  order    = %d\n", g_everything.order[i]);
+			i++;
+		}
 		if (g_everything.prompt[0] != '\0')
 			add_history(g_everything.prompt);
 		if (catch_input_errors(&g_everything))
@@ -101,13 +99,3 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
-
-		/*int i = 0;
-		while (g_everything.cmd[i])
-		{
-			printf("executable = %s\n", g_everything.cmd[i]);
-			printf("  args     = %s\n", g_everything.st_arg[i]);
-			printf("   sep     = %s\n", g_everything.sep[i]);
-			printf("  order    = %d\n", g_everything.order[i]);
-			i++;
-		}*/

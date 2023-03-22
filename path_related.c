@@ -49,6 +49,12 @@ void	change_directory(t_prompt *every, char *pwd)
 	char		*var;
 
 	every->exit_stat = 0;
+	if (!ft_strcmp(pwd, "altura de dar free a isto!@#%$^"))
+	{
+		if (previous_pwd)
+			free(previous_pwd);
+		return ;
+	}
 	if (current_pwd != getcwd(pwd, 100))
 		current_pwd = getcwd(pwd, 100);
 	if (!ft_strcmp(every->st_arg[0], "~") || !ft_strcmp(every->st_arg[0], ""))
@@ -73,7 +79,8 @@ void	change_directory(t_prompt *every, char *pwd)
 	}
 	else if (chdir(every->st_arg[0]) == -1)
 		ft_printf(2, "cd: %s: %s\n", every->st_arg[0], strerror(errno));
-	
+	if (previous_pwd)
+		free(previous_pwd);
 	previous_pwd = ft_strdup(current_pwd);
 
 	// Nao sei bem como dar free aqui, pq so podemos nos livrar do previous_pwd

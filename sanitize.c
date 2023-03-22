@@ -50,11 +50,15 @@ void	ft_prompt(t_prompt *every, char *prompt, int i)
 	j = 0;
 	every->cmd[i] = ft_strtrim(sep[0], "\"");
 	while (sep[++j])
+	{
+		if (j > 1)
+			joined = ft_alt_strjoin(joined, " ");
 		joined = ft_alt_strjoin(joined, sep[j]);
+	}
 	if (!sep[1])
 		every->st_arg[i] = ft_strdup("\0");
 	else
-		every->st_arg[i] = ft_strtrim(joined, "\"");
+		every->st_arg[i] = ft_strdup(joined);
 	free(joined);
 	freesplit(sep);
 }

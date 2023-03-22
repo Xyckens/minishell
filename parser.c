@@ -70,15 +70,17 @@ void	path(t_prompt *every, int c)
 {
 	char	pwd[1000];
 
-	if (!ft_strcmp(every->cmd[c], "pwd"))
+	if (ft_strcmp(every->cmd[c], "echo"))
+		every->st_arg[c] = ft_alt_strtrim(every->st_arg[c], "\"");
+	if (!ft_strcmp(every->cmd[c], "echo"))
+		echo(every, c);
+	else if (!ft_strcmp(every->cmd[c], "pwd"))
 	{
 		ft_printf(every->fd, "%s\n", getcwd(pwd, 100));
 		every->exit_stat = 0;
 	}
 	else if (!ft_strcmp(every->cmd[c], "cd"))
 		change_directory(every, pwd);
-	else if (!ft_strcmp(every->cmd[c], "echo"))
-		echo(every, c);
 	else if (!ft_strcmp(every->cmd[c], "export"))
 		every->new_env = ft_export(every, c);
 	else if (!ft_strcmp(every->cmd[c], "unset"))
@@ -153,10 +155,7 @@ int	parser(t_prompt *eve)
 	{
 		jump = 1;
 		if (eve->sep[ex])
-		{
-			if (eve->sep[ex][0] == 62 || eve->sep[ex][0] == 60 || eve->sep[ex][0] == '|')
-				jump = use_last(eve, ex);
-		}
+			jump = use_last(eve, ex);
 		if (ex >= 1)
 		{
 			if (eve->sep[ex - 1][0] != '|')
