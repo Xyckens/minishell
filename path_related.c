@@ -82,13 +82,4 @@ void	change_directory(t_prompt *every, char *pwd)
 	if (previous_pwd)
 		free(previous_pwd);
 	previous_pwd = ft_strdup(current_pwd);
-
-	// Nao sei bem como dar free aqui, pq so podemos nos livrar do previous_pwd
-	// quando o programa acabar. Se pah, vou ter que incluir isso na struct pra poder
-	// dar free no main. Talvez seja melhor, pq dai um free geral no fim pode ser util.
-
-	// Se for assim, eu penso em criar uma struct unica pro CD e add na struct geral. 
-	// Talvez cada built-in mereca uma struct, se achar que precisa. Nda complicado.
-
-	// Se tiver outra ideia, me diga.
 }

@@ -55,6 +55,7 @@ void	ft_exit(t_prompt *everything)
 	change_directory(everything, "altura de dar free a isto!@#%$^");
 	delete_everything(everything);
 	freesplit(everything->new_env);
+	ft_printf(1, "exit\n");
 	exit(saida);
 }
 
@@ -84,7 +85,8 @@ int	main(int argc, char **argv, char **envp)
 			ft_exit(&g_everything);
 		if (g_everything.prompt[0] != '\0')
 			add_history(g_everything.prompt);
-		if (catch_input_errors(&g_everything) && g_everything.prompt[0] != 0)
+		if (!catch_input_errors(&g_everything)
+			&& (g_everything.prompt[0] != 0 && ft_strlen(g_everything.cmd[0])))
 			g_everything.fd = parser(&g_everything);
 		free(g_everything.prompt);
 	}

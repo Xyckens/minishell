@@ -49,7 +49,7 @@ void	ft_prompt(t_prompt *every, char *prompt, int i)
 	joined = ft_strdup("\0");
 	j = 0;
 	if (sep[0])
-		every->cmd[i] = ft_strtrim(sep[0], "\"");
+		every->cmd[i] = ft_strtrim(sep[0], "\" \t");
 	else
 		every->cmd[i] = ft_strdup("\0");
 	while (sep[0] && sep[++j])

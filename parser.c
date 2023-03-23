@@ -71,7 +71,7 @@ void	path(t_prompt *every, int c)
 	char	pwd[1000];
 
 	if (ft_strcmp(every->cmd[c], "echo"))
-		every->st_arg[c] = ft_alt_strtrim(every->st_arg[c], "\"");
+		every->st_arg[c] = ft_alt_strtrim(every->st_arg[c], "\" \t");
 	if (!ft_strcmp(every->cmd[c], "echo"))
 		echo(every, c);
 	else if (!ft_strcmp(every->cmd[c], "pwd"))

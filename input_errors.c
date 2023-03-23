@@ -24,20 +24,14 @@ int	catch_input_errors(t_prompt *every)
 	while (every->sep[++s])
 	{
 		if (!every->cmd[s] || ft_strlen(every->cmd[s]) == 0)
-		{
-			ft_printf(2, "syntax error near unexpected token %c\n", every->sep[s][0]);
-			return (0);
-		}
+			return (ft_printf(2, "syntax error near %c\n", every->sep[s][0]));
 		if (every->sep[s][0] != every->sep[s][1] && every->sep[s][1] != '\0')
-		{
-			ft_printf(2, "syntax error near unexpected token %c\n", every->sep[s][0]);
-			return (0);
-		}
+			return (ft_printf(2, "syntax error near %c\n", every->sep[s][0]));
 	}
 	if (cexe != s + 1 || cexe == 0)
 	{
-		ft_printf(2, "syntax error near unexpected token %s\n", every->sep[s]);
-		return (0);
+		ft_printf(2, "syntax error near %s\n", every->sep[s]);
+		return (1);
 	}
-	return (1);
+	return (0);
 }

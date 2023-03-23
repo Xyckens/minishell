@@ -77,7 +77,7 @@ int	dollarsign(char *str, int c, t_prompt *every)
 	if (str[cou] == '?')
 		ft_printf(every->fd, "%d", every->exit_stat);
 	while (str[cou] && str[cou] != ' ' && str[cou] != '"' && str[cou] != 39
-		&& str[cou] != '>' && str[cou] != '<' && str[cou] != '|')
+		&& str[cou] != '>' && str[cou] != '<' && str[cou] != '|' && str[cou] != '$')
 		cou++;
 	while (every->new_env[i])
 	{
