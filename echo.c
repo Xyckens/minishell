@@ -41,9 +41,9 @@ int	does_it_have_2quotes(char *str, int firststop, int fd)
 				ft_putchar_fd(str[count], fd);
 			count++;
 		}
-		return (firststop + count2 + 1);
+		return (firststop + count2);
 	}
-	return (firststop + 1);
+	return (firststop);
 }
 
 void	ft_printenv(char *str, int fd)
@@ -88,7 +88,7 @@ int	dollarsign(char *str, int c, t_prompt *every)
 		}
 		i++;
 	}
-	return (cou + c + 1);
+	return (cou + c);
 }
 
 int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)
@@ -122,9 +122,9 @@ int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)
 				ft_putchar_fd(s[count], every->fd);
 			count++;
 		}
-		return (firststop + count2 + 1);
+		return (firststop + count2);
 	}
-	return (firststop + 1);
+	return (firststop);
 }
 
 
@@ -145,16 +145,16 @@ void	ft_epur(char *s, t_prompt *every)
 	{
 		if (s[c] == 39)
 			c = does_it_have_2quotes(s + c, c, every->fd);
-		if (s[c] == '"')
+		else if (s[c] == '"')
 			c = does_it_have_2doublequotes(s + c, c, every);
 		if (s[c] == '$')
 			c = dollarsign(s + c + 1, c, every);
-		if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
+		else if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
 			ft_putchar_fd(' ', every->fd);
 			flag = 0;
 		}
-		if (s[c] != ' ' && s[c] != '\t' && s[c] != '\n')
+		else if (s[c] != ' ' && s[c] != '\t' && s[c] != '\n')
 		{
 			flag = 1;
 			ft_putchar_fd(s[c], every->fd);
