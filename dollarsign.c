@@ -87,10 +87,11 @@ char	*join3strings(t_prompt *every, char *str, int c)
 	int		temp;
 	char	*tempstr;
 	char	*tempstr2;
+	char	*var;
 
 	temp = c;
 	while (str[c] && str[c] != ' ' && str[c] != '"' && str[c] != 39
-		&& str[c] != '>' && str[c] != '<' && str[c] != '|' && str[c] != '$')
+		&& str[c] != '>' && str[c] != '<' && str[c] != '|' && str[c] != '$' && str[c] != '=')
 		c++;
 	tempstr2 = ft_substr(str, temp, c - temp);
 	if (tempstr2[0] == '?')
@@ -100,10 +101,24 @@ char	*join3strings(t_prompt *every, char *str, int c)
 		tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), tempstr2);
 	}
 	else
-		tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), get_variable(every, tempstr2));
+	{
+		var = get_variable(every, tempstr2);
+		if (var)
+			tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), var);
+		else
+			tempstr = NULL;
+	}
 	free(tempstr2);
 	tempstr2 = ft_substr(str, c, ft_strlen(str + c));
-	tempstr = ft_alt_strjoin(tempstr, tempstr2);
+	temp = ft_alt_strchr(str + c - 1, '$');
+	if (temp > -1)
+	{
+		var = ft_strdup(tempstr2 + temp - 1);
+		tempstr = ft_alt_strjoin(tempstr, join3strings(every, var, 1));
+		free(var);
+	}
+	else
+		tempstr = ft_alt_strjoin(tempstr, tempstr2);
 	free(tempstr2);
 	return (tempstr);
 }

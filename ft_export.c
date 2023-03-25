@@ -21,7 +21,7 @@ char	*formated_word(char *str)
 	str = ft_setchar(str, 39, '"');
 	if (strchr(str, '"'))
 		return (str);
-	new_word = malloc(sizeof(char) * ft_strlen(str) + 3);
+	new_word = malloc(sizeof(char) * ft_strlen(str) + 1);
 	if (!new_word)
 		return (NULL);
 	i = 0;
@@ -29,10 +29,8 @@ char	*formated_word(char *str)
 	while (str[i] && str[i] != '=')
 		new_word[j++] = str[i++];
 	new_word[j++] = str[i++];
-	new_word[j++] = '"';
 	while (str[i])
 		new_word[j++] = str[i++];
-	new_word[j++] = '"';
 	new_word[j] = '\0';
 	return (new_word);
 }
@@ -47,6 +45,8 @@ char	*get_key(char *str)
 		return (NULL);
 	while (str[i] && str[i] != '=')
 		i++;
+	if (str[i] == '"')
+		i--;
 	key = ft_substr(str, 0, i);
 	return (key);
 }
@@ -71,6 +71,56 @@ char	*get_value(char *str)
 	return (value);
 }
 
+char	*get_default_key(t_prompt *every, char *new_key, int *i)
+{
+	char	*def_key;
+
+	while (every->new_env[*i])
+	{
+		def_key = get_key(every->new_env[*i]);
+		if (!ft_strcmp(def_key, new_key))
+			break ;
+		free(def_key);
+		def_key = NULL;
+		(*i)++;
+	}
+	return (def_key);
+}
+
+char	**manage_env_variables(t_prompt *every, int c)
+{
+	char	*def_key;
+	char	*new_key;
+	char	*new_value;
+	int		i;
+
+	i = 0;
+	new_key = get_key(every->st_arg[c]);
+	def_key = get_default_key(every, new_key, &i);
+	new_value = get_value(every->st_arg[c]);
+	if (!def_key && !new_value)
+	{
+		every->new_env = set_new_env2(every->new_env, every, i + 1);
+		every->new_env[i] = ft_strdup(every->st_arg[c]);
+	}
+	else if (new_value)
+	{
+		if (!every->new_env[i])
+			every->new_env = set_new_env2(every->new_env, every, i + 1);
+		else
+		{
+			free(def_key);
+			free(every->new_env[i]);
+		}
+		every->new_env[i] = formated_word(every->st_arg[c]);
+	}
+	free(new_value);
+	free(new_key);
+	every->exit_stat = 0;
+	return (every->new_env);
+}
+
+/*
 char	**manage_env_variables(t_prompt *every, int c)
 {
 	char	*def_key;
@@ -110,10 +160,11 @@ char	**manage_env_variables(t_prompt *every, int c)
 	every->exit_stat = 0;
 	return (every->new_env);
 }
+*/
 
 char	**ft_export(t_prompt *e, int c)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (e->st_arg[c][0] == '\0')

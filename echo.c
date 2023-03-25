@@ -46,51 +46,6 @@ int	does_it_have_2quotes(char *str, int firststop, int fd)
 	return (firststop);
 }
 
-void	ft_printenv(char *str, int fd)
-{
-	int	count;
-
-	count = 0;
-	while (str[count])
-	{
-		if (str[count] == '=')
-		{
-			count++;
-			break ;
-		}
-		count++;
-	}
-	while (str[count])
-	{
-		ft_putchar_fd(str[count], fd);
-		count++;
-	}
-}
-
-int	dollarsign(char *str, int c, t_prompt *every)
-{
-	int	cou;
-	int	i;
-
-	cou = 0;
-	i = 0;
-	if (str[cou] == '?')
-		ft_printf(every->fd, "%d", every->exit_stat);
-	while (str[cou] && str[cou] != ' ' && str[cou] != '"' && str[cou] != 39
-		&& str[cou] != '>' && str[cou] != '<' && str[cou] != '|' && str[cou] != '$')
-		cou++;
-	while (every->new_env[i])
-	{
-		if (!ft_strncmp(str, every->new_env[i], cou))
-		{
-			ft_printenv(every->new_env[i], every->fd);
-			break ;
-		}
-		i++;
-	}
-	return (cou + c);
-}
-
 int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)
 {
 	int	count;
@@ -116,8 +71,6 @@ int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)
 		count = 0;
 		while (s[count] && count < count2)
 		{
-			if (s[count] == '$')
-				count = dollarsign(s + count + 1, count, every);
 			if (s[count] != '"')
 				ft_putchar_fd(s[count], every->fd);
 			count++;
@@ -147,8 +100,6 @@ void	ft_epur(char *s, t_prompt *every)
 			c = does_it_have_2quotes(s + c, c, every->fd);
 		else if (s[c] == '"')
 			c = does_it_have_2doublequotes(s + c, c, every);
-		if (s[c] == '$')
-			c = dollarsign(s + c + 1, c, every);
 		else if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
 			ft_putchar_fd(' ', every->fd);
