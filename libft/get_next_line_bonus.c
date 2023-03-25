@@ -35,7 +35,7 @@ static char	*backtoleft(char *s1, int offset)
 	return (array);
 }
 
-int	ft_alt_strchr(const char *s)
+static int	ft_alt_strchr(const char *s)
 {
 	int	count;
 

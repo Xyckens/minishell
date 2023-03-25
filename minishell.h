@@ -26,6 +26,7 @@
 # include <signal.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <termios.h>
 
 typedef struct s_prompt
 {
@@ -53,6 +54,8 @@ int		catch_input_errors(t_prompt *every);
 void	path(t_prompt *every, int c);
 
 void	change_directory(t_prompt *every, char *pwd);
+char	*get_variable(t_prompt *env, char *var);
+
 void	echo(t_prompt *every, int c);
 
 char	**initialize(t_prompt *everything, int c);
@@ -69,7 +72,6 @@ int		redirectout(char *prompt);
 int		append(char *prompt);
 int		redirectin(char *name);
 int		hereindoc(t_prompt *every);
-void	pipes(t_prompt *env, int c);
 void	mult_pipes(t_prompt *every, int c, int mult);
 
 char	*name(char *str);
@@ -77,4 +79,5 @@ char	*name(char *str);
 void	freesplit(char **array);
 char	**ft_alt_split(char *s, char *p);
 void	delete_everything(t_prompt *everything);
+char	**dollarsign2(t_prompt *every, char **str);
 #endif

@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/03/21 20:02:11 by fvieira          ###   ########.fr        #
+#    Updated: 2023/03/25 12:51:15 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRC = main.c \
 		pelicaseaspas.c \
 		split.c \
 		input_errors.c \
-		pipe.c
+		pipe.c \
+		dollarsign.c
 
 OBJ = $(SRC:.c=.o)
 

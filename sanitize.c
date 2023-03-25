@@ -45,7 +45,7 @@ void	ft_prompt(t_prompt *every, char *prompt, int i)
 	char	*joined;
 	int		j;
 
-	sep = ft_alt_split(prompt, " \t");
+	sep = dollarsign2(every, ft_alt_split(prompt, " \t"));
 	joined = ft_strdup("\0");
 	j = 0;
 	if (sep[0])
