@@ -57,14 +57,15 @@ void	delete_everything(t_prompt *everything)
 		freesplit(everything->sep);
 	if (everything->st_arg)
 		freesplit(everything->st_arg);
-	free(everything->order);
+	if (everything->order)
+		free(everything->order);
 }
 
 void	ft_exit(t_prompt *everything)
 {
 	int	saida;
 
-	if (!everything->st_arg[0])
+	if (!everything->st_arg)
 		saida = (everything->exit_stat);
 	else
 		saida = (ft_atoi(everything->st_arg[0]));
@@ -93,11 +94,9 @@ int	main(int argc, char **argv, char **envp)
 			g_everything.clean = 0;
 			g_everything.prompt = readline("prompt% ");
 		}
-		if (!g_everything.prompt)
-			exit(g_everything.exit_stat);
 		if (!g_everything.clean)
 			sanitize(&g_everything);
-		if (!ft_strcmp(g_everything.cmd[0], "exit"))
+		if (!ft_strcmp(g_everything.cmd[0], "exit") || !g_everything.prompt)
 			ft_exit(&g_everything);
 		if (g_everything.prompt[0] != '\0')
 			add_history(g_everything.prompt);
