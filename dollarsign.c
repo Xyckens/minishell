@@ -12,63 +12,6 @@
 
 #include "minishell.h"
 
-int	between2(const char *str, int pos)
-{
-	int	temp;
-	int	flag;
-	int	c;
-
-	temp = -1;
-	flag = 1;
-	c = -1;
-	while (str[++c] && c <= pos)
-	{
-		if (temp >= 0 && str[c] == str[temp])
-		{
-			temp = -1;
-			flag = 1;
-			continue ;
-		}
-		if (str[c] == 39 && temp == -1)
-		{
-			temp = c;
-			flag = 0;
-		}
-	}
-	if (flag == 1)
-		return (1);
-	return (0);
-}
-
-int	count_words2(char const *s, char *c)
-{
-	int	words;
-	int	i;
-	int	j;
-
-	words = 1;
-	i = 0;
-	while (s[i])
-	{
-		j = 0;
-		while (j < 3)
-		{	
-			if (s[i] == c[j] && i > 0 && s[i - 1] != c[0]
-				&& s[i - 1] != c[1] && s[i - 1] != c[2])
-			{
-				if (between2(s, i) == 1)
-				{
-					words++;
-					break ;
-				}
-			}
-			j++;
-		}
-		i++;
-	}	
-	return (words);
-}
-
 int	ft_alt_strchr(const char *s, char d)
 {
 	int	count;
@@ -83,16 +26,27 @@ int	ft_alt_strchr(const char *s, char d)
 	return (-1);
 }
 
-char	*join3strings(t_prompt *every, char *str, int c)
+char	*joinrest(t_prompt *every, char *str, char *tempstr2, int temp)
 {
-	int		temp;
+	char	*var;
+	char	*tempstr;
+
+	var = ft_strdup(tempstr2 + temp - 1);
+	tempstr = ft_substr(str, 0, temp - 1);
+	free(tempstr2);
+	tempstr2 = ft_strjoinfree(tempstr, join3strings(every, var, 1, 1));
+	free(var);
+	return (tempstr2);
+}
+
+char	*join3strings(t_prompt *every, char *str, int c, int temp)
+{
 	char	*tempstr;
 	char	*tempstr2;
 	char	*var;
 
-	temp = c;
 	while (str[c] && str[c] != ' ' && str[c] != '"' && str[c] != 39
-		&& str[c] != '>' && str[c] != '<' && str[c] != '|' && str[c] != '$' && str[c] != '=')
+		&& (str[c] > 62 || str[c] < 60) && str[c] != '|' && str[c] != '$')
 		c++;
 	tempstr2 = ft_substr(str, temp, c - temp);
 	if (tempstr2[0] == '?')
@@ -104,23 +58,14 @@ char	*join3strings(t_prompt *every, char *str, int c)
 	else
 	{
 		var = get_variable(every, tempstr2);
-		if (var)
-			tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), var);
-		else
-			tempstr = ft_substr(str, 0, temp - 1);
+		tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), var);
 	}
 	free(tempstr2);
 	tempstr2 = ft_substr(str, c, ft_strlen(str + c));
 	temp = ft_alt_strchr(str + c - 1, '$');
 	if (temp > -1)
-	{
-		var = ft_strdup(tempstr2 + temp - 1);
-		free(tempstr2);
-		tempstr2 = ft_strjoinfree(ft_substr(str + c, 0, temp - 1), join3strings(every, var, 1));
-		free(var);
-	}
-	tempstr = ft_strjoinfree(tempstr, tempstr2);
-	return (tempstr);
+		tempstr2 = joinrest(every, str + c, tempstr2, temp);
+	return (ft_strjoinfree(tempstr, tempstr2));
 }
 
 char	**dollarsign2(t_prompt *every, char **str)
@@ -140,7 +85,7 @@ char	**dollarsign2(t_prompt *every, char **str)
 		if (ft_strnstr(str[i], "export", 7))
 			cou = -2;
 		if (cou++ >= 0 && between2(str[i], ft_alt_strchr(str[i], '$')))
-			dlr[i] = join3strings(every, str[i], cou);
+			dlr[i] = join3strings(every, str[i], cou, cou);
 		else
 			dlr[i] = ft_strdup(str[i]);
 		i++;

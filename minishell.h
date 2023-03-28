@@ -83,4 +83,8 @@ void	delete_everything(t_prompt *everything);
 char	**dollarsign2(t_prompt *every, char **str);
 char	*ft_strjoinfree(char *s1, char *s2);
 
+char	*join3strings(t_prompt *every, char *str, int c, int temp);
+int		validate_variables(char *str, int flag);
+int		between2(const char *str, int pos);
+
 #endif

@@ -48,10 +48,12 @@ char	*get_value(char *str)
 	return (value);
 }
 
-char	*get_default_key(t_prompt *every, char *new_key, int *i)
+char	*get_default_key(t_prompt *every, int *i, int c)
 {
 	char	*def_key;
+	char	*new_key;
 
+	new_key = get_key(every->st_arg[c]);
 	while (every->new_env[*i])
 	{
 		def_key = get_key(every->new_env[*i]);
@@ -61,83 +63,36 @@ char	*get_default_key(t_prompt *every, char *new_key, int *i)
 		def_key = NULL;
 		(*i)++;
 	}
+	free(new_key);
 	return (def_key);
 }
 
-char	**manage_env_variables(t_prompt *every, int c)
+char	**manage_env_variables(t_prompt *every, int c, int i)
 {
 	char	*def_key;
-	char	*new_key;
 	char	*new_value;
-	int		i;
 
-	i = 0;
-	new_key = get_key(every->st_arg[c]);
-	def_key = get_default_key(every, new_key, &i);
+	def_key = get_default_key(every, &i, c);
 	new_value = get_value(every->st_arg[c]);
-	if (!def_key && !new_value)
+	if ((!def_key && !new_value) && validate_variables(every->st_arg[c], 0))
 	{
 		every->new_env = set_new_env2(every->new_env, every, i + 1);
 		every->new_env[i] = ft_strdup(every->st_arg[c]);
 	}
-	else if (new_value)
+	else if (new_value && validate_variables(get_key(every->st_arg[c]), 1))
 	{
 		if (!every->new_env[i])
 			every->new_env = set_new_env2(every->new_env, every, i + 1);
 		else
-		{
-			free(def_key);
 			free(every->new_env[i]);
-		}
 		every->new_env[i] = formated_word(every->st_arg[c]);
 	}
-	free(new_value);
-	free(new_key);
-	every->exit_stat = 0;
-	return (every->new_env);
-}
-
-/*
-char	**manage_env_variables(t_prompt *every, int c)
-{
-	char	*def_key;
-	char	*new_key;
-	char	*new_value;
-	int		i;
-
-	i = -1;
-	new_key = get_key(every->st_arg[c]);
-	while (every->new_env[++i])
-	{
-		def_key = get_key(every->new_env[i]);
-		if (!ft_strcmp(def_key, new_key))
-			break ;
+	if (def_key)
 		free(def_key);
-		def_key = NULL;
-	}
-	new_value = get_value(every->st_arg[c]);
-	if (!def_key && !new_value)
-	{
-		every->new_env = set_new_env2(every->new_env, every, i + 1);
-		every->new_env[i] = ft_strdup(every->st_arg[c]);
-	}
-	else if (new_value)
-	{
-		if (!every->new_env[i])
-			every->new_env = set_new_env2(every->new_env, every, i + 1);
-		else
-		{
-			free(def_key);
-			free(every->new_env[i]);
-		}
-		every->new_env[i] = formated_word(every->st_arg[c]);
-	}
 	free(new_value);
-	free(new_key);
 	every->exit_stat = 0;
 	return (every->new_env);
 }
-*/
 
 char	**ft_export(t_prompt *e, int c)
 {
@@ -154,7 +109,8 @@ char	**ft_export(t_prompt *e, int c)
 			{
 				ft_putchar_fd(e->new_env[i][c], e->fd);
 				if ((e->new_env[i][c] == '=' && e->new_env[i][c + 1] != '"')
-					|| (e->new_env[i][c + 1] == 0 && e->new_env[i][c] != '"'))
+				|| (ft_strchr(e->new_env[i], '=') && (e->new_env[i][c + 1] == 0
+				&& e->new_env[i][c] != '"')))
 					ft_putchar_fd('"', e->fd);
 			}
 			ft_putchar_fd('\n', e->fd);
@@ -163,6 +119,6 @@ char	**ft_export(t_prompt *e, int c)
 		e->exit_stat = 0;
 	}
 	else
-		e->new_env = manage_env_variables(e, c);
+		e->new_env = manage_env_variables(e, c, 0);
 	return (e->new_env);
 }

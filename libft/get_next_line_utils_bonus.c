@@ -20,22 +20,22 @@ char	*ft_alt_strjoin(char *s1, char *s2)
 	size_t	count;
 	char	*joined;
 
-	count = 0;
+	count = -1;
 	if (!s1)
 		s1 = ft_calloc(1, sizeof(char));
 	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
+	len_s2 = 1;
+	if (s2)
+		len_s2 = ft_strlen(s2);
 	joined = ft_calloc((len_s1 + len_s2 + 1), sizeof(char));
-	while (s1[count] != '\0')
-	{
+	while (s1[++count] != '\0')
 		joined[count] = s1[count];
-		count++;
-	}
 	count = 0;
-	while (s2[count] != '\0')
+	if (s2)
 	{
-		joined[len_s1 + count] = s2[count];
-		count++;
+		count = -1;
+		while (s2[++count] != '\0')
+			joined[len_s1 + count] = s2[count];
 	}
 	joined[len_s1 + count] = '\0';
 	free(s1);

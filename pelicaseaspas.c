@@ -20,10 +20,10 @@ char	**sep_init(t_prompt *e)
 	int		j;
 
 	i = 2;
-	c = 0;
+	c = -1;
 	j = 0;
 	sep = malloc((count_words(e->prompt, "><|") + 1) * sizeof(char *));
-	while (e->prompt[c])
+	while (e->prompt[++c])
 	{
 		if ((e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|')
 			&& between(e->prompt, c) == 1)
@@ -32,12 +32,10 @@ char	**sep_init(t_prompt *e)
 				i++;
 			sep[j] = malloc(i);
 			sep[j][0] = e->prompt[c];
-			sep[j][i - 1] = '\0';
+			sep[j++][i - 1] = '\0';
 			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
-				sep[j][1] = e->prompt[++c];
-			j++;
+				sep[j - 1][1] = e->prompt[++c];
 		}
-		c++;
 	}
 	sep[j] = 0;
 	return (sep);

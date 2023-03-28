@@ -18,29 +18,24 @@ int	does_it_have_2quotes(char *str, int firststop, int fd)
 	int	count2;
 	int	flag;
 
-	count2 = 0;
 	flag = 0;
-	count = 0;
-	while (str[count])
+	count = -1;
+	while (str[++count])
 	{
-		if (str[count] == 39)
+		if (str[count] == str[0])
 			flag++;
 		if (flag == 2)
 		{
 			count2 = count;
 			break ;
 		}
-		count++;
 	}
 	if (flag == 2)
 	{
-		count = 0;
-		while (str[count] && count < count2)
-		{
-			if (str[count] != 39)
+		count = -1;
+		while (str[++count] && count < count2)
+			if (str[count] != str[0])
 				ft_putchar_fd(str[count], fd);
-			count++;
-		}
 		return (firststop + count2);
 	}
 	return (firststop);
@@ -52,10 +47,9 @@ int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)
 	int	count2;
 	int	flag;
 
-	count2 = 0;
 	flag = 0;
-	count = 0;
-	while (s[count])
+	count = -1;
+	while (s[++count])
 	{
 		if (s[count] == '"')
 			flag++;
@@ -64,53 +58,43 @@ int	does_it_have_2doublequotes(char *s, int firststop, t_prompt *every)
 			count2 = count;
 			break ;
 		}
-		count++;
 	}
 	if (flag == 2)
 	{
-		count = 0;
-		while (s[count] && count < count2)
-		{
+		count = -1;
+		while (s[++count] && count < count2)
 			if (s[count] != '"')
 				ft_putchar_fd(s[count], every->fd);
-			count++;
-		}
 		return (firststop + count2);
 	}
 	return (firststop);
 }
 
-
 void	ft_epur(char *s, t_prompt *every)
 {
 	int	c;
 	int	flag;
-	int	l;
 
-	c = 0;
+	c = -1;
 	flag = 0;
-	l = ft_strlen(s) - 1;
-	while (s[c] != '\0' && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
+	while (s[c + 1] != '\0' && (s[c + 1] <= ' '))
 		c++;
-	while (l > 0 && (s[l] == ' ' || s[l] == '\t' || s[l] == '\n'))
-		l--;
-	while (c <= l)
+	while (s[++c])
 	{
-		if (s[c] == 39)
+		if (s[c] == 39 || s[c] == '"')
 			c = does_it_have_2quotes(s + c, c, every->fd);
-		else if (s[c] == '"')
-			c = does_it_have_2doublequotes(s + c, c, every);
 		else if (flag == 1 && (s[c] == ' ' || s[c] == '\t' || s[c] == '\n'))
 		{
-			ft_putchar_fd(' ', every->fd);
 			flag = 0;
+			ft_putchar_fd(s[c], every->fd);
+			while (s[c + 1] && (s[c + 1] <= ' '))
+				c++;
 		}
 		else if (s[c] != ' ' && s[c] != '\t' && s[c] != '\n')
 		{
 			flag = 1;
 			ft_putchar_fd(s[c], every->fd);
 		}
-		c++;
 	}
 }
 

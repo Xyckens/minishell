@@ -33,7 +33,8 @@ SRC = main.c \
 		input_errors.c \
 		pipe.c \
 		dollarsign.c \
-		unset_export_surplus.c
+		unset_export_surplus.c \
+		dollarexport.c
 
 OBJ = $(SRC:.c=.o)
 
