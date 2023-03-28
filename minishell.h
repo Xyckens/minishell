@@ -64,15 +64,16 @@ int		executable(t_prompt *everything, int c);
 
 char	**set_new_env(char **envp);
 char	**set_new_env2(char **envp, t_prompt *every, int size);
+char	*formated_word(char *str);
 char	**ft_export(t_prompt *every, int c);
-char	**ft_unset(t_prompt *everything, int c);
+char	**ft_unset(t_prompt *every, int c);
 
 int		parser(t_prompt *every);
 int		redirectout(char *prompt);
 int		append(char *prompt);
 int		redirectin(char *name);
 int		hereindoc(t_prompt *every);
-void	mult_pipes(t_prompt *every, int c, int mult);
+void	mult_pipes(t_prompt *every, int c, int *i);
 
 char	*name(char *str);
 
@@ -80,4 +81,6 @@ void	freesplit(char **array);
 char	**ft_alt_split(char *s, char *p);
 void	delete_everything(t_prompt *everything);
 char	**dollarsign2(t_prompt *every, char **str);
+char	*ft_strjoinfree(char *s1, char *s2);
+
 #endif

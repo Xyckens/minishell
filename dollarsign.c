@@ -82,6 +82,7 @@ int	ft_alt_strchr(const char *s, char d)
 	}
 	return (-1);
 }
+
 char	*join3strings(t_prompt *every, char *str, int c)
 {
 	int		temp;
@@ -106,7 +107,7 @@ char	*join3strings(t_prompt *every, char *str, int c)
 		if (var)
 			tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), var);
 		else
-			tempstr = NULL;
+			tempstr = ft_substr(str, 0, temp - 1);
 	}
 	free(tempstr2);
 	tempstr2 = ft_substr(str, c, ft_strlen(str + c));
@@ -114,15 +115,13 @@ char	*join3strings(t_prompt *every, char *str, int c)
 	if (temp > -1)
 	{
 		var = ft_strdup(tempstr2 + temp - 1);
-		tempstr = ft_alt_strjoin(tempstr, join3strings(every, var, 1));
+		free(tempstr2);
+		tempstr2 = ft_strjoinfree(ft_substr(str + c, 0, temp - 1), join3strings(every, var, 1));
 		free(var);
 	}
-	else
-		tempstr = ft_alt_strjoin(tempstr, tempstr2);
-	free(tempstr2);
+	tempstr = ft_strjoinfree(tempstr, tempstr2);
 	return (tempstr);
 }
-
 
 char	**dollarsign2(t_prompt *every, char **str)
 {

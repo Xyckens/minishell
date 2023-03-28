@@ -12,29 +12,6 @@
 
 #include "minishell.h"
 
-char	*formated_word(char *str)
-{
-	char	*new_word;
-	int		i;
-	int		j;
-
-	str = ft_setchar(str, 39, '"');
-	if (strchr(str, '"'))
-		return (str);
-	new_word = malloc(sizeof(char) * ft_strlen(str) + 1);
-	if (!new_word)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i] && str[i] != '=')
-		new_word[j++] = str[i++];
-	new_word[j++] = str[i++];
-	while (str[i])
-		new_word[j++] = str[i++];
-	new_word[j] = '\0';
-	return (new_word);
-}
-
 char	*get_key(char *str)
 {
 	char	*key;

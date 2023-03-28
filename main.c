@@ -28,24 +28,24 @@ void	handle_signals(int signo)
 
 void	signals(void)
 {
-	struct termios termios_save;
-	struct termios termios_new;
+	struct termios	termios_save;
+	struct termios	termios_new;
 
 	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
 		ft_printf(1, "failed to register interrupts with kernel\n");
 	if (signal(SIGINT, handle_signals) == SIG_ERR)
 		ft_printf(1, "failed to register interrupts with kernel\n");
-	if (tcgetattr(0, &termios_save) == -1) 
+	if (tcgetattr(0, &termios_save) == -1)
 	{
-		perror("tcgetattr"); 
-		exit(1); 
+		perror("tcgetattr");
+		exit(1);
 	}
 	termios_new = termios_save;
 	termios_new.c_lflag &= ~ECHOCTL;
-	if (tcsetattr(0, 0, &termios_new) == -1) 
+	if (tcsetattr(0, 0, &termios_new) == -1)
 	{
-		perror("tcsetattr"); 
-		exit(1); 
+		perror("tcsetattr");
+		exit(1);
 	}
 }
 
@@ -63,6 +63,7 @@ void	delete_everything(t_prompt *everything)
 void	ft_exit(t_prompt *everything)
 {
 	int	saida;
+
 	if (!everything->st_arg[0])
 		saida = (everything->exit_stat);
 	else

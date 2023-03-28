@@ -89,10 +89,7 @@ void	idk(char *arg0, char **args, t_prompt *everything, int c)
 	i = 0;
 	path = pathfinder(everything->new_env);
 	if (everything->sep[c] && everything->sep[c][0] == '<')
-	{
 		dup2(everything->fd, 0);
-		everything->fd = 1;
-	}
 	else if (everything->fd > 1)
 		dup2(everything->fd, 1);
 	if (execve(args[0], args, everything->new_env) == -1)
@@ -106,8 +103,6 @@ void	idk(char *arg0, char **args, t_prompt *everything, int c)
 				i++;
 		}
 	}
-	if (everything->fd != 1)
-		close(everything->fd);
 	freesplit(path);
 	ft_printf(2, "%s: command not found\n", arg0 + 1);
 	free(arg0);
