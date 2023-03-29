@@ -32,7 +32,6 @@ int	hereindoc(t_prompt *every)
 
 	buff = "\0";
 	fd = open("libft/.test.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
-	printf("fd doc: %d\n", fd);
 	while (1)
 	{
 		every->prompt = readline("> ");

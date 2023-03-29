@@ -117,6 +117,8 @@ int	executable(t_prompt *everything, int c)
 	char	**seperated;
 
 	seperated = initialize(everything, c);
+	if (everything->fdinput != -30)
+		everything->fd = everything->fdinput;
 	pid = fork();
 	if (pid == 0)
 		idk(seperated[0], seperated, everything, c);

@@ -36,6 +36,7 @@ typedef struct s_prompt
 	char	**sep;
 	int		*order;
 	int		fd;
+	int		fdinput;
 	char	**new_env;
 	int		exit_stat;
 	int		herein;

@@ -82,9 +82,9 @@ int	use_last(t_prompt *eve, int f)
 		if (eve->sep[i][0] == '>' && eve->sep[i][1] == '>')
 			eve->fd = append(eve->cmd[i + 1]);
 		if (eve->sep[i][0] == '<' && eve->sep[i][1] != '<')
-			eve->fd = redirectin(eve->cmd[i + 1]);
+			eve->fdinput = redirectin(eve->cmd[i + 1]);
 		if (eve->sep[i][0] == '<' && eve->sep[i][1] == '<')
-			eve->fd = hereindoc(eve);
+			eve->fdinput = hereindoc(eve);
 		i++;
 	}
 	mult[1] = i - f + 1;
@@ -100,6 +100,7 @@ int	parser(t_prompt *eve)
 
 	ex = next(eve->sep, eve->order, -1, 1);
 	eve->fd = 1;
+	eve->fdinput = -30;
 	while (eve->cmd[ex])
 	{
 		jump = 1;
