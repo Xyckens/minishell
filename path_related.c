@@ -42,11 +42,33 @@ char	*get_variable(t_prompt *env, char *var)
 	return (NULL);
 }
 
+void	change_to_variable(t_prompt *every)
+{
+	char		*var;
+
+	var = ft_str_nex_chr(every->st_arg[0], '$');
+	if (!get_variable(every, var))
+		chdir(get_variable(every, "HOME"));
+	else if (chdir(get_variable(every, var)) == -1)
+		ft_printf(2, "cd: %s: %s\n", get_variable(every, var),
+			strerror(errno));
+}
+
+void	swap_pwd(t_prompt *every, char *cpwd, char *ppwd)
+{
+	if (!ppwd)
+		ft_printf(every->fd, "%s\n", cpwd);
+	else
+	{
+		chdir(ppwd);
+		ft_printf(every->fd, "%s\n", ppwd);
+	}
+}
+
 void	change_directory(t_prompt *every, char *pwd)
 {
 	static char	*previous_pwd;
 	static char	*current_pwd;
-	char		*var;
 
 	every->exit_stat = 0;
 	if (!ft_strcmp(pwd, "altura de dar free a isto!@#%$^"))
@@ -60,23 +82,9 @@ void	change_directory(t_prompt *every, char *pwd)
 	if (!ft_strcmp(every->st_arg[0], "~") || !ft_strcmp(every->st_arg[0], ""))
 		chdir(get_variable(every, "HOME"));
 	else if (!ft_strncmp(every->st_arg[0], "$", 1))
-	{
-		var = ft_str_nex_chr(every->st_arg[0], '$');
-		if (!get_variable(every, var))
-			chdir(get_variable(every, "HOME"));
-		else if (chdir(get_variable(every, var)) == -1)
-			ft_printf(2, "cd: %s: %s\n", get_variable(every, var), strerror(errno));
-	}
+		change_to_variable(every);
 	else if (!ft_strcmp(every->st_arg[0], "-"))
-	{
-		if (!previous_pwd)
-			ft_printf(every->fd, "%s\n", current_pwd);
-		else
-		{
-			chdir(previous_pwd);
-			ft_printf(every->fd, "%s\n", previous_pwd);
-		}
-	}
+		swap_pwd(every, current_pwd, previous_pwd);
 	else if (chdir(every->st_arg[0]) == -1)
 		ft_printf(2, "cd: %s: %s\n", every->st_arg[0], strerror(errno));
 	if (previous_pwd)

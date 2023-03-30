@@ -84,17 +84,11 @@ int	main(int argc, char **argv, char **envp)
 	g_everything.new_env = set_new_env(envp);
 	g_everything.exit_stat = 0;
 	g_everything.herein = 0;
-	g_everything.clean = 0;
-	g_everything.parser = 0;
 	while (1)
 	{
 		if (!g_everything.herein)
-		{
-			g_everything.parser = 0;
-			g_everything.clean = 0;
 			g_everything.prompt = readline("prompt% ");
-		}
-		if (!g_everything.clean)
+		if (g_everything.prompt)
 			sanitize(&g_everything);
 		if (!ft_strcmp(g_everything.cmd[0], "exit") || !g_everything.prompt)
 			ft_exit(&g_everything);
@@ -107,12 +101,3 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
-		/*int i = 0;
-		while (g_everything.cmd[i])
-		{
-			printf("executable = %s\n", g_everything.cmd[i]);
-			printf("  args     = %s\n", g_everything.st_arg[i]);
-			printf("   sep     = %s\n", g_everything.sep[i]);
-			printf("  order    = %d\n", g_everything.order[i]);
-			i++;
-		}*/

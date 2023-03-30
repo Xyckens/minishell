@@ -67,7 +67,63 @@ char	*get_default_key(t_prompt *every, int *i, int c)
 	return (def_key);
 }
 
+char	**create_new_key(t_prompt *every, int i, int c)
+{
+	char 	**test;
+	int 	j;
+	
+	printf("ARG: %s\n", every->st_arg[c]);
+	j = count_words(every->st_arg[c], " \t\n");
+	// printf("J: %d\n", i + j);
+	test = ft_alt_split(every->st_arg[c], " \t\n");
+	every->new_env = set_new_env2(every->new_env, every, i + j + 2);
+	j = 0;
+	while (test[j])
+	{
+		every->new_env[i] = ft_strdup(test[j]);
+		printf("Tes: %s\n", test[j++]);
+		i++;
+	}
+
+	return (every->new_env);
+}
+
 char	**manage_env_variables(t_prompt *every, int c, int i)
+{
+	char	*def_key;
+	char	*new_value;
+
+	char 	**test;
+
+	def_key = get_default_key(every, &i, c);
+	new_value = get_value(every->st_arg[c]);
+	if ((!def_key && !new_value))
+	{
+		every->new_env = create_new_key(every, i, c);
+	}
+	else if (new_value)
+	{
+		if (!every->new_env[i])
+			every->new_env = set_new_env2(every->new_env, every, i + 1);
+		else
+			free(every->new_env[i]);
+
+		printf("ARG: %s\n", formated_word(every->st_arg[c]));
+		test = ft_alt_split(formated_word(every->st_arg[c]), " \t\n");
+		int j = 0;
+		while (test[j])
+			printf("Tes: %s\n", test[j++]);
+
+		every->new_env[i] = formated_word(every->st_arg[c]);
+	}
+	if (def_key)
+		free(def_key);
+	free(new_value);
+	every->exit_stat = 0;
+	return (every->new_env);
+}
+
+/*char	**manage_env_variables(t_prompt *every, int c, int i)
 {
 	char	*def_key;
 	char	*new_value;
@@ -92,7 +148,7 @@ char	**manage_env_variables(t_prompt *every, int c, int i)
 	free(new_value);
 	every->exit_stat = 0;
 	return (every->new_env);
-}
+}*/
 
 char	**ft_export(t_prompt *e, int c)
 {
@@ -104,7 +160,7 @@ char	**ft_export(t_prompt *e, int c)
 		while (e->new_env[i])
 		{
 			c = -1;
-			ft_printf(e->fd, "declare -x ");
+			ft_printf(e->fd, "declare -x \n");
 			while (e->new_env[i][++c])
 			{
 				ft_putchar_fd(e->new_env[i][c], e->fd);

@@ -43,7 +43,7 @@ char	**set_new_env2(char **envp, t_prompt *every, int size)
 	char	**new_env;
 	int		i;
 
-	new_env = malloc(sizeof(char *) * (size + 1));
+	new_env = ft_calloc(size + 1, sizeof(char *));
 	i = -1;
 	while (envp[++i])
 		new_env[i] = ft_strdup(envp[i]);
