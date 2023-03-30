@@ -72,9 +72,6 @@ char	*formated_word(char *str)
 	int		i;
 	int		j;
 
-	str = ft_setchar(str, 39, '"');
-	if (strchr(str, '"'))
-		return (str);
 	new_word = malloc(sizeof(char) * ft_strlen(str) + 1);
 	if (!new_word)
 		return (NULL);
@@ -83,6 +80,8 @@ char	*formated_word(char *str)
 	while (str[i] && str[i] != '=')
 		new_word[j++] = str[i++];
 	new_word[j++] = str[i++];
+	if (str[i] == '"')
+		i++;
 	while (str[i])
 		new_word[j++] = str[i++];
 	new_word[j] = '\0';

@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+void	minipath(t_prompt *every)
+{
+	ft_printf(1, "exit: too many arguments\n");
+	every->exit_stat = 1;
+}
+
 void	path(t_prompt *every, int c)
 {
 	char	pwd[1000];
@@ -32,10 +38,9 @@ void	path(t_prompt *every, int c)
 	else if (!ft_strcmp(every->cmd[c], "unset"))
 		every->new_env = ft_unset(every, c);
 	else if (!ft_strcmp(every->cmd[c], "exit"))
-	{
-		ft_printf(1, "exit: too many arguments\n");
-		every->exit_stat = 1;
-	}
+		minipath(every);
+	else if (!ft_strcmp(every->cmd[c], "env"))
+		ft_env(every, c);
 	else
 		executable(every, c);
 	unlink("libft/.test.txt");

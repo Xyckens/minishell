@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	**sep_init(t_prompt *e)
+/*char	**sep_init(t_prompt *e)
 {
 	char	**sep;
 	int		i;
@@ -31,6 +31,35 @@ char	**sep_init(t_prompt *e)
 			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
 				i++;
 			sep[j] = malloc(i);
+			sep[j][0] = e->prompt[c];
+			sep[j++][i - 1] = '\0';
+			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')
+				sep[j - 1][1] = e->prompt[++c];
+		}
+	}
+	sep[j] = 0;
+	return (sep);
+}*/
+
+char	**sep_init(t_prompt *e)
+{
+	char	**sep;
+	int		i;
+	int		c;
+	int		j;
+
+	c = -1;
+	j = 0;
+	sep = malloc((count_words(e->prompt, "><|") + 1) * sizeof(char *));
+	while (e->prompt[++c])
+	{
+		i = 2;
+		if ((e->prompt[c] == '>' || e->prompt[c] == '<' || e->prompt[c] == '|')
+			&& between(e->prompt, c) == 1)
+		{
+			while(e->prompt[c + i - 1] == e->prompt[c])
+				i++;
+			sep[j] = ft_calloc(i, sizeof(char));
 			sep[j][0] = e->prompt[c];
 			sep[j++][i - 1] = '\0';
 			if (e->prompt[c + 1] == '>' || e->prompt[c + 1] == '<')

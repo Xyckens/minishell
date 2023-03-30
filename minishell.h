@@ -88,4 +88,10 @@ char	*join3strings(t_prompt *every, char *str, int c, int temp);
 int		validate_variables(char *str, int flag);
 int		between2(const char *str, int pos);
 
+void	ft_env(t_prompt *every, int c);
+
+char	*get_key(char *str);
+char	*get_value(char *str);
+char	*get_default_key(t_prompt *every, int *i, char *var);
+
 #endif

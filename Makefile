@@ -6,7 +6,7 @@
 #    By: fvieira <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 17:21:26 by fvieira           #+#    #+#              #
-#    Updated: 2023/03/25 12:51:15 by fvieira          ###   ########.fr        #
+#    Updated: 2023/03/30 22:33:16 by fvieira          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,9 @@ SRC = main.c \
 		pipe.c \
 		dollarsign.c \
 		unset_export_surplus.c \
-		dollarexport.c
+		dollarexport.c \
+		env.c \
+		environment_utils.c
 
 OBJ = $(SRC:.c=.o)
 

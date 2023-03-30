@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 			g_everything.prompt = readline("prompt% ");
 		if (g_everything.prompt)
 			sanitize(&g_everything);
-		if (!ft_strcmp(g_everything.cmd[0], "exit") || !g_everything.prompt)
+		if (!g_everything.prompt || !ft_strcmp(g_everything.cmd[0], "exit"))
 			ft_exit(&g_everything);
 		if (g_everything.prompt[0] != '\0')
 			add_history(g_everything.prompt);
