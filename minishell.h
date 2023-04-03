@@ -46,7 +46,7 @@ typedef struct s_prompt
 
 int		count_words(char const *s, char *c);
 int		*order(t_prompt *every);
-char	**sep_init(t_prompt *e);
+char	**sep_init(char *prompt);
 void	sanitize(t_prompt *every);
 int		between(const char *str, int pos);
 

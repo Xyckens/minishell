@@ -90,7 +90,7 @@ void	sanitize(t_prompt *every)
 	}
 	every->cmd[i] = 0;
 	every->st_arg[i] = 0;
-	every->sep = sep_init(every);
+	every->sep = sep_init(every->prompt);
 	every->order = order(every);
 	freesplit(sep2);
 }

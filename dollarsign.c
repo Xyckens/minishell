@@ -39,27 +39,42 @@ char	*joinrest(t_prompt *every, char *str, char *tempstr2, int temp)
 	return (tempstr2);
 }
 
+static char	*get_temp_str(t_prompt *every, char *str, int temp, char *t2)
+{
+	char	*tempstr;
+	char	*var;
+
+	if (t2[0] == '?')
+	{
+		t2 = ft_itoa(every->exit_stat);
+		tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), t2);
+	}
+	else
+	{
+		var = get_variable(every, t2);
+		tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), var);
+	}
+	return (tempstr);
+}
+
 char	*join3strings(t_prompt *every, char *str, int c, int temp)
 {
 	char	*tempstr;
 	char	*tempstr2;
-	char	*var;
 
 	while (str[c] && str[c] != ' ' && str[c] != '"' && str[c] != 39
 		&& (str[c] > 62 || str[c] < 60) && str[c] != '|' && str[c] != '$')
 		c++;
 	tempstr2 = ft_substr(str, temp, c - temp);
-	if (tempstr2[0] == '?')
+	if (tempstr2[0] == 0)
 	{
 		free(tempstr2);
-		tempstr2 = ft_itoa(every->exit_stat);
-		tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), tempstr2);
+		tempstr = ft_strjoinfree(ft_substr(str, 0, temp - 1), ft_strdup("$"));
+		tempstr2 = ft_substr(str, temp + c, ft_strlen(str));
+		return (ft_strjoinfree(tempstr, tempstr2));
 	}
 	else
-	{
-		var = get_variable(every, tempstr2);
-		tempstr = ft_alt_strjoin(ft_substr(str, 0, temp - 1), var);
-	}
+		tempstr = get_temp_str(every, str, temp, tempstr2);
 	free(tempstr2);
 	tempstr2 = ft_substr(str, c, ft_strlen(str + c));
 	temp = ft_alt_strchr(str + c - 1, '$');
@@ -77,9 +92,11 @@ char	**dollarsign2(t_prompt *every, char **str)
 	i = 0;
 	while (str[i])
 		i++;
+	if (str[0] == NULL)
+		i = 1;
 	dlr = malloc(sizeof(char *) * (i + 1));
 	i = 0;
-	while (str[i])
+	while (str[0] != NULL && str[i])
 	{
 		cou = ft_alt_strchr(str[i], '$');
 		if (ft_strnstr(str[i], "export", 7))

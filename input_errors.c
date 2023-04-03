@@ -12,21 +12,21 @@
 
 #include "minishell.h"
 
-int moreerrors(char *str)
+int	moreerrors(char *str)
 {
 	int	c;
 
 	c = 0;
 	while (str[c])
 	{
-		if (c > 2 && (str[c] == '|' || str[c] == '<' || str[c] == '>'))
+		if (c >= 2 && (str[c] == '|' || str[c] == '<' || str[c] == '>'))
 		{
 			if (str[c] == str[c - 1]
 				&& str[c] == str[c - 2])
-				{
-					ft_printf(2, "syntax error near %c\n", str[c]);
-					return (1);
-				}
+			{
+				ft_printf(2, "syntax error near %c\n", str[c]);
+				return (1);
+			}
 		}
 		c++;
 	}
